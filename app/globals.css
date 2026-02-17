@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-yellow: #ebc858;
+  --color-primary-green: #00baa3;
+  --color-secondary-orange: #eb8958;
+  --color-dark-grey: #2d2d2d;
+  --color-error-red: #d55342;
+  --color-light-bg: #f9f9f9;
+  
+  --font-poppins: "Poppins", sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #5c5c5c;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins);
+  line-height: 1.65;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #2d2d2d;
+  font-weight: 700;
+}
