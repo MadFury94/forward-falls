@@ -7,7 +7,7 @@ const MissionAndFocus = () => {
     return (
         <div className="font-poppins">
             {/* Quick Cards Section */}
-            <section className="relative -mt-16 z-20 container mx-auto px-6">
+            <section className="relative -mt-16 z-20 max-w-[1200px] mx-auto px-6">
                 <div className="grid md:grid-cols-3 gap-0 shadow-2xl rounded-lg overflow-hidden">
                     <div className="bg-primary-yellow p-10 text-dark-grey">
                         <Target size={48} className="mb-6 opacity-80" />
@@ -39,7 +39,7 @@ const MissionAndFocus = () => {
 
             {/* Focus Areas Section */}
             <section id="about" className="py-24 bg-light-bg">
-                <div className="container mx-auto px-6">
+                <div className="max-w-[1200px] mx-auto px-6">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">What We Do</span>
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-dark-grey leading-tight">OUR SDG FOCUS AREAS</h2>

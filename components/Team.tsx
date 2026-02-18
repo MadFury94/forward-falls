@@ -20,7 +20,7 @@ const Team = () => {
 
     return (
         <section id="advisory-board" className="py-24 bg-light-bg font-poppins">
-            <div className="container mx-auto px-6">
+            <div className="max-w-[1200px] mx-auto px-6">
                 {/* Advisory Board */}
                 <div className="text-center mb-16">
                     <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Leadership</span>

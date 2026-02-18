@@ -6,7 +6,7 @@ import { BookOpen, Award, Users, TrendingUp } from 'lucide-react';
 const Programs = () => {
     return (
         <section id="programs" className="py-24 bg-white font-poppins">
-            <div className="container mx-auto px-6">
+            <div className="max-w-[1200px] mx-auto px-6">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
                     <div className="lg:w-1/2">
                         <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Education for All</span>

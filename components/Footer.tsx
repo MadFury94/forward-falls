@@ -17,7 +17,7 @@ const Footer = () => {
 
     return (
         <footer id="contact" className="bg-dark-grey text-white pt-20 pb-10 font-poppins">
-            <div className="container mx-auto px-6">
+            <div className="max-w-[1200px] mx-auto px-6">
                 <div className="grid lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand Info */}
                     <div className="col-span-1 lg:col-span-1">

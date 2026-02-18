@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
+import AboutSection from "@/components/AboutSection";
 import MissionAndFocus from "@/components/Mission";
 import Programs from "@/components/Programs";
 import Team from "@/components/Team";
@@ -12,7 +12,7 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <Hero />
-      <About />
+      <AboutSection />
       <MissionAndFocus />
       <Programs />
       <Team />

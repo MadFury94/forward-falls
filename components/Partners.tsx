@@ -16,7 +16,7 @@ const Partners = () => {
 
     return (
         <section className="py-20 bg-white border-t border-gray-100 font-poppins">
-            <div className="container mx-auto px-6">
+            <div className="max-w-[1200px] mx-auto px-6">
                 <div className="text-center mb-12">
                     <span className="text-xs font-bold text-gray-400 uppercase tracking-[0.4em]">Our Trusted Network</span>
                 </div>
