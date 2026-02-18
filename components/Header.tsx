@@ -3,8 +3,19 @@
 import React from 'react';
 import { Phone, Mail, Facebook, Twitter, Instagram, Youtube, Search } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+    const pathname = usePathname();
+
+    const navLinks = [
+        { name: 'Home', href: '/' },
+        { name: 'About Us', href: '/about' },
+        { name: 'Programs', href: '/programs' },
+        { name: 'Leadership', href: '/board-and-team' },
+        { name: 'Contact', href: '/contact' },
+    ];
+
     return (
         <header className="w-full font-poppins">
             {/* Top Bar */}
@@ -39,12 +50,22 @@ const Header = () => {
                     </div>
                 </div>
 
-                <div className="hidden lg:flex items-center gap-8 font-semibold text-sm text-dark-grey uppercase">
-                    <Link href="/" className="hover:text-primary-green transition-colors">Home</Link>
-                    <Link href="/about" className="hover:text-primary-green transition-colors">About Us</Link>
-                    <Link href="/programs" className="hover:text-primary-green transition-colors">Programs</Link>
-                    <Link href="/board-and-team" className="hover:text-primary-green transition-colors">Leadership</Link>
-                    <Link href="/contact" className="hover:text-primary-green transition-colors text-primary-green border-b-2 border-primary-green">Contact</Link>
+                <div className="hidden lg:flex items-center gap-8 font-semibold text-sm text-dark-grey uppercase h-full">
+                    {navLinks.map((link) => {
+                        const isActive = pathname === link.href;
+                        return (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`transition-all duration-300 py-4 h-full flex items-center border-b-2 ${isActive
+                                        ? 'text-primary-green border-primary-green'
+                                        : 'text-dark-grey border-transparent hover:text-primary-green'
+                                    }`}
+                            >
+                                {link.name}
+                            </Link>
+                        );
+                    })}
                     <div className="flex items-center gap-2 ml-4">
                         <Search size={20} className="text-gray-400 hover:text-primary-green cursor-pointer" />
                         <button className="bg-primary-green text-white px-6 py-3 rounded-full text-xs font-bold hover:bg-dark-grey transition-all shadow-md">
