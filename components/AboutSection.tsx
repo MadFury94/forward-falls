@@ -74,7 +74,7 @@ const AboutSection = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <span className="text-primary-green text-sm font-bold tracking-[3px] uppercase mb-4 block">OUR BEGINNING</span>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-dark-grey mb-8 leading-tight">
+                        <h2 className="text-2xl md:text-4xl lg:text-4xl font-bold text-dark-grey mb-8 leading-tight">
                             FROM ADVERSITY TO <br /> CONCRETE SUCCESS
                         </h2>
 

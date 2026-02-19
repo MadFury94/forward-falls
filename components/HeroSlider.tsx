@@ -81,7 +81,8 @@ const HeroSlider = () => {
                                                             animate={{ x: 0 }}
                                                             exit={{ x: "-100%" }}
                                                             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-                                                            className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight uppercase whitespace-pre-line text-white"
+                                                            className="text-5xl md:text-5xl lg:text-6xl font-light leading-tight uppercase whitespace-pre-line text-white"
+
                                                         >
                                                             {slide.title}
                                                         </motion.h1>

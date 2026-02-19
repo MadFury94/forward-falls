@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
-import MissionAndFocus from "@/components/Mission";
+import AdoptionsSection from "@/components/AdoptionsSection";
 import Programs from "@/components/Programs";
 import Team from "@/components/Team";
 import Partners from "@/components/Partners";
@@ -13,7 +13,7 @@ export default function Home() {
       <Header />
       <Hero />
       <AboutSection />
-      <MissionAndFocus />
+      <AdoptionsSection />
       <Programs />
       <Team />
       <Partners />

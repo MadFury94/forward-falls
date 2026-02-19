@@ -35,6 +35,12 @@ h3,
 h4,
 h5,
 h6 {
-  color: var(--dark-grey);
+
   font-weight: 700;
+}
+
+h1 {
+  /* font-size: 50px; */
+  line-height: 1.2;
+  color: var(--primary-yellow);
 }
