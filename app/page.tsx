@@ -5,6 +5,7 @@ import AdoptionsSection from "@/components/AdoptionsSection";
 import Programs from "@/components/Programs";
 import Team from "@/components/Team";
 import Partners from "@/components/Partners";
+import NewsTicker from "@/components/NewsTicker";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <AboutSection />
       <AdoptionsSection />
       <Programs />
+      <NewsTicker />
       <Team />
       <Partners />
       <Footer />

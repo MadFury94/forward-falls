@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 
 const Header = () => {
     const pathname = usePathname();
+    const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
     const navLinks = [
         { name: 'Home', href: '/' },
@@ -77,13 +78,47 @@ const Header = () => {
                         </div>
                     </div>
 
-                    {/* Mobile Menu Icon Placeholder */}
-                    <div className="lg:hidden">
-                        <div className="w-6 h-0.5 bg-dark-grey mb-1"></div>
-                        <div className="w-6 h-0.5 bg-dark-grey mb-1"></div>
-                        <div className="w-6 h-0.5 bg-dark-grey"></div>
-                    </div>
+                    {/* Mobile Menu Icon */}
+                    <button 
+                        className="lg:hidden p-2 hover:bg-gray-100 rounded transition-colors"
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <div className={`w-6 h-0.5 bg-dark-grey mb-1 transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></div>
+                        <div className={`w-6 h-0.5 bg-dark-grey mb-1 transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                        <div className={`w-6 h-0.5 bg-dark-grey transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
+                    </button>
                 </div>
+
+                {/* Mobile Navigation */}
+                {mobileMenuOpen && (
+                    <div className="lg:hidden border-t border-gray-200 bg-white">
+                        <div className="max-w-[1200px] mx-auto px-6 py-4 space-y-2">
+                            {navLinks.map((link) => {
+                                const isActive = pathname === link.href;
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={`block py-3 text-xs uppercase font-semibold tracking-widest transition-colors ${
+                                            isActive
+                                                ? 'text-primary-green'
+                                                : 'text-dark-grey hover:text-primary-green'
+                                        }`}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                );
+                            })}
+                            <div className="pt-3 border-t border-gray-200">
+                                <button className="w-full bg-primary-green text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-dark-grey transition-all">
+                                    Donate Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </nav>
         </header>
     );
