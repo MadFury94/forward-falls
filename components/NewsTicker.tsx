@@ -92,13 +92,12 @@ const NewsTicker = () => {
                     <motion.div
                         className="flex gap-6"
                         animate={{
-                            x: scrollDirection === 'left' ? [0, -2400] : [0, 2400]
+                            x: isPaused ? (scrollDirection === 'left' ? -2400 : 2400) : (scrollDirection === 'left' ? [0, -2400] : [0, 2400])
                         }}
                         transition={{
                             duration: 40,
-                            repeat: Infinity,
-                            ease: "linear",
-                            pause: isPaused ? { while: true } : undefined
+                            repeat: isPaused ? 0 : Infinity,
+                            ease: "linear"
                         }}
                     >
                         {extendedItems.map((item, idx) => (
