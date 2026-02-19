@@ -41,12 +41,21 @@ const BoardPage = () => {
             <Header />
 
             {/* Page Header */}
-            <section className="bg-dark-grey text-white py-24">
-                <div className="container mx-auto px-6">
+            <section className="relative py-32 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/board.jpg"
+                        alt="Board & Team background"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60"></div>
+                </div>
+
+                <div className="container mx-auto px-6 relative z-10">
                     <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Leadership</span>
-                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6">Board & <span className="text-primary-yellow">Team</span></h1>
+                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Board & <span className="text-primary-yellow">Team</span></h1>
                     <div className="w-24 h-1 bg-primary-yellow mb-8"></div>
-                    <p className="max-w-2xl text-gray-400 text-lg">
+                    <p className="max-w-2xl text-gray-200 text-lg font-medium">
                         Guided by experts and driven by passionate young leaders committed to social change.
                     </p>
                 </div>

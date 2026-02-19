@@ -11,16 +11,24 @@ const ContactPage = () => {
             <Header />
 
             {/* Page Header */}
-            <section className="bg-primary-yellow text-dark-grey py-24 relative overflow-hidden">
-                <div className="container mx-auto px-6 relative z-10">
-                    <span className="text-dark-grey/60 font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Get In Touch</span>
-                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6">Contact <span className="text-white">Forward Falls</span></h1>
+            <section className="relative py-32 overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                    <img
+                        src="/contact.jpg"
+                        alt="Contact background"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/60"></div>
+                </div>
+
+                <div className="container mx-auto px-6 relative z-10 text-white">
+                    <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Get In Touch</span>
+                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Contact <span className="text-primary-yellow">Forward Falls</span></h1>
                     <div className="w-24 h-1 bg-white mb-8"></div>
-                    <p className="max-w-2xl text-dark-grey/80 text-lg">
+                    <p className="max-w-2xl text-gray-200 text-lg font-medium">
                         Have questions or want to collaborate? We'd love to hear from you.
                     </p>
                 </div>
-                <div className="absolute top-0 right-0 w-1/4 h-full bg-white opacity-20 -skew-x-12 translate-x-12"></div>
             </section>
 
             <section className="py-24 bg-white">
