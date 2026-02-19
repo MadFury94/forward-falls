@@ -10,7 +10,7 @@ const pillars = [
         title: "Quality Education",
         description: "Ensuring inclusive and equitable learning.",
         amount: "Goal 4",
-        image: "https://images.unsplash.com/photo-1540206276207-3f24341d746b?q=80\u0026w=150\u0026h=150\u0026auto=format\u0026fit=crop",
+        image: "/kids.jpg",
         badgeColor: "bg-primary-green"
     },
     {
@@ -18,7 +18,7 @@ const pillars = [
         title: "Gender Equality",
         description: "Advocating for equal rights and opportunities.",
         amount: "Goal 5",
-        image: "https://images.unsplash.com/photo-1518391846015-55a9cc00bb86?q=80\u0026w=150\u0026h=150\u0026auto=format\u0026fit=crop",
+        image: "/kid3.jpg",
         badgeColor: "bg-primary-yellow"
     },
     {
@@ -26,7 +26,7 @@ const pillars = [
         title: "Reduced Inequalities",
         description: "Supporting underprivileged students.",
         amount: "Goal 10",
-        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80\u0026w=150\u0026h=150\u0026auto=format\u0026fit=crop",
+        image: "/kid5.jpg",
         badgeColor: "bg-secondary-orange"
     }
 ];
@@ -56,7 +56,7 @@ const AdoptionsSection = () => {
                         <div className="flex items-center gap-4 pt-4">
                             <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-primary-yellow">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1531123897727-8f129e16fd3c?q=80\u0026w=100\u0026h=100\u0026auto=format\u0026fit=crop"
+                                    src="/kid4.jpg"
                                     alt="Community Member"
                                     fill
                                     className="object-cover"
@@ -75,10 +75,10 @@ const AdoptionsSection = () => {
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
-                        className="relative h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl"
+                        className="relative h-[500px] lg:h-[600px]  rounded-2xl overflow-hidden shadow-2xl"
                     >
                         <Image
-                            src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80\u0026w=800\u0026auto=format\u0026fit=crop"
+                            src="/kid2.jpg"
                             alt="Forward Falls Impact"
                             fill
                             className="object-cover"

@@ -71,7 +71,6 @@ const Header = () => {
                             );
                         })}
                         <div className="flex items-center gap-2 ml-4">
-                            <Search size={20} className="text-gray-400 hover:text-primary-green cursor-pointer" />
                             <button className="bg-primary-green text-white px-6 py-3 rounded-full text-xs font-bold hover:bg-dark-grey transition-all shadow-md">
                                 DONATE NOW
                             </button>

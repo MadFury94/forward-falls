@@ -41,7 +41,7 @@ const AboutSection = () => {
                         {/* Main Image */}
                         <div className="relative aspect-[4/5] w-full max-w-[450px] mx-auto lg:ml-0 overflow-hidden shadow-2xl">
                             <Image
-                                src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
+                                src="/about.jpg"
                                 alt="Forward Falls Initiative Impact"
                                 fill
                                 className="object-cover"
@@ -97,7 +97,7 @@ const AboutSection = () => {
                         <div className="flex items-center gap-6 pt-8 border-t border-gray-100">
                             <div className="w-16 h-16 rounded-full overflow-hidden relative border-4 border-light-bg">
                                 <Image
-                                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop"
+                                    src="/teacher.jpg"
                                     alt="Director"
                                     fill
                                     className="object-cover"

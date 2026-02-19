@@ -80,20 +80,22 @@ const Programs = () => {
                         {/* Back image */}
                         <div className="absolute top-0 left-0 w-[55%] h-[420px] overflow-hidden shadow-xl z-0">
                             <Image
-                                src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop"
+                                src="/kid11.jpg"
                                 alt="Students learning"
                                 fill
                                 className="object-cover"
+                                style={{ objectPosition: 'left 20%' }}
                             />
                         </div>
 
                         {/* Front image (overlapping) */}
-                        <div className="absolute top-16 left-[35%] w-[45%] h-[420px] overflow-hidden shadow-xl z-10">
+                        <div className="absolute top-12 left-[30%] w-[48%] h-[420px] overflow-hidden shadow-xl z-10">
                             <Image
-                                src="https://images.unsplash.com/photo-1540206276207-3f24341d746b?q=80&w=800&auto=format&fit=crop"
+                                src="/kids.jpg"
                                 alt="Education impact"
                                 fill
                                 className="object-cover"
+                                style={{ objectPosition: 'center 20%' }}
                             />
                         </div>
 
