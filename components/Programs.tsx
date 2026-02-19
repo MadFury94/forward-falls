@@ -1,82 +1,209 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { motion, useInView, animate, useMotionValue } from 'framer-motion';
 import { BookOpen, Award, Users, TrendingUp } from 'lucide-react';
 
+/* ── Animated Counter (counts up when scrolled into view) ── */
+const AnimatedCounter = ({ target, duration = 2 }: { target: number; duration?: number }) => {
+    const count = useMotionValue(0);
+    const [displayValue, setDisplayValue] = useState(0);
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+    useEffect(() => {
+        if (isInView) {
+            const controls = animate(count, target, {
+                duration,
+                ease: "easeOut",
+                onUpdate: (latest) => setDisplayValue(Math.round(latest)),
+            });
+            return controls.stop;
+        }
+    }, [isInView, count, target, duration]);
+
+    return <span ref={ref}>{displayValue}</span>;
+};
+
+/* ── Animated Progress Bar ── */
+const ProgressBar = ({
+    label,
+    percent,
+    color,
+    delay = 0,
+}: {
+    label: string;
+    percent: number;
+    color: string;
+    delay?: number;
+}) => {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, amount: 0.5 });
+
+    return (
+        <div ref={ref} className="mb-5">
+            <div className="flex justify-between items-center mb-2">
+                <span className="text-sm font-semibold text-dark-grey tracking-wide">{label}</span>
+                <span className="text-sm font-bold" style={{ color }}>{percent}%</span>
+            </div>
+            <div className="w-full h-[6px] bg-gray-100 rounded-full overflow-hidden">
+                <motion.div
+                    className="h-full rounded-full"
+                    style={{ backgroundColor: color }}
+                    initial={{ width: 0 }}
+                    animate={isInView ? { width: `${percent}%` } : { width: 0 }}
+                    transition={{ duration: 1.4, delay, ease: "easeOut" }}
+                />
+            </div>
+        </div>
+    );
+};
+
+/* ── Main Programs Section ── */
 const Programs = () => {
     return (
         <section id="programs" className="py-24 bg-white font-poppins">
             <div className="max-w-[1200px] mx-auto px-6">
-                <div className="flex flex-col lg:flex-row gap-16 items-center">
-                    <div className="lg:w-1/2">
-                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Education for All</span>
+
+                {/* ─── Top Row: Images + Stats │ Text + Progress Bars ─── */}
+                <div className="flex flex-col lg:flex-row gap-16 items-center mb-24">
+
+                    {/* LEFT: Overlapping images with vertical counter card */}
+                    <motion.div
+                        initial={{ opacity: 0, x: -40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.9 }}
+                        viewport={{ once: true }}
+                        className="relative w-full lg:w-[50%] min-h-[480px]"
+                    >
+                        {/* Back image */}
+                        <div className="absolute top-0 left-0 w-[55%] h-[420px] overflow-hidden shadow-xl z-0">
+                            <Image
+                                src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=800&auto=format&fit=crop"
+                                alt="Students learning"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+
+                        {/* Front image (overlapping) */}
+                        <div className="absolute top-16 left-[35%] w-[45%] h-[420px] overflow-hidden shadow-xl z-10">
+                            <Image
+                                src="https://images.unsplash.com/photo-1540206276207-3f24341d746b?q=80&w=800&auto=format&fit=crop"
+                                alt="Education impact"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
+
+                        {/* Counter stats card — vertically stacked on the right edge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4, duration: 0.7 }}
+                            viewport={{ once: true }}
+                            className="absolute top-8 right-0 bg-white shadow-2xl z-20 py-6 px-5 flex flex-col gap-4 min-w-[110px]"
+                        >
+                            {[
+                                { value: 2000, label: "STUDENTS" },
+                                { value: 76, label: "MENTORS" },
+                                { value: 5, label: "STATES" },
+                                { value: 4, label: "PROGRAMS" },
+                            ].map((stat, i) => (
+                                <div key={i} className="text-center border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+                                    <span className="text-2xl font-bold text-dark-grey block leading-none">
+                                        <AnimatedCounter target={stat.value} duration={2 + i * 0.3} />
+                                    </span>
+                                    <span className="text-[10px] font-bold text-gray-400 tracking-[0.15em] uppercase">
+                                        {stat.label}
+                                    </span>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </motion.div>
+
+                    {/* RIGHT: Text content + progress bars */}
+                    <motion.div
+                        initial={{ opacity: 0, x: 40 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.9 }}
+                        viewport={{ once: true }}
+                        className="lg:w-1/2 w-full"
+                    >
+                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">
+                            Education for All
+                        </span>
                         <h2 className="text-4xl md:text-5xl font-bold mb-8 text-dark-grey leading-tight uppercase">
-                            FORWARD SCHOLARS <span className="text-primary-green">PROGRAM</span>
+                            FORWARD SCHOLARS{" "}
+                            <span className="text-primary-green">PROGRAM</span>
                         </h2>
-                        <p className="text-gray-600 mb-8 leading-relaxed text-lg">
-                            Our flagship initiative designed to level the playing field for underserved secondary school students. We provide the tools to succeed in university and shape futures with confidence.
+                        <p className="text-gray-600 mb-10 leading-relaxed text-base">
+                            Our flagship initiative designed to level the playing field for
+                            underserved secondary school students. We provide the tools to
+                            succeed in university and shape futures with confidence.
                         </p>
 
-                        <div className="grid sm:grid-cols-2 gap-6 mb-10">
-                            <div className="flex items-start gap-4">
-                                <div className="text-primary-yellow mt-1"><BookOpen size={24} /></div>
-                                <div>
-                                    <h4 className="font-bold text-dark-grey">Intensive Prep</h4>
-                                    <p className="text-sm text-gray-500">UTME entrance examination classes and resources.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="text-primary-green mt-1"><Award size={24} /></div>
-                                <div>
-                                    <h4 className="font-bold text-dark-grey">Scholarships</h4>
-                                    <p className="text-sm text-gray-500">Financial support for undergraduate education.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="text-primary-yellow mt-1"><Users size={24} /></div>
-                                <div>
-                                    <h4 className="font-bold text-dark-grey">Mentorship</h4>
-                                    <p className="text-sm text-gray-500">Career counseling and professional guidance.</p>
-                                </div>
-                            </div>
-                            <div className="flex items-start gap-4">
-                                <div className="text-primary-green mt-1"><TrendingUp size={24} /></div>
-                                <div>
-                                    <h4 className="font-bold text-dark-grey">Civic Education</h4>
-                                    <p className="text-sm text-gray-500">Voter education and leadership training.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button className="bg-dark-grey text-white px-8 py-4 rounded-full font-bold hover:bg-primary-green transition-all shadow-lg uppercase text-sm">
-                            Explore Our Impact
-                        </button>
-                    </div>
-
-                    <div className="lg:w-1/2 w-full">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="bg-primary-green/5 p-8 rounded-2xl border-t-4 border-primary-green text-center">
-                                <span className="text-5xl font-bold text-primary-green block mb-2">2000+</span>
-                                <span className="text-xs font-bold text-dark-grey uppercase tracking-widest">Students Benefited</span>
-                                <p className="text-[10px] text-gray-400 mt-2 uppercase">Lagos, Kano, Kaduna, Abuja, Borno</p>
-                            </div>
-                            <div className="bg-primary-yellow/5 p-8 rounded-2xl border-t-4 border-primary-yellow text-center mt-8">
-                                <span className="text-5xl font-bold text-primary-yellow block mb-2">70%</span>
-                                <span className="text-xs font-bold text-dark-grey uppercase tracking-widest">Growth in Career Clarity</span>
-                            </div>
-                            <div className="bg-primary-yellow/5 p-8 rounded-2xl border-t-4 border-primary-yellow text-center -mt-8">
-                                <span className="text-5xl font-bold text-primary-yellow block mb-2">25%</span>
-                                <span className="text-xs font-bold text-dark-grey uppercase tracking-widest">Strategic Path Changes</span>
-                            </div>
-                            <div className="bg-primary-green/5 p-8 rounded-2xl border-t-4 border-primary-green text-center">
-                                <span className="text-5xl font-bold text-primary-green block mb-2">100%</span>
-                                <span className="text-xs font-bold text-dark-grey uppercase tracking-widest">Free Access</span>
-                            </div>
-                        </div>
-                    </div>
+                        {/* Progress bars */}
+                        <ProgressBar label="UTME Preparation" percent={82} color="#00baa3" delay={0} />
+                        <ProgressBar label="Scholarship Awards" percent={50} color="#ebc858" delay={0.15} />
+                        <ProgressBar label="Mentorship Reach" percent={65} color="#eb8958" delay={0.3} />
+                    </motion.div>
                 </div>
 
-                {/* Other Initiatives Grid */}
+                {/* ─── Bottom Row: Feature Icons ─── */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-10 border-t border-gray-100 pt-14"
+                >
+                    {[
+                        {
+                            icon: <BookOpen size={28} />,
+                            iconColor: "text-primary-yellow",
+                            bgColor: "bg-primary-yellow/10",
+                            title: "Intensive Prep",
+                            desc: "UTME entrance examination classes and resources.",
+                        },
+                        {
+                            icon: <Award size={28} />,
+                            iconColor: "text-primary-green",
+                            bgColor: "bg-primary-green/10",
+                            title: "Scholarships",
+                            desc: "Financial support for undergraduate education.",
+                        },
+                        {
+                            icon: <Users size={28} />,
+                            iconColor: "text-secondary-orange",
+                            bgColor: "bg-secondary-orange/10",
+                            title: "Mentorship",
+                            desc: "Career counseling and professional guidance.",
+                        },
+                        {
+                            icon: <TrendingUp size={28} />,
+                            iconColor: "text-primary-green",
+                            bgColor: "bg-primary-green/10",
+                            title: "Civic Education",
+                            desc: "Voter education and leadership training.",
+                        },
+                    ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-4 group cursor-default">
+                            <div
+                                className={`${item.bgColor} ${item.iconColor} p-3 rounded-full flex-shrink-0 group-hover:scale-110 transition-transform`}
+                            >
+                                {item.icon}
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-dark-grey text-sm">{item.title}</h4>
+                                <p className="text-xs text-gray-400 leading-relaxed">{item.desc}</p>
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
+
+                {/* ─── Other Initiatives Grid ─── */}
                 <div className="mt-32">
                     <div className="text-center mb-16">
                         <h3 className="text-4xl font-bold text-dark-grey uppercase mb-4">Other Initiatives</h3>
