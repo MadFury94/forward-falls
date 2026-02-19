@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -33,10 +33,10 @@ const slides = [
 ];
 
 const HeroSlider = () => {
-    const swiperRef = React.useRef(null);
+    const swiperRef = React.useRef<SwiperRef>(null);
 
     return (
-        <section className="relative h-[600px] md:h-[750px] w-full overflow-hidden font-poppins">
+        <section className="relative h-[500px] md:h-[600px] w-full overflow-hidden font-poppins">
             <style>{`
                 @keyframes blinkArrow {
                     0% {
@@ -93,7 +93,7 @@ const HeroSlider = () => {
 
                                 {/* Content */}
                                 <div className="relative z-10 flex h-full items-center">
-                                    <div className="w-full px-6 md:px-12 flex items-center">
+                                    <div className="max-w-[1200px] mx-auto w-full px-6 flex items-center">
                                         <div className="max-w-2xl w-full">
                                             {/* Title */}
                                             <div className="overflow-hidden mb-6">
