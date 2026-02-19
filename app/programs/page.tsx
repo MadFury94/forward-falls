@@ -17,7 +17,7 @@ const ProgramsPage = () => {
                     <img
                         src="/program.jpg"
                         alt="Programs background"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-[75%_center]"
                     />
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>

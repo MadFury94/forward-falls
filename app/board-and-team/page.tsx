@@ -3,6 +3,8 @@
 import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PhotoMosaic from "@/components/PhotoMosaic";
+import { motion } from "framer-motion";
 import { Linkedin, Mail, Twitter } from 'lucide-react';
 
 const BoardPage = () => {
@@ -46,75 +48,104 @@ const BoardPage = () => {
                     <img
                         src="/board.jpg"
                         alt="Board & Team background"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-[75%_center]"
                     />
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
 
                 <div className="container mx-auto px-6 relative z-10">
-                    <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Leadership</span>
-                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Board & <span className="text-primary-yellow">Team</span></h1>
-                    <div className="w-24 h-1 bg-primary-yellow mb-8"></div>
-                    <p className="max-w-2xl text-gray-200 text-lg font-medium">
-                        Guided by experts and driven by passionate young leaders committed to social change.
-                    </p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Leadership</span>
+                        <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Board & <span className="text-primary-yellow">Team</span></h1>
+                        <div className="w-24 h-1 bg-primary-yellow mb-8"></div>
+                        <p className="max-w-2xl text-gray-200 text-lg font-medium">
+                            Guided by experts and driven by passionate young leaders committed to social change.
+                        </p>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Advisory Board */}
             <section className="py-24 bg-white">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Advisory Board</h2>
-                        <div className="w-20 h-1 bg-primary-green mx-auto"></div>
-                    </div>
+                    <motion.div
+                        className="text-center mb-16"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Advisory <span className="text-primary-green">Board</span></h2>
+                        <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
+                        <p className="max-w-2xl mx-auto text-gray-500">
+                            Our board comprises seasoned professionals across education, law, finance, and social development who provide strategic oversight and guidance.
+                        </p>
+                    </motion.div>
 
-                    <div className="grid md:grid-cols-3 gap-12">
-                        {advisoryBoard.map((member, i) => (
-                            <div key={i} className="bg-light-bg rounded-3xl p-10 border-t-8 border-primary-yellow shadow-sm hover:shadow-xl transition-all h-full flex flex-col">
-                                <div className="w-24 h-24 bg-primary-yellow/20 rounded-2xl flex items-center justify-center text-primary-yellow font-bold text-3xl mb-8">
-                                    {member.name.split(' ').map(n => n[0]).join('')}
-                                </div>
-                                <h3 className="text-2xl font-bold text-dark-grey mb-2">{member.name}</h3>
-                                <span className="text-primary-green font-bold uppercase text-xs tracking-widest mb-6 block">{member.role}</span>
-                                <p className="text-gray-500 leading-relaxed italic mb-8 flex-grow">"{member.desc}"</p>
-                                <div className="flex gap-4">
-                                    <div className="w-8 h-8 rounded-full bg-dark-grey/5 flex items-center justify-center text-dark-grey hover:bg-primary-green hover:text-white transition-colors cursor-pointer"><Linkedin size={14} /></div>
-                                    <div className="w-8 h-8 rounded-full bg-dark-grey/5 flex items-center justify-center text-dark-grey hover:bg-primary-green hover:text-white transition-colors cursor-pointer"><Twitter size={14} /></div>
-                                </div>
-                            </div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                            { name: "Dr. Sarah Johnson", role: "Education Specialist", bio: "20+ years in curriculum development and educational policy in West Africa." },
+                            { name: "Barr. Ahmed Musa", role: "Legal Counsel", bio: "Expert in non-profit law and governance with a focus on child rights advocacy." },
+                            { name: "Mrs. Chioma Okeke", role: "Finance Director", bio: "Chartered accountant ensuring transparency and financial sustainability." },
+                        ].map((member, i) => (
+                            <motion.div
+                                key={i}
+                                className="bg-light-bg p-8 rounded-2xl border-t-4 border-primary-green hover:shadow-lg transition-all"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: i * 0.1 }}
+                            >
+                                <div className="w-16 h-16 bg-gray-200 rounded-full mb-6 mx-auto"></div>
+                                <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
+                                <p className="text-primary-green text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
+                                <p className="text-gray-500 text-center text-sm leading-relaxed">{member.bio}</p>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Executive/Core Team */}
+            {/* Meet the Team (Mosaic) */}
             <section className="py-24 bg-light-bg">
                 <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Meet the Team</h2>
-                        <div className="w-20 h-1 bg-primary-green mx-auto"></div>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {coreTeam.map((member, i) => (
-                            <div key={i} className="bg-white p-8 rounded-2xl group hover:-translate-y-2 transition-all border-l-8 border-primary-green shadow-sm">
-                                <div className="flex items-center gap-6 mb-6">
-                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-dark-grey font-bold text-xl group-hover:bg-primary-green group-hover:text-white transition-all">
-                                        {member.name.split(' ').map(n => n[0]).join('')}
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-dark-grey leading-tight">{member.name}</h4>
-                                        <span className="text-[10px] text-primary-green font-bold uppercase tracking-wider">{member.role}</span>
-                                    </div>
-                                </div>
-                                <p className="text-sm text-gray-400 group-hover:text-gray-600 transition-colors">{member.bio}</p>
-                                <div className="mt-6 pt-6 border-t border-gray-50 flex justify-end gap-3 grayscale group-hover:grayscale-0 transition-all">
-                                    <Linkedin size={14} className="text-gray-300 hover:text-primary-green cursor-pointer" />
-                                    <Mail size={14} className="text-gray-300 hover:text-primary-green cursor-pointer" />
-                                </div>
+                    <div className="flex flex-col lg:flex-row gap-16 items-center">
+                        <motion.div
+                            className="lg:w-1/3"
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">The Engine Room</span>
+                            <h2 className="text-4xl font-bold mb-8 text-dark-grey uppercase">Meet The <span className="text-primary-yellow">Team</span></h2>
+                            <div className="space-y-6 text-gray-600 text-lg leading-relaxed mb-8">
+                                <p>
+                                    We are a collective of young, vibrant professionals and volunteers. From medical students to software engineers, our diverse backgrounds fuel our innovative approach to solving education inequality.
+                                </p>
+                                <p>
+                                    <strong className="text-dark-grey">50+ Active Volunteers</strong> working across operations, communications, partnerships, and program implementation.
+                                </p>
                             </div>
-                        ))}
+                            <div className="bg-white p-6 rounded-xl border-l-4 border-primary-yellow shadow-sm">
+                                <p className="italic text-gray-500 text-sm">"Volunteering with Forward Falls has given me a platform to give back while learning critical leadership skills."</p>
+                                <p className="text-right text-xs font-bold text-primary-green mt-2 uppercase">- Volunteer Testimony</p>
+                            </div>
+                        </motion.div>
+
+                        <motion.div
+                            className="lg:w-2/3 w-full"
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                        >
+                            <PhotoMosaic />
+                        </motion.div>
                     </div>
                 </div>
             </section>

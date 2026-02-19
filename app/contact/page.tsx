@@ -4,6 +4,7 @@ import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
+import { motion } from "framer-motion";
 
 const ContactPage = () => {
     return (
@@ -16,18 +17,24 @@ const ContactPage = () => {
                     <img
                         src="/contact.jpg"
                         alt="Contact background"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-[75%_center]"
                     />
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
 
                 <div className="container mx-auto px-6 relative z-10 text-white">
-                    <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Get In Touch</span>
-                    <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Contact <span className="text-primary-yellow">Forward Falls</span></h1>
-                    <div className="w-24 h-1 bg-white mb-8"></div>
-                    <p className="max-w-2xl text-gray-200 text-lg font-medium">
-                        Have questions or want to collaborate? We'd love to hear from you.
-                    </p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    >
+                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Get In Touch</span>
+                        <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Contact <span className="text-primary-yellow">Forward Falls</span></h1>
+                        <div className="w-24 h-1 bg-white mb-8"></div>
+                        <p className="max-w-2xl text-gray-200 text-lg font-medium">
+                            Have questions or want to collaborate? We'd love to hear from you.
+                        </p>
+                    </motion.div>
                 </div>
             </section>
 
@@ -35,7 +42,13 @@ const ContactPage = () => {
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16">
                         {/* Contact Info */}
-                        <div className="lg:w-1/3">
+                        <motion.div
+                            className="lg:w-1/3"
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                        >
                             <h2 className="text-3xl font-bold mb-10 text-dark-grey uppercase">Contact <span className="text-primary-green">Details</span></h2>
 
                             <div className="space-y-10">
@@ -82,10 +95,16 @@ const ContactPage = () => {
                                     ))}
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Contact Form */}
-                        <div className="lg:w-2/3">
+                        <motion.div
+                            className="lg:w-2/3"
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                        >
                             <div className="bg-light-bg p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100">
                                 <h2 className="text-3xl font-bold mb-8 text-dark-grey uppercase">Send a <span className="text-primary-yellow">Message</span></h2>
                                 <form className="grid md:grid-cols-2 gap-6">
@@ -112,7 +131,7 @@ const ContactPage = () => {
                                     </div>
                                 </form>
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
