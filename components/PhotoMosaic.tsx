@@ -88,7 +88,7 @@ const slides: SlideData[] = [
             "/kidn.jpg",
             "/teacher.jpg",
             "/about.jpg",
-            "/kids4.jpg",
+            "/kid4.jpg",
             "/kiid.jpg",
         ],
         topCard: {
@@ -215,7 +215,14 @@ const PhotoMosaic = () => {
     const trackWidthStyle: React.CSSProperties = { width: `${slides.length * 100}%` };
     const childWidthPercent = 100 / slides.length;
     const translate = containerWidth.current ? -current * containerWidth.current + dragDelta : 0;
-    const trackTransform = { transform: `translateX(${translate}px)`, transition: isTransitioning ? "transform 600ms cubic-bezier(.22,.9,.3,1)" : "none" } as React.CSSProperties;
+
+    // Slower transition on mobile (1200ms), faster on desktop (600ms)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const transitionDuration = isMobile ? '1200ms' : '600ms';
+    const trackTransform = {
+        transform: `translateX(${translate}px)`,
+        transition: isTransitioning ? `transform ${transitionDuration} cubic-bezier(.22,.9,.3,1)` : "none"
+    } as React.CSSProperties;
 
     return (
         <>

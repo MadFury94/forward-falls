@@ -16,7 +16,7 @@ import 'swiper/css/pagination';
 const slides = [
     {
         id: 1,
-        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop",
+        image: "/slide1.jpg",
         title: "WE LOVE\nALL PEOPLE",
         description: "CHECK OUR LATEST CAUSES AND MISSIONS",
         buttonText: "DONATE NOW",
@@ -24,7 +24,7 @@ const slides = [
     },
     {
         id: 2,
-        image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=2070&auto=format&fit=crop",
+        image: "/slide2.jpg",
         title: "FALL FORWARD\nINTO SUCCESS",
         description: "TRANSFORMING LIVES IN CONFLICT-AFFECTED COMMUNITIES",
         buttonText: "DONATE NOW",
@@ -56,7 +56,7 @@ const HeroSlider = () => {
                     animation: blinkArrow 2s ease-in-out infinite;
                 }
             `}</style>
-            
+
             <Swiper
                 ref={swiperRef}
                 modules={[Autoplay, EffectFade, Navigation, Pagination]}
@@ -104,8 +104,8 @@ const HeroSlider = () => {
                                                             initial={{ x: "100%", opacity: 0 }}
                                                             animate={{ x: 0, opacity: 1 }}
                                                             exit={{ x: "-100%", opacity: 0 }}
-                                                            transition={{ 
-                                                                duration: 1.2, 
+                                                            transition={{
+                                                                duration: 1.2,
                                                                 ease: [0.33, 1, 0.68, 1],
                                                                 delay: 0.3
                                                             }}
@@ -177,11 +177,10 @@ const HeroSlider = () => {
                                         <button
                                             key={idx}
                                             onClick={() => swiperRef.current?.swiper?.slideTo(idx)}
-                                            className={`transition-all duration-300 rounded-full ${
-                                                slide.id === slides[idx].id
-                                                    ? 'bg-[#00baa3] w-3 h-3'
-                                                    : 'bg-white/50 w-2 h-2 hover:bg-white/70'
-                                            }`}
+                                            className={`transition-all duration-300 rounded-full ${slide.id === slides[idx].id
+                                                ? 'bg-[#00baa3] w-3 h-3'
+                                                : 'bg-white/50 w-2 h-2 hover:bg-white/70'
+                                                }`}
                                             aria-label={`Go to slide ${idx + 1}`}
                                         />
                                     ))}
