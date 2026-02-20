@@ -22,7 +22,7 @@ const ProgramsPage = () => {
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
 
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="max-w-[1200px] mx-auto px-6 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ const ProgramsPage = () => {
 
             {/* Forward Scholars Program (Detailed) */}
             <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+                <div className="max-w-[1200px] mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-start">
                         <motion.div
                             className="lg:w-1/2"
@@ -127,7 +127,7 @@ const ProgramsPage = () => {
 
             {/* Other Major Initiatives */}
             <section className="py-24 bg-light-bg">
-                <div className="container mx-auto px-6">
+                <div className="max-w-[1200px] mx-auto px-6">
                     <div className="text-center mb-16">
                         <motion.h2
                             className="text-4xl font-bold mb-4 text-dark-grey uppercase"

@@ -5,7 +5,7 @@ import React from 'react';
 const About = () => {
     return (
         <section id="about-us" className="py-24 bg-white font-poppins overflow-hidden">
-            <div className="container mx-auto px-6">
+            <div className="max-w-[1200px] mx-auto px-6">
                 <div className="flex flex-col lg:flex-row gap-16 items-center">
                     <div className="lg:w-1/2 relative">
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border-8 border-white">

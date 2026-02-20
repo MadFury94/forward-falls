@@ -22,7 +22,7 @@ const ContactPage = () => {
                     <div className="absolute inset-0 bg-black/60"></div>
                 </div>
 
-                <div className="container mx-auto px-6 relative z-10 text-white">
+                <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-white">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -39,7 +39,7 @@ const ContactPage = () => {
             </section>
 
             <section className="py-24 bg-white">
-                <div className="container mx-auto px-6">
+                <div className="max-w-[1200px] mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16">
                         {/* Contact Info */}
                         <motion.div
