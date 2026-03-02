@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube, Heart } from 'lucide-react';
 
 const Footer = () => {
@@ -21,9 +22,15 @@ const Footer = () => {
                 <div className="grid lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand Info */}
                     <div className="col-span-1 lg:col-span-1">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-10 h-10 bg-primary-green rounded-full flex items-center justify-center text-white font-bold text-xl">F</div>
-                            <span className="font-bold text-xl tracking-tight">FORWARD FALLS</span>
+                        <div className="flex items-center gap-3 mb-6">
+                            <Image
+                                src="/FFI Logo.png"
+                                alt="Forward Falls Initiative Logo"
+                                width={70}
+                                height={70}
+                                className="h-16 w-auto"
+                            />
+                            <span className="font-bold text-lg tracking-tight">FORWARD FALLS</span>
                         </div>
                         <p className="text-sm text-gray-400 leading-relaxed mb-6">
                             A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities for conflict-affected communities.

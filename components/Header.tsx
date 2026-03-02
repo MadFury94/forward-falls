@@ -3,6 +3,7 @@
 import React from 'react';
 import { Phone, Mail, Facebook, Twitter, Instagram, Youtube, Search } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const Header = () => {
@@ -44,15 +45,15 @@ const Header = () => {
             {/* Main Navigation */}
             <nav className="bg-white/80 backdrop-blur-md border-b border-gray-100">
                 <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
-                    <div className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-primary-green rounded-full flex items-center justify-center text-white font-bold text-xl">
-                            F
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="font-bold text-lg md:text-xl leading-none text-dark-grey tracking-tight">FORWARD FALLS</span>
-                            <span className="text-[10px] md:text-xs text-primary-green font-bold tracking-[0.2em] uppercase">Initiative</span>
-                        </div>
-                    </div>
+                    <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                        <Image
+                            src="/FFI Logo.png"
+                            alt="Forward Falls Initiative Logo"
+                            width={132}
+                            height={132}
+                            className="h-32 w-auto"
+                        />
+                    </Link>
 
                     <div className="hidden lg:flex items-center gap-8 font-semibold text-sm text-dark-grey uppercase h-full">
                         {navLinks.map((link) => {
@@ -78,7 +79,7 @@ const Header = () => {
                     </div>
 
                     {/* Mobile Menu Icon */}
-                    <button 
+                    <button
                         className="lg:hidden p-2 hover:bg-gray-100 rounded transition-colors"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Toggle menu"
@@ -99,11 +100,10 @@ const Header = () => {
                                     <Link
                                         key={link.href}
                                         href={link.href}
-                                        className={`block py-3 text-xs uppercase font-semibold tracking-widest transition-colors ${
-                                            isActive
-                                                ? 'text-primary-green'
-                                                : 'text-dark-grey hover:text-primary-green'
-                                        }`}
+                                        className={`block py-3 text-xs uppercase font-semibold tracking-widest transition-colors ${isActive
+                                            ? 'text-primary-green'
+                                            : 'text-dark-grey hover:text-primary-green'
+                                            }`}
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         {link.name}
