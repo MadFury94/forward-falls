@@ -1,43 +1,10 @@
 "use client";
 
-import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import PhotoMosaic from "@/components/PhotoMosaic";
 import { motion } from "framer-motion";
-import { Linkedin, Mail, Twitter } from 'lucide-react';
 
 const BoardPage = () => {
-    const advisoryBoard = [
-        {
-            name: "Prof Chidi Odinkalu",
-            role: "Chairman",
-            desc: "Professor of Practice in International Human Rights Law at the Fletcher School of Law and Diplomacy, Tufts University.",
-            image: null
-        },
-        {
-            name: "Mrs Maryanne Moghalu",
-            role: "Executive Director",
-            desc: "Executive Director, Isaac Moghalu Foundation.",
-            image: null
-        },
-        {
-            name: "Prof Offornze Amucheazi",
-            role: "Senior Advocate",
-            desc: "Senior Advocate of Nigeria and esteemed legal practitioner.",
-            image: null
-        }
-    ];
-
-    const coreTeam = [
-        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", bio: "Leading the vision for educational democratization." },
-        { name: "Tobechukwu Onyeji", role: "Cofounder", bio: "Driving strategic growth and impact." },
-        { name: "Ozioma Okafor", role: "Chief Operating Officer", bio: "Managing day-to-day excellence." },
-        { name: "Faith Adeyanju", role: "Social Media Manager", bio: "Amplifying our voice and advocacy." },
-        { name: "Oluwatoyin Oloidi", role: "Administrative Officer", bio: "Ensuring organizational stability." },
-        { name: "Sandra Kennedy", role: "Development & Programs Director", bio: "Designing impactful curricula and outreach." }
-    ];
-
     return (
         <main className="min-h-screen font-poppins">
             <Header />
@@ -88,9 +55,21 @@ const BoardPage = () => {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[
-                            { name: "Dr. Sarah Johnson", role: "Education Specialist", bio: "20+ years in curriculum development and educational policy in West Africa." },
-                            { name: "Barr. Ahmed Musa", role: "Legal Counsel", bio: "Expert in non-profit law and governance with a focus on child rights advocacy." },
-                            { name: "Mrs. Chioma Okeke", role: "Finance Director", bio: "Chartered accountant ensuring transparency and financial sustainability." },
+                            {
+                                name: "Prof Chidi Odinkalu",
+                                role: "Chairman",
+                                bio: "Professor of Practice in International Human Rights Law at the Fletcher School of Law and Diplomacy, Tufts University."
+                            },
+                            {
+                                name: "Mrs Maryanne Moghalu",
+                                role: "Executive Director",
+                                bio: "Executive Director, Isaac Moghalu Foundation."
+                            },
+                            {
+                                name: "Prof Offornze Amucheazi",
+                                role: "Senior Advocate",
+                                bio: "Senior Advocate of Nigeria and esteemed legal practitioner."
+                            },
                         ].map((member, i) => (
                             <motion.div
                                 key={i}
@@ -100,7 +79,7 @@ const BoardPage = () => {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
                             >
-                                <div className="w-16 h-16 bg-gray-200 rounded-full mb-6 mx-auto"></div>
+                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto"></div>
                                 <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
                                 <p className="text-primary-green text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
                                 <p className="text-gray-500 text-center text-sm leading-relaxed">{member.bio}</p>
@@ -110,43 +89,105 @@ const BoardPage = () => {
                 </div>
             </section>
 
-            {/* Meet the Team (Mosaic) */}
+            {/* Core Team */}
             <section className="py-24 bg-light-bg">
                 <div className="max-w-[1200px] mx-auto px-6">
-                    <div className="flex flex-col lg:flex-row gap-16 items-center">
-                        <motion.div
-                            className="lg:w-1/3"
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">The Engine Room</span>
-                            <h2 className="text-4xl font-bold mb-8 text-dark-grey uppercase">Meet The <span className="text-primary-yellow">Team</span></h2>
-                            <div className="space-y-6 text-gray-600 text-lg leading-relaxed mb-8">
-                                <p>
-                                    We are a collective of young, vibrant professionals and volunteers. From medical students to software engineers, our diverse backgrounds fuel our innovative approach to solving education inequality.
-                                </p>
-                                <p>
-                                    <strong className="text-dark-grey">50+ Active Volunteers</strong> working across operations, communications, partnerships, and program implementation.
-                                </p>
-                            </div>
-                            <div className="bg-white p-6 rounded-xl border-l-4 border-primary-yellow shadow-sm">
-                                <p className="italic text-gray-500 text-sm">"Volunteering with Forward Falls has given me a platform to give back while learning critical leadership skills."</p>
-                                <p className="text-right text-xs font-bold text-primary-green mt-2 uppercase">- Volunteer Testimony</p>
-                            </div>
-                        </motion.div>
+                    <motion.div
+                        className="text-center mb-16"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">The Engine Room</span>
+                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Meet The <span className="text-primary-yellow">Team</span></h2>
+                        <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
+                        <p className="max-w-2xl mx-auto text-gray-500">
+                            We are a collective of young, vibrant professionals and volunteers. From medical students to software engineers, our diverse backgrounds fuel our innovative approach to solving education inequality.
+                        </p>
+                    </motion.div>
 
-                        <motion.div
-                            className="lg:w-2/3 w-full"
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
-                        >
-                            <PhotoMosaic />
-                        </motion.div>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {[
+                            {
+                                name: "Ijeoma Seraphie Obiedelu",
+                                role: "Founder",
+                                bio: "Leading the vision for educational democratization and driving Forward Falls' mission to transform education access for underserved communities.",
+                                image: null
+                            },
+                            {
+                                name: "Tobechukwu Onyeji",
+                                role: "Cofounder",
+                                bio: "Driving strategic growth and impact, ensuring Forward Falls reaches more communities and creates lasting change.",
+                                image: null
+                            },
+                            {
+                                name: "Ozioma Okafor",
+                                role: "Chief Operating Officer",
+                                bio: "Managing day-to-day operations with excellence, ensuring smooth program delivery and organizational efficiency.",
+                                image: null
+                            },
+                            {
+                                name: "Faith Adeyanju",
+                                role: "Social Media Manager",
+                                bio: "Amplifying our voice and advocacy through strategic digital communications and community engagement.",
+                                image: null
+                            },
+                            {
+                                name: "Oluwatoyin Oloidi",
+                                role: "Administrative Officer",
+                                bio: "Ensuring organizational stability through meticulous administrative support and coordination.",
+                                image: null
+                            },
+                            {
+                                name: "Sandra Kennedy",
+                                role: "Development & Programs Director",
+                                bio: "Designing impactful curricula and outreach programs that transform lives and create opportunities.",
+                                image: null
+                            },
+                        ].map((member, i) => (
+                            <motion.div
+                                key={i}
+                                className="bg-white p-8 rounded-2xl border-t-4 border-primary-yellow hover:shadow-lg transition-all"
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: i * 0.1 }}
+                            >
+                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto overflow-hidden">
+                                    {member.image ? (
+                                        <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-3xl font-bold">
+                                            {member.name.split(' ').map(n => n[0]).join('')}
+                                        </div>
+                                    )}
+                                </div>
+                                <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
+                                <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
+                                <p className="text-gray-500 text-center text-sm leading-relaxed">{member.bio}</p>
+                            </motion.div>
+                        ))}
                     </div>
+
+                    <motion.div
+                        className="mt-16 text-center bg-white p-8 rounded-xl border-l-4 border-primary-green shadow-sm max-w-3xl mx-auto"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <p className="text-dark-grey font-semibold mb-2">
+                            <strong className="text-2xl text-primary-green">50+ Active Volunteers</strong>
+                        </p>
+                        <p className="text-gray-500">
+                            Working across operations, communications, partnerships, and program implementation.
+                        </p>
+                        <div className="mt-6 pt-6 border-t border-gray-200">
+                            <p className="italic text-gray-500 text-sm">"Volunteering with Forward Falls has given me a platform to give back while learning critical leadership skills."</p>
+                            <p className="text-right text-xs font-bold text-primary-green mt-2 uppercase">- Volunteer Testimony</p>
+                        </div>
+                    </motion.div>
                 </div>
             </section>
 

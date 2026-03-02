@@ -241,7 +241,7 @@ const PhotoMosaic = () => {
                             {slides.map((s, idx) => (
                                 <div key={idx} style={{ width: `${childWidthPercent}%`, flexShrink: 0 }}>
                                     {/* Row 1 */}
-                                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 h-[500px] md:h-[clamp(220px,35vw,360px)]">
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4" style={{ height: ROW_HEIGHT }}>
                                         <div className="hidden md:block h-full">
                                             <ImgTile src={s.images[0]} alt={`Impact ${idx}-1`} />
                                         </div>
@@ -252,23 +252,23 @@ const PhotoMosaic = () => {
                                             <ImgTile src={s.images[2]} alt={`Impact ${idx}-3`} />
                                         </div>
                                         {/* paired container: image + info tile with no gap */}
-                                        <div className="h-full md:col-span-2 flex flex-col md:flex-row col-span-1" style={{ gap: 0 }}>
-                                            <div className="w-full h-1/2 md:w-1/2 md:h-full">
+                                        <div className="h-full md:col-span-2 col-span-2 grid grid-cols-2 gap-0">
+                                            <div className="h-full">
                                                 <ImgTile src={s.images[3]} alt={`Impact ${idx}-4`} />
                                             </div>
-                                            <div className="w-full h-1/2 md:w-1/2 md:h-full">
+                                            <div className="h-full">
                                                 <InfoTile card={s.topCard} bgImage={s.images[3]} />
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* Row 2 */}
-                                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mt-6 h-[500px] md:h-[clamp(220px,35vw,360px)]">
-                                        <div className="h-full md:col-span-2 flex flex-col-reverse md:flex-row col-span-1" style={{ gap: 0 }}>
-                                            <div className="w-full h-1/2 md:w-1/2 md:h-full">
+                                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mt-3 md:mt-4" style={{ height: ROW_HEIGHT }}>
+                                        <div className="h-full md:col-span-2 col-span-2 grid grid-cols-2 gap-0">
+                                            <div className="h-full">
                                                 <InfoTile card={s.bottomCard} bgImage={s.images[5]} />
                                             </div>
-                                            <div className="w-full h-1/2 md:w-1/2 md:h-full">
+                                            <div className="h-full">
                                                 <ImgTile src={s.images[5]} alt={`Impact ${idx}-6`} />
                                             </div>
                                         </div>
