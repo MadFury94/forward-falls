@@ -24,7 +24,7 @@ const slides = [
     },
     {
         id: 2,
-        image: "/slide2.jpg",
+        image: "/images/2.jpg",
         title: "FALL FORWARD\nINTO SUCCESS",
         description: "TRANSFORMING LIVES IN CONFLICT-AFFECTED COMMUNITIES",
         buttonText: "DONATE NOW",
