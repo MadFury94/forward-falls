@@ -24,11 +24,11 @@ const Footer = () => {
                     <div className="col-span-1 lg:col-span-1">
                         <div className="flex items-center gap-3 mb-6">
                             <Image
-                                src="/FFI Logo.png"
+                                src="/FFI.png"
                                 alt="Forward Falls Initiative Logo"
-                                width={70}
-                                height={70}
-                                className="h-16 w-auto"
+                                width={50}
+                                height={50}
+                                className="h-12 w-12"
                             />
                             <span className="font-bold text-lg tracking-tight">FORWARD FALLS</span>
                         </div>

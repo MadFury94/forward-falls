@@ -47,11 +47,11 @@ const Header = () => {
                 <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
                     <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Image
-                            src="/FFI Logo.png"
+                            src="/FFI.png"
                             alt="Forward Falls Initiative Logo"
-                            width={132}
-                            height={132}
-                            className="h-32 w-auto"
+                            width={66}
+                            height={66}
+                            className="h-16 w-auto"
                         />
                     </Link>
 
