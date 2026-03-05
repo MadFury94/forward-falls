@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BookOpen, Award, Users, TrendingUp, Heart, Globe, Video, ExternalLink } from 'lucide-react';
 import { motion } from "framer-motion";
+import Link from 'next/link';
 
 const ProgramsPage = () => {
     return (
@@ -99,8 +100,8 @@ const ProgramsPage = () => {
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
                         >
-                            <div className="bg-gray-100 h-64 rounded-2xl flex items-center justify-center text-gray-400 font-bold uppercase tracking-[0.2em] border-2 border-dashed border-gray-300">UTME Classes Image</div>
-                            <div className="bg-gray-100 h-64 rounded-2xl flex items-center justify-center text-gray-400 font-bold uppercase tracking-[0.2em] border-2 border-dashed border-gray-300">Award Ceremony Image</div>
+                            <img src="/images/utme.jpg" alt="UTME Classes" className="w-full h-64 object-cover rounded-2xl shadow-lg" />
+                            <img src="/images/awards.jpg" alt="Award Ceremony" className="w-full h-64 object-cover rounded-2xl shadow-lg" />
                             <div className="p-8 bg-primary-green/5 rounded-2xl border-2 border-primary-green/20">
                                 <h4 className="font-bold text-dark-grey uppercase text-sm mb-4">Testimonials</h4>
                                 <div className="space-y-4">

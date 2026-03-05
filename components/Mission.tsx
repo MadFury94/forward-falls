@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Target, Heart, Shield, GraduationCap, Users, Globe, Scale } from 'lucide-react';
+import Link from 'next/link';
 
 const MissionAndFocus = () => {
     return (
@@ -48,7 +49,7 @@ const MissionAndFocus = () => {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {/* SDG 4 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-green hover:shadow-xl transition-all group">
+                        <Link href="/sdg-4" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-green hover:shadow-xl transition-all group cursor-pointer">
                             <div className="w-16 h-16 bg-primary-green/10 rounded-full flex items-center justify-center text-primary-green mb-6 group-hover:bg-primary-green group-hover:text-white transition-all">
                                 <GraduationCap size={32} />
                             </div>
@@ -56,10 +57,10 @@ const MissionAndFocus = () => {
                             <p className="text-sm text-gray-500 leading-relaxed">
                                 Ensuring inclusive and equitable education through traditional and non-traditional means.
                             </p>
-                        </div>
+                        </Link>
 
                         {/* SDG 5 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-yellow hover:shadow-xl transition-all group">
+                        <Link href="/sdg-5" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-yellow hover:shadow-xl transition-all group cursor-pointer">
                             <div className="w-16 h-16 bg-primary-yellow/10 rounded-full flex items-center justify-center text-primary-yellow mb-6 group-hover:bg-primary-yellow group-hover:text-white transition-all">
                                 <Users size={32} />
                             </div>
@@ -67,10 +68,10 @@ const MissionAndFocus = () => {
                             <p className="text-sm text-gray-500 leading-relaxed">
                                 Advocating for equal rights and opportunities for all genders while promoting gender equity.
                             </p>
-                        </div>
+                        </Link>
 
                         {/* SDG 10 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-secondary-orange hover:shadow-xl transition-all group">
+                        <Link href="/sdg-10" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-secondary-orange hover:shadow-xl transition-all group cursor-pointer">
                             <div className="w-16 h-16 bg-secondary-orange/10 rounded-full flex items-center justify-center text-secondary-orange mb-6 group-hover:bg-secondary-orange group-hover:text-white transition-all">
                                 <Globe size={32} />
                             </div>
@@ -78,10 +79,10 @@ const MissionAndFocus = () => {
                             <p className="text-sm text-gray-500 leading-relaxed">
                                 Supporting underprivileged students and marginalized communities through educational programs.
                             </p>
-                        </div>
+                        </Link>
 
                         {/* SDG 16 */}
-                        <div className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-dark-grey hover:shadow-xl transition-all group">
+                        <Link href="/sdg-16" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-dark-grey hover:shadow-xl transition-all group cursor-pointer">
                             <div className="w-16 h-16 bg-dark-grey/10 rounded-full flex items-center justify-center text-dark-grey mb-6 group-hover:bg-dark-grey group-hover:text-white transition-all">
                                 <Scale size={32} />
                             </div>
@@ -89,7 +90,7 @@ const MissionAndFocus = () => {
                             <p className="text-sm text-gray-500 leading-relaxed">
                                 Promoting civic engagement, voter education, and leadership development among youth.
                             </p>
-                        </div>
+                        </Link>
                     </div>
                 </div>
             </section>
