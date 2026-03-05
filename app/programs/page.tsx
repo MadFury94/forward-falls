@@ -105,20 +105,20 @@ const ProgramsPage = () => {
                             <div className="p-8 bg-primary-green/5 rounded-2xl border-2 border-primary-green/20">
                                 <h4 className="font-bold text-dark-grey uppercase text-sm mb-4">Testimonials</h4>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:translate-x-1 transition-transform cursor-pointer group">
+                                    <a href="https://drive.google.com/file/d/14XOpaKaBkZ2C6gw6oJbVjdbd_edxCqM2/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:translate-x-1 transition-transform cursor-pointer group">
                                         <div className="flex items-center gap-3">
                                             <div className="bg-primary-green/10 p-2 rounded-lg text-primary-green"><Video size={20} /></div>
                                             <span className="text-xs font-bold uppercase">Ruth - Beneficiary</span>
                                         </div>
                                         <ExternalLink size={16} className="text-gray-300 group-hover:text-primary-green" />
-                                    </div>
-                                    <div className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:translate-x-1 transition-transform cursor-pointer group">
+                                    </a>
+                                    <a href="https://drive.google.com/file/d/1xDY-OK1u3kegPXpg_oBPE5izM-IYap8N/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm hover:translate-x-1 transition-transform cursor-pointer group">
                                         <div className="flex items-center gap-3">
                                             <div className="bg-primary-green/10 p-2 rounded-lg text-primary-green"><Video size={20} /></div>
                                             <span className="text-xs font-bold uppercase">Goodness - Beneficiary</span>
                                         </div>
                                         <ExternalLink size={16} className="text-gray-300 group-hover:text-primary-green" />
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         </motion.div>

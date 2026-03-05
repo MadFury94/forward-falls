@@ -74,10 +74,10 @@ const AboutPage = () => {
                         >
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="aspect-square rounded-2xl overflow-hidden shadow-lg border-4 border-white">
-                                    <img src="/kiid.jpg" alt="Impact Photo 1" className="w-full h-full object-cover" />
+                                    <img src="/images/about.jpg" alt="Impact Photo 1" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="aspect-square rounded-2xl overflow-hidden shadow-lg border-4 border-white mt-12">
-                                    <img src="/kidn.jpg" alt="Impact Photo 2" className="w-full h-full object-cover" />
+                                    <img src="/images/about2.jpg" alt="Impact Photo 2" className="w-full h-full object-cover" />
                                 </div>
                                 <div className="aspect-square rounded-2xl overflow-hidden shadow-lg border-4 border-white -mt-12">
                                     <img src="/kids.jpg" alt="Impact Photo 3" className="w-full h-full object-cover" />
