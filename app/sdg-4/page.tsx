@@ -3,6 +3,7 @@
 import React from 'react';
 import { GraduationCap, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 
 const SDG4Page = () => {
     return (
@@ -104,11 +105,15 @@ const SDG4Page = () => {
                     <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                         Help us provide more students with access to quality education and the tools they need to succeed.
                     </p>
-                    <button className="bg-primary-green text-white px-8 py-4 rounded-full font-semibold hover:bg-dark-grey transition-all">
-                        DONATE NOW
-                    </button>
+                    <Link href="/contact">
+                        <button className="bg-primary-green text-white px-8 py-4 rounded-full font-semibold hover:bg-dark-grey transition-all">
+                            DONATE NOW
+                        </button>
+                    </Link>
                 </div>
             </section>
+
+            <Footer />
         </div>
     );
 };

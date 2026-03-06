@@ -49,47 +49,59 @@ const MissionAndFocus = () => {
 
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {/* SDG 4 */}
-                        <Link href="/sdg-4" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-green hover:shadow-xl transition-all group cursor-pointer">
-                            <div className="w-16 h-16 bg-primary-green/10 rounded-full flex items-center justify-center text-primary-green mb-6 group-hover:bg-primary-green group-hover:text-white transition-all">
-                                <GraduationCap size={32} />
+                        <Link href="/sdg-4" className="bg-white rounded-xl shadow-sm border-b-4 border-primary-green hover:shadow-xl transition-all group cursor-pointer overflow-hidden">
+                            <div className="relative h-40 overflow-hidden bg-gray-200">
+                                <img src="/kid2.jpg" alt="Quality Education" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             </div>
-                            <h4 className="text-xl font-bold mb-4 text-dark-grey">SDG 4 - Quality Education</h4>
-                            <p className="text-sm text-gray-500 leading-relaxed">
-                                Ensuring inclusive and equitable education through traditional and non-traditional means.
-                            </p>
+                            <div className="p-6">
+                                <span className="text-primary-green font-bold text-xs tracking-[0.2em] uppercase block mb-2">SDG 4</span>
+                                <h4 className="text-lg font-bold mb-3 text-dark-grey">Quality Education</h4>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Ensuring inclusive and equitable education through traditional and non-traditional means.
+                                </p>
+                            </div>
                         </Link>
 
                         {/* SDG 5 */}
-                        <Link href="/sdg-5" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-primary-yellow hover:shadow-xl transition-all group cursor-pointer">
-                            <div className="w-16 h-16 bg-primary-yellow/10 rounded-full flex items-center justify-center text-primary-yellow mb-6 group-hover:bg-primary-yellow group-hover:text-white transition-all">
-                                <Users size={32} />
+                        <Link href="/sdg-5" className="bg-white rounded-xl shadow-sm border-b-4 border-primary-yellow hover:shadow-xl transition-all group cursor-pointer overflow-hidden">
+                            <div className="relative h-40 overflow-hidden bg-gray-200">
+                                <img src="/kid4.jpg" alt="Gender Equality" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             </div>
-                            <h4 className="text-xl font-bold mb-4 text-dark-grey">SDG 5 - Gender Equality</h4>
-                            <p className="text-sm text-gray-500 leading-relaxed">
-                                Advocating for equal rights and opportunities for all genders while promoting gender equity.
-                            </p>
+                            <div className="p-6">
+                                <span className="text-primary-yellow font-bold text-xs tracking-[0.2em] uppercase block mb-2">SDG 5</span>
+                                <h4 className="text-lg font-bold mb-3 text-dark-grey">Gender Equality</h4>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Advocating for equal rights and opportunities for all genders while promoting gender equity.
+                                </p>
+                            </div>
                         </Link>
 
                         {/* SDG 10 */}
-                        <Link href="/sdg-10" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-secondary-orange hover:shadow-xl transition-all group cursor-pointer">
-                            <div className="w-16 h-16 bg-secondary-orange/10 rounded-full flex items-center justify-center text-secondary-orange mb-6 group-hover:bg-secondary-orange group-hover:text-white transition-all">
-                                <Globe size={32} />
+                        <Link href="/sdg-10" className="bg-white rounded-xl shadow-sm border-b-4 border-secondary-orange hover:shadow-xl transition-all group cursor-pointer overflow-hidden">
+                            <div className="relative h-40 overflow-hidden bg-gray-200">
+                                <img src="/group2.jpg" alt="Reduced Inequalities" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             </div>
-                            <h4 className="text-xl font-bold mb-4 text-dark-grey">SDG 10 - Reduced Inequalities</h4>
-                            <p className="text-sm text-gray-500 leading-relaxed">
-                                Supporting underprivileged students and marginalized communities through educational programs.
-                            </p>
+                            <div className="p-6">
+                                <span className="text-secondary-orange font-bold text-xs tracking-[0.2em] uppercase block mb-2">SDG 10</span>
+                                <h4 className="text-lg font-bold mb-3 text-dark-grey">Reduced Inequalities</h4>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Supporting underprivileged students and marginalized communities through educational programs.
+                                </p>
+                            </div>
                         </Link>
 
                         {/* SDG 16 */}
-                        <Link href="/sdg-16" className="bg-white p-8 rounded-xl shadow-sm border-b-4 border-dark-grey hover:shadow-xl transition-all group cursor-pointer">
-                            <div className="w-16 h-16 bg-dark-grey/10 rounded-full flex items-center justify-center text-dark-grey mb-6 group-hover:bg-dark-grey group-hover:text-white transition-all">
-                                <Scale size={32} />
+                        <Link href="/sdg-16" className="bg-white rounded-xl shadow-sm border-b-4 border-dark-grey hover:shadow-xl transition-all group cursor-pointer overflow-hidden">
+                            <div className="relative h-40 overflow-hidden bg-gray-200">
+                                <img src="/teacher.jpg" alt="Peace & Justice" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                             </div>
-                            <h4 className="text-xl font-bold mb-4 text-dark-grey">SDG 16 - Peace & Justice</h4>
-                            <p className="text-sm text-gray-500 leading-relaxed">
-                                Promoting civic engagement, voter education, and leadership development among youth.
-                            </p>
+                            <div className="p-6">
+                                <span className="text-dark-grey font-bold text-xs tracking-[0.2em] uppercase block mb-2">SDG 16</span>
+                                <h4 className="text-lg font-bold mb-3 text-dark-grey">Peace & Justice</h4>
+                                <p className="text-sm text-gray-500 leading-relaxed">
+                                    Promoting civic engagement, voter education, and leadership development among youth.
+                                </p>
+                            </div>
                         </Link>
                     </div>
                 </div>

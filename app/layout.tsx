@@ -11,6 +11,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Forward Falls Initiative | Democratizing Education",
   description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
+  icons: {
+    icon: "/FFI.png",
+  },
 };
 
 export default function RootLayout({

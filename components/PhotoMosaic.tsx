@@ -21,13 +21,13 @@ interface SlideData {
 const slides: SlideData[] = [
     {
         images: [
-            "/group.jpg",
-            "/single.jpg",
-            "/group.jpg",
-            "/single.jpg",
+            "/images/5.jpg",
+            "/images/awards.jpg",
+            "/images/1.jpg",
+            "/images/home.jpg",
             "/kid11.jpg",
             "/kidd.jpg",
-            "/group2.jpg",
+            "/images/group2.jpg",
             "/kidn.jpg",
             "/teacher.jpg",
             "/about.jpg",
@@ -51,12 +51,12 @@ const slides: SlideData[] = [
     },
     {
         images: [
-            "/group.jpg",
+            "/images/group2.jpg",
             "/group.jpg",
             "/single.jpg",
             "/kid11.jpg",
             "/kidd.jpg",
-            "/group2.jpg",
+            "/images/2.jpg",
             "/kidn.jpg",
             "/teacher.jpg",
             "/about.jpg",
@@ -80,8 +80,8 @@ const slides: SlideData[] = [
     },
     {
         images: [
-            "/group.jpg",
-            "/single.jpg",
+            "/images/group2.jpg",
+            "/images/2.jpg",
             "/kid11.jpg",
             "/kidd.jpg",
             "/group2.jpg",

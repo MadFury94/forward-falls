@@ -3,6 +3,7 @@
 import React from 'react';
 import { Scale, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import Footer from '@/components/Footer';
 
 const SDG16Page = () => {
     return (
@@ -116,11 +117,15 @@ const SDG16Page = () => {
                     <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                         Help us build a generation of informed, engaged citizens committed to peace, justice, and strong institutions.
                     </p>
-                    <button className="bg-dark-grey text-white px-8 py-4 rounded-full font-semibold hover:bg-primary-green transition-all">
-                        DONATE NOW
-                    </button>
+                    <Link href="/contact">
+                        <button className="bg-dark-grey text-white px-8 py-4 rounded-full font-semibold hover:bg-primary-green transition-all">
+                            DONATE NOW
+                        </button>
+                    </Link>
                 </div>
             </section>
+
+            <Footer />
         </div>
     );
 };

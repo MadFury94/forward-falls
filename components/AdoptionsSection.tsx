@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const pillars = [
@@ -9,25 +10,25 @@ const pillars = [
         category: "SDG 4",
         title: "Quality Education",
         description: "Ensuring inclusive and equitable learning.",
-        amount: "Goal 4",
         image: "/kids.jpg",
-        badgeColor: "bg-primary-green"
+        badgeColor: "bg-primary-green",
+        link: "/sdg-4"
     },
     {
         category: "SDG 5",
         title: "Gender Equality",
         description: "Advocating for equal rights and opportunities.",
-        amount: "Goal 5",
         image: "/kid3.jpg",
-        badgeColor: "bg-primary-yellow"
+        badgeColor: "bg-primary-yellow",
+        link: "/sdg-5"
     },
     {
         category: "SDG 10",
         title: "Reduced Inequalities",
         description: "Supporting underprivileged students.",
-        amount: "Goal 10",
         image: "/kid5.jpg",
-        badgeColor: "bg-secondary-orange"
+        badgeColor: "bg-secondary-orange",
+        link: "/sdg-10"
     }
 ];
 
@@ -88,31 +89,30 @@ const AdoptionsSection = () => {
                     {/* Right Columns List */}
                     <div className="space-y-8">
                         {pillars.map((pillar, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, x: 50 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.2 }}
-                                viewport={{ once: true }}
-                                className="flex items-center gap-6 group"
-                            >
-                                <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden shadow-md">
-                                    <Image
-                                        src={pillar.image}
-                                        alt={pillar.title}
-                                        fill
-                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                                    />
-                                </div>
-                                <div className="flex-grow">
-                                    <span className="text-[10px] font-bold tracking-widest text-gray-400 block mb-1 uppercase">{pillar.category}</span>
-                                    <h4 className="text-xl font-bold text-dark-grey group-hover:text-primary-green transition-colors">{pillar.title}</h4>
-                                    <p className="text-xs text-gray-400 line-clamp-1">{pillar.description}</p>
-                                </div>
-                                <div className={`${pillar.badgeColor} text-white text-[10px] whitespace-nowrap font-bold px-3 py-1 rounded-full shadow-lg`}>
-                                    {pillar.amount}
-                                </div>
-                            </motion.div>
+                            <Link key={index} href={pillar.link}>
+                                <motion.div
+                                    initial={{ opacity: 0, x: 50 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                                    viewport={{ once: true }}
+                                    className="flex items-center gap-6 group"
+                                >
+                                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden shadow-md">
+                                        <Image
+                                            src={pillar.image}
+                                            alt={pillar.title}
+                                            fill
+                                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <div className="flex-grow">
+                                        <span className="text-[10px] font-bold tracking-widest text-gray-400 block mb-1 uppercase">{pillar.category}</span>
+                                        <h4 className="text-xl font-bold text-dark-grey group-hover:text-primary-green transition-colors">{pillar.title}</h4>
+                                        <p className="text-xs text-gray-400 line-clamp-1">{pillar.description}</p>
+                                    </div>
+
+                                </motion.div>
+                            </Link>
                         ))}
                     </div>
                 </div>
