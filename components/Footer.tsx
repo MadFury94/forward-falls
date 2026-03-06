@@ -48,7 +48,11 @@ const Footer = () => {
                         <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-primary-yellow">Our Partners</h4>
                         <ul className="text-sm text-gray-400 space-y-2">
                             {partners.slice(0, 4).map((p, i) => <li key={i}>{p}</li>)}
-                            <li className="text-primary-green font-bold mt-2">View All Partners</li>
+                            <li className="text-primary-green font-bold mt-2">
+                                <Link href="/partners" className="hover:text-white transition-colors">
+                                    View All Partners
+                                </Link>
+                            </li>
                         </ul>
                     </div>
 
