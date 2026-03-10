@@ -18,12 +18,26 @@ const ContactPage = () => {
         setSubmitStatus('idle');
 
         try {
-            // Replace these with your actual EmailJS credentials
+            const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+            const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+            if (!serviceId || !templateId || !publicKey) {
+                console.error('Missing EmailJS credentials:', {
+                    serviceId: !!serviceId,
+                    templateId: !!templateId,
+                    publicKey: !!publicKey
+                });
+                setSubmitStatus('error');
+                setIsSubmitting(false);
+                return;
+            }
+
             const result = await emailjs.sendForm(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+                serviceId,
+                templateId,
                 formRef.current!,
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+                publicKey
             );
 
             console.log('Email sent successfully:', result.text);
