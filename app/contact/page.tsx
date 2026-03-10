@@ -12,6 +12,14 @@ const ContactPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
+    React.useEffect(() => {
+        const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+        if (publicKey) {
+            emailjs.init(publicKey);
+            console.log('EmailJS initialized');
+        }
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -43,8 +51,13 @@ const ContactPage = () => {
             console.log('Email sent successfully:', result.text);
             setSubmitStatus('success');
             formRef.current?.reset();
-        } catch (error) {
-            console.error('Email send failed:', error);
+        } catch (error: any) {
+            console.error('Email send failed:', {
+                message: error?.message,
+                status: error?.status,
+                text: error?.text,
+                fullError: error
+            });
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
