@@ -158,7 +158,7 @@ const ContactPage = () => {
 
                                 {submitStatus === 'error' && (
                                     <div className="mb-6 p-4 bg-error-red/10 border border-error-red/20 rounded-xl text-error-red font-medium">
-                                        ✗ Failed to send message. Please try again or email us directly.
+                                        ✗ Failed to send message. Please try again or email us directly at forwardfalls@gmail.com
                                     </div>
                                 )}
 
