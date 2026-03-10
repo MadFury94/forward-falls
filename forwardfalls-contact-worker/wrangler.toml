@@ -1,0 +1,9 @@
+name = "forwardfalls-contact"
+main = "src/index.ts"
+compatibility_date = "2026-03-10"
+compatibility_flags = ["nodejs_compat"]
+
+[[send_email]]
+name = "CONTACT_EMAIL"
+destination_address = "forwardfalls@gmail.com"
+allowed_sender_addresses = ["info@forwardfalls.com"]
