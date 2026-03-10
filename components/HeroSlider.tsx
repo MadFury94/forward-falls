@@ -20,7 +20,7 @@ const slides = [
         title: "WE LOVE\nALL PEOPLE",
         description: "CHECK OUR LATEST CAUSES AND MISSIONS",
         buttonText: "DONATE NOW",
-        buttonLink: "/contact"
+        buttonLink: "/donate"
     },
     {
         id: 2,
@@ -28,7 +28,7 @@ const slides = [
         title: "FALL FORWARD\nINTO SUCCESS",
         description: "TRANSFORMING LIVES IN CONFLICT-AFFECTED COMMUNITIES",
         buttonText: "DONATE NOW",
-        buttonLink: "/contact"
+        buttonLink: "/donate"
     }
 ];
 

@@ -17,7 +17,6 @@ export default function Home() {
       <AboutSection />
       <AdoptionsSection />
       <Programs />
-      {/* <NewsTicker /> */}
       <Team />
       <Partners />
       <PhotoMosaic />
