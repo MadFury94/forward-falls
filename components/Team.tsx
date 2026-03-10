@@ -1,15 +1,14 @@
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, User } from 'lucide-react';
 
 const Team = () => {
     const featuredTeam = [
-        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", color: "border-primary-green", image: "/group.jpg" },
-        { name: "Tobechukwu Onyeji", role: "Cofounder", color: "border-primary-yellow", image: "/group3.jpg" },
-        { name: "Ozioma Okafor", role: "Chief Operating Officer", color: "border-secondary-orange", image: "/board.jpg" },
-        { name: "Faith Adeyanju", role: "Social Media Manager", color: "border-primary-green", image: "/teacher.jpg" }
+        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", color: "border-primary-green" },
+        { name: "Tobechukwu Onyeji", role: "Cofounder", color: "border-primary-yellow" },
+        { name: "Ozioma Okafor", role: "Chief Operating Officer", color: "border-secondary-orange" },
+        { name: "Faith Adeyanju", role: "Social Media Manager", color: "border-primary-green" }
     ];
 
     return (
@@ -27,13 +26,8 @@ const Team = () => {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {featuredTeam.map((member, i) => (
                         <div key={i} className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${member.color}`}>
-                            <div className="relative w-full h-64 bg-gray-200">
-                                <Image
-                                    src={member.image}
-                                    alt={member.name}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                                />
+                            <div className="w-full h-64 bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                                <User size={80} className="text-gray-400 group-hover:text-gray-500 transition-colors" />
                             </div>
                             <div className="p-6 text-center">
                                 <h4 className="font-bold text-dark-grey group-hover:text-primary-green transition-colors mb-2">{member.name}</h4>

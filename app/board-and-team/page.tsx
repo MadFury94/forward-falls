@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
+import { User } from "lucide-react";
 
 const BoardPage = () => {
     return (
@@ -79,7 +80,9 @@ const BoardPage = () => {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
                             >
-                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto"></div>
+                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto flex items-center justify-center">
+                                    <User size={48} className="text-gray-400" />
+                                </div>
                                 <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
                                 <p className="text-primary-green text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
                                 <p className="text-gray-500 text-center text-sm leading-relaxed">{member.bio}</p>
@@ -112,38 +115,32 @@ const BoardPage = () => {
                             {
                                 name: "Ijeoma Seraphie Obiedelu",
                                 role: "Founder",
-                                bio: "Leading the vision for educational democratization and driving Forward Falls' mission to transform education access for underserved communities.",
-                                image: null
+                                bio: "Leading the vision for educational democratization and driving Forward Falls' mission to transform education access for underserved communities."
                             },
                             {
                                 name: "Tobechukwu Onyeji",
                                 role: "Cofounder",
-                                bio: "Driving strategic growth and impact, ensuring Forward Falls reaches more communities and creates lasting change.",
-                                image: null
+                                bio: "Driving strategic growth and impact, ensuring Forward Falls reaches more communities and creates lasting change."
                             },
                             {
                                 name: "Ozioma Okafor",
                                 role: "Chief Operating Officer",
-                                bio: "Managing day-to-day operations with excellence, ensuring smooth program delivery and organizational efficiency.",
-                                image: null
+                                bio: "Managing day-to-day operations with excellence, ensuring smooth program delivery and organizational efficiency."
                             },
                             {
                                 name: "Faith Adeyanju",
                                 role: "Social Media Manager",
-                                bio: "Amplifying our voice and advocacy through strategic digital communications and community engagement.",
-                                image: null
+                                bio: "Amplifying our voice and advocacy through strategic digital communications and community engagement."
                             },
                             {
                                 name: "Oluwatoyin Oloidi",
                                 role: "Administrative Officer",
-                                bio: "Ensuring organizational stability through meticulous administrative support and coordination.",
-                                image: null
+                                bio: "Ensuring organizational stability through meticulous administrative support and coordination."
                             },
                             {
                                 name: "Sandra Kennedy",
                                 role: "Development & Programs Director",
-                                bio: "Designing impactful curricula and outreach programs that transform lives and create opportunities.",
-                                image: null
+                                bio: "Designing impactful curricula and outreach programs that transform lives and create opportunities."
                             },
                         ].map((member, i) => (
                             <motion.div
@@ -154,14 +151,8 @@ const BoardPage = () => {
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: i * 0.1 }}
                             >
-                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto overflow-hidden">
-                                    {member.image ? (
-                                        <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-400 text-3xl font-bold">
-                                            {member.name.split(' ').map(n => n[0]).join('')}
-                                        </div>
-                                    )}
+                                <div className="w-24 h-24 bg-gray-200 rounded-full mb-6 mx-auto flex items-center justify-center">
+                                    <User size={48} className="text-gray-400" />
                                 </div>
                                 <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
                                 <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
