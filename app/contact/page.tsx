@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Mail, Phone, MapPin, Send, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import { motion } from "framer-motion";
-import emailjs from '@emailjs/browser';
 
 const ContactPage = () => {
     const formRef = useRef<HTMLFormElement>(null);
@@ -18,38 +17,44 @@ const ContactPage = () => {
         setSubmitStatus('idle');
 
         try {
-            const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
-            const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-            const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+            const form = formRef.current;
+            if (!form) throw new Error("Form not found");
 
-            if (!serviceId || !templateId || !publicKey) {
-                console.error('Missing EmailJS credentials:', {
-                    serviceId: !!serviceId,
-                    templateId: !!templateId,
-                    publicKey: !!publicKey
-                });
-                setSubmitStatus('error');
-                setIsSubmitting(false);
-                return;
+            const formData = new FormData(form);
+            const payload = {
+                name: formData.get("user_name"),
+                email: formData.get("user_email"),
+                subject: formData.get("subject"),
+                message: formData.get("message"),
+            };
+
+            const res = await fetch("https://forwardfalls-contact.onochieazukaeme.workers.dev", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const result = await res.json();
+            if (!res.ok || !result.success) {
+                throw new Error(result.error || "Failed to send message");
             }
 
-            const result = await emailjs.sendForm(
-                serviceId,
-                templateId,
-                formRef.current!,
-                publicKey
-            );
+            console.log('Email sent successfully:', result);
+            setSubmitStatus("success");
+            form.reset();
 
-            console.log('Email sent successfully:', result.text);
-            setSubmitStatus('success');
-            formRef.current?.reset();
+            // Reset success message after 5 seconds
+            setTimeout(() => setSubmitStatus('idle'), 5000);
         } catch (error) {
-            console.error('Email send failed:', error);
-            setSubmitStatus('error');
+            console.error("Contact form error:", error);
+            setSubmitStatus("error");
         } finally {
             setIsSubmitting(false);
         }
     };
+
     return (
         <main className="min-h-screen font-poppins">
             <Header />
@@ -158,7 +163,7 @@ const ContactPage = () => {
 
                                 {submitStatus === 'error' && (
                                     <div className="mb-6 p-4 bg-error-red/10 border border-error-red/20 rounded-xl text-error-red font-medium">
-                                        ✗ Failed to send message. Please try again or email us directly at forwardfalls@gmail.com
+                                        ✗ Failed to send message. Please try again or email us directly.
                                     </div>
                                 )}
 
