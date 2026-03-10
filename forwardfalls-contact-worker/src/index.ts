@@ -95,11 +95,14 @@ ${message}`,
 				status: 200,
 				headers: corsHeaders,
 			});
-		} catch (error) {
-			console.error("Worker error:", error);
+		} catch (error: any) {
+			console.error("Worker error:", error?.message || error, error);
 
 			return new Response(
-				JSON.stringify({ success: false, error: "Failed to send email" }),
+				JSON.stringify({
+					success: false,
+					error: error?.message || "Failed to send email",
+				}),
 				{ status: 500, headers: corsHeaders }
 			);
 		}

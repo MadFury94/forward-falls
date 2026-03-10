@@ -36,9 +36,18 @@ const ContactPage = () => {
                 body: JSON.stringify(payload),
             });
 
-            const result = await res.json();
+            const text = await res.text();
+            console.log("Worker raw response:", text);
+
+            let result: any = {};
+            try {
+                result = JSON.parse(text);
+            } catch {
+                result = { success: false, error: text || "Invalid JSON response" };
+            }
+
             if (!res.ok || !result.success) {
-                throw new Error(result.error || "Failed to send message");
+                throw new Error(result.error || `Request failed with status ${res.status}`);
             }
 
             console.log('Email sent successfully:', result);
