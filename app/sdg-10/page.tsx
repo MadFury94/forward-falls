@@ -112,7 +112,7 @@ const SDG10Page = () => {
                     <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                         Support our mission to provide equal educational opportunities for all young people, regardless of their background.
                     </p>
-                    <Link href="/contact">
+                    <Link href="/donate">
                         <button className="bg-secondary-orange text-white px-8 py-4 rounded-full font-semibold hover:bg-dark-grey transition-all">
                             DONATE NOW
                         </button>
