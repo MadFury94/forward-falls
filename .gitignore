@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cloudflare Worker (separate project)
+/forwardfalls-contact-worker/node_modules/
+/forwardfalls-contact-worker/.wrangler/
+/forwardfalls-contact-worker/dist/
