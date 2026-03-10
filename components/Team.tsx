@@ -1,15 +1,15 @@
 "use client";
 
-import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 const Team = () => {
     const featuredTeam = [
-        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", color: "border-primary-green" },
-        { name: "Tobechukwu Onyeji", role: "Cofounder", color: "border-primary-yellow" },
-        { name: "Ozioma Okafor", role: "Chief Operating Officer", color: "border-secondary-orange" },
-        { name: "Faith Adeyanju", role: "Social Media Manager", color: "border-primary-green" }
+        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", color: "border-primary-green", image: "/group.jpg" },
+        { name: "Tobechukwu Onyeji", role: "Cofounder", color: "border-primary-yellow", image: "/group3.jpg" },
+        { name: "Ozioma Okafor", role: "Chief Operating Officer", color: "border-secondary-orange", image: "/board.jpg" },
+        { name: "Faith Adeyanju", role: "Social Media Manager", color: "border-primary-green", image: "/teacher.jpg" }
     ];
 
     return (
@@ -26,11 +26,16 @@ const Team = () => {
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {featuredTeam.map((member, i) => (
-                        <div key={i} className={`bg-white p-6 rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 ${member.color}`}>
-                            <div className="text-center">
-                                <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center text-dark-grey font-bold text-xl group-hover:bg-dark-grey group-hover:text-white transition-all mx-auto mb-4">
-                                    {member.name.split(' ').map(n => n[0]).join('')}
-                                </div>
+                        <div key={i} className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${member.color}`}>
+                            <div className="relative w-full h-64 bg-gray-200">
+                                <Image
+                                    src={member.image}
+                                    alt={member.name}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                                />
+                            </div>
+                            <div className="p-6 text-center">
                                 <h4 className="font-bold text-dark-grey group-hover:text-primary-green transition-colors mb-2">{member.name}</h4>
                                 <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">{member.role}</p>
                             </div>

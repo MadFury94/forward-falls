@@ -117,7 +117,7 @@ const SDG16Page = () => {
                     <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                         Help us build a generation of informed, engaged citizens committed to peace, justice, and strong institutions.
                     </p>
-                    <Link href="/contact">
+                    <Link href="/donate">
                         <button className="bg-dark-grey text-white px-8 py-4 rounded-full font-semibold hover:bg-primary-green transition-all">
                             DONATE NOW
                         </button>
