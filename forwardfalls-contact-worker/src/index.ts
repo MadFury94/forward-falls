@@ -11,6 +11,8 @@ export default {
 			"https://forwardfalls.com",
 			"https://www.forwardfalls.com",
 			"https://mail.forward-falls.pages.dev",
+			"http://localhost:3000",
+			"http://localhost:3001",
 		];
 
 		const origin = request.headers.get("Origin") || "";
@@ -68,8 +70,6 @@ export default {
 
 			msg.setRecipient("forwardfalls@gmail.com");
 			msg.setSubject(`Contact Form: ${subject}`);
-
-			msg.setHeader("Reply-To", `${name} <${email}>`);
 
 			msg.addMessage({
 				contentType: "text/plain",

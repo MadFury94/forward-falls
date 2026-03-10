@@ -72,9 +72,11 @@ const Header = () => {
                             );
                         })}
                         <div className="flex items-center gap-2 ml-4">
-                            <button className="bg-primary-green text-white px-6 py-3 rounded-full text-xs font-bold hover:bg-dark-grey transition-all shadow-md">
-                                DONATE NOW
-                            </button>
+                            <Link href="/donate">
+                                <button className="bg-primary-green text-white px-6 py-3 rounded-full text-xs font-bold hover:bg-dark-grey transition-all shadow-md">
+                                    DONATE NOW
+                                </button>
+                            </Link>
                         </div>
                     </div>
 
@@ -111,9 +113,11 @@ const Header = () => {
                                 );
                             })}
                             <div className="pt-3 border-t border-gray-200">
-                                <button className="w-full bg-primary-green text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-dark-grey transition-all">
-                                    Donate Now
-                                </button>
+                                <Link href="/donate" className="block">
+                                    <button className="w-full bg-primary-green text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-dark-grey transition-all">
+                                        Donate Now
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

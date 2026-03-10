@@ -41,7 +41,7 @@ const DonatePage = () => {
             <section className="relative py-32 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
-                        src="/group.jpg"
+                        src="/donate.jpg"
                         alt="Donate background"
                         className="w-full h-full object-cover"
                     />

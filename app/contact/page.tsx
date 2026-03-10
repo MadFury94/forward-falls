@@ -10,11 +10,13 @@ const ContactPage = () => {
     const formRef = useRef<HTMLFormElement>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         setSubmitStatus('idle');
+        setErrorMessage('');
 
         try {
             const form = formRef.current;
@@ -28,6 +30,8 @@ const ContactPage = () => {
                 message: formData.get("message"),
             };
 
+            console.log("Sending payload:", payload);
+
             const res = await fetch("https://forwardfalls-contact.onochieazukaeme.workers.dev", {
                 method: "POST",
                 headers: {
@@ -35,6 +39,9 @@ const ContactPage = () => {
                 },
                 body: JSON.stringify(payload),
             });
+
+            console.log("Response status:", res.status);
+            console.log("Response headers:", res.headers);
 
             const text = await res.text();
             console.log("Worker raw response:", text);
@@ -47,17 +54,27 @@ const ContactPage = () => {
             }
 
             if (!res.ok || !result.success) {
-                throw new Error(result.error || `Request failed with status ${res.status}`);
+                const errorMsg = result.error || `Request failed with status ${res.status}`;
+                setErrorMessage(errorMsg);
+                throw new Error(errorMsg);
             }
 
             console.log('Email sent successfully:', result);
             setSubmitStatus("success");
+            setErrorMessage('');
             form.reset();
 
             // Reset success message after 5 seconds
             setTimeout(() => setSubmitStatus('idle'), 5000);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Contact form error:", error);
+            console.error("Error details:", {
+                message: error?.message,
+                name: error?.name,
+                stack: error?.stack
+            });
+            const errorMsg = error?.message || "Failed to send message. Please check your connection and try again.";
+            setErrorMessage(errorMsg);
             setSubmitStatus("error");
         } finally {
             setIsSubmitting(false);
@@ -172,7 +189,7 @@ const ContactPage = () => {
 
                                 {submitStatus === 'error' && (
                                     <div className="mb-6 p-4 bg-error-red/10 border border-error-red/20 rounded-xl text-error-red font-medium">
-                                        ✗ Failed to send message. Please try again or email us directly.
+                                        ✗ {errorMessage || "Failed to send message. Please try again or email us directly."}
                                     </div>
                                 )}
 
