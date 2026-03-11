@@ -12,19 +12,19 @@ const DonatePage = () => {
 
     const bankAccounts = [
         {
-            id: 'gtb',
-            bank: 'Guaranty Trust Bank (GTB)',
-            accountNumber: '0123456789',
+            id: 'stl',
+            bank: 'Sterling Bank',
+            accountNumber: '0092858858',
             accountName: 'Forward Falls Initiative',
             color: 'border-primary-green'
         },
-        {
-            id: 'access',
-            bank: 'Access Bank',
-            accountNumber: '0987654321',
-            accountName: 'Forward Falls Initiative',
-            color: 'border-primary-yellow'
-        }
+        // {
+        //     id: 'access',
+        //     bank: 'Access Bank',
+        //     accountNumber: '0987654321',
+        //     accountName: 'Forward Falls Initiative',
+        //     color: 'border-primary-yellow'
+        // }
     ];
 
     const handleCopy = (accountNumber: string, accountId: string) => {
