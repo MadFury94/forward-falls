@@ -60,6 +60,7 @@ const AdoptionsSection = () => {
                                     src="/kid4.jpg"
                                     alt="Community Member"
                                     fill
+                                    sizes="64px"
                                     className="object-cover"
                                 />
                             </div>
@@ -82,6 +83,7 @@ const AdoptionsSection = () => {
                             src="/kid2.jpg"
                             alt="Forward Falls Impact"
                             fill
+                            sizes="(max-width: 1024px) 100vw, 33vw"
                             className="object-cover"
                         />
                     </motion.div>
@@ -102,6 +104,7 @@ const AdoptionsSection = () => {
                                             src={pillar.image}
                                             alt={pillar.title}
                                             fill
+                                            sizes="96px"
                                             className="object-cover group-hover:scale-110 transition-transform duration-500"
                                         />
                                     </div>

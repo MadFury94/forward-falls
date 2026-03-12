@@ -83,6 +83,8 @@ const Programs = () => {
                                 src="/kid11.jpg"
                                 alt="Students learning"
                                 fill
+                                priority
+                                sizes="(max-width: 1024px) 50vw, 30vw"
                                 className="object-cover"
                                 style={{ objectPosition: 'left 20%' }}
                             />
@@ -94,6 +96,7 @@ const Programs = () => {
                                 src="/kids.jpg"
                                 alt="Education impact"
                                 fill
+                                sizes="(max-width: 1024px) 50vw, 30vw"
                                 className="object-cover"
                                 style={{ objectPosition: 'center 20%' }}
                             />

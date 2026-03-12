@@ -44,6 +44,7 @@ const AboutSection = () => {
                                 src="/about.jpg"
                                 alt="Forward Falls Initiative Impact"
                                 fill
+                                sizes="(max-width: 1024px) 100vw, 50vw"
                                 className="object-cover"
                             />
                         </div>
@@ -100,6 +101,7 @@ const AboutSection = () => {
                                     src="/teacher.jpg"
                                     alt="Director"
                                     fill
+                                    sizes="64px"
                                     className="object-cover"
                                 />
                             </div>

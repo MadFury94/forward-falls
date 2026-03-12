@@ -1,16 +1,15 @@
 "use client";
 
 import Link from 'next/link';
-import { ArrowRight, User } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
+import { featuredTeam } from '@/data/team';
+
+const getInitials = (name: string): string => {
+    return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
+};
 
 const Team = () => {
-    const featuredTeam = [
-        { name: "Ijeoma Seraphie Obiedelu", role: "Founder", color: "border-primary-green" },
-        { name: "Tobechukwu Onyeji", role: "Cofounder", color: "border-primary-yellow" },
-        { name: "Ozioma Okafor", role: "Chief Operating Officer", color: "border-secondary-orange" },
-        { name: "Faith Adeyanju", role: "Social Media Manager", color: "border-primary-green" }
-    ];
-
     return (
         <section id="team" className="py-24 bg-light-bg font-poppins">
             <div className="max-w-[1200px] mx-auto px-6">
@@ -26,8 +25,25 @@ const Team = () => {
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {featuredTeam.map((member, i) => (
                         <div key={i} className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${member.color}`}>
-                            <div className="w-full h-64 bg-gray-100 flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                                <User size={80} className="text-gray-400 group-hover:text-gray-500 transition-colors" />
+                            <div className="w-full h-64 relative bg-gray-100 overflow-hidden">
+                                {member.image ? (
+                                    <Image
+                                        src={member.image}
+                                        alt={`${member.name} - ${member.role}`}
+                                        fill
+                                        priority={i === 0}
+                                        unoptimized={member.image.includes('drive.google.com')}
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                        style={{ objectPosition: 'center 20%' }}
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-green/20 to-primary-yellow/20">
+                                        <span className="text-6xl font-bold text-dark-grey/30 group-hover:text-dark-grey/50 transition-colors">
+                                            {getInitials(member.name)}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                             <div className="p-6 text-center">
                                 <h4 className="font-bold text-dark-grey group-hover:text-primary-green transition-colors mb-2">{member.name}</h4>

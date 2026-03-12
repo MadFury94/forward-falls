@@ -128,7 +128,7 @@ const InfoTile = ({ card, bgImage }: { card: ProfileCard; bgImage?: string }) =>
     <div className={`${card.bgColor} text-white p-6 md:p-8 flex flex-col justify-center h-full relative overflow-hidden`}>
         {bgImage && (
             <div className="absolute inset-0 -z-10 opacity-20">
-                <Image src={bgImage} alt="bg" fill className="object-cover" />
+                <Image src={bgImage} alt="bg" fill sizes="25vw" className="object-cover" />
             </div>
         )}
         <span className="text-[11px] font-bold tracking-[0.25em] uppercase opacity-90 mb-2 block">
