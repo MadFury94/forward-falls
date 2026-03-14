@@ -23,7 +23,7 @@ export default function EditorJSComponent({ onChange, initialData, token }: Edit
             const List = (await import("@editorjs/list")).default;
             const Quote = (await import("@editorjs/quote")).default;
             const Delimiter = (await import("@editorjs/delimiter")).default;
-            const Embed = (await import("@editorjs/embed")).default;
+            const Embed = (await import("@editorjs/embed" as any)).default;
             const Table = (await import("@editorjs/table")).default;
             const ImageTool = (await import("@editorjs/image")).default;
 
@@ -33,7 +33,7 @@ export default function EditorJSComponent({ onChange, initialData, token }: Edit
                 placeholder: "Start writing your post...",
                 tools: {
                     header: {
-                        class: Header,
+                        class: Header as any,
                         config: { levels: [2, 3, 4], defaultLevel: 2 },
                     },
                     list: {
@@ -51,7 +51,7 @@ export default function EditorJSComponent({ onChange, initialData, token }: Edit
                         config: { services: { youtube: true, vimeo: true, twitter: true } },
                     },
                     table: {
-                        class: Table,
+                        class: Table as any,
                         inlineToolbar: true,
                     },
                     image: {
