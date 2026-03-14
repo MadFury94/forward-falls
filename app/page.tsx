@@ -7,6 +7,7 @@ import Team from "@/components/Team";
 import Partners from "@/components/Partners";
 import NewsTicker from "@/components/NewsTicker";
 import PhotoMosaic from "@/components/PhotoMosaic";
+import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       <Team />
       <Partners />
       <PhotoMosaic />
+      <BlogSection />
       <Footer />
     </main>
   );
