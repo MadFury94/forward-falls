@@ -20,18 +20,20 @@ import {
 const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
 
 function pick<T>(wpVal: T | null | undefined, def: T): T {
-  if (wpVal === null || wpVal === undefined || wpVal === '' || (Array.isArray(wpVal) && (wpVal as unknown[]).length === 0)) return def;
+  if (wpVal === null || wpVal === undefined || wpVal === '' || wpVal === false || (Array.isArray(wpVal) && (wpVal as unknown[]).length === 0)) return def;
   return wpVal;
 }
 
 async function getHomepageContent() {
   try {
-    const res = await fetch(`${WP_URL}/wp-json/acf/v3/options/options`, {
-      next: { revalidate: 60 },
+    const res = await fetch(`${WP_URL}/wp-json/ffi/v1/homepage`, {
+      next: { revalidate: 0 },
     });
     if (!res.ok) return null;
     const data = await res.json();
-    return data?.acf || null;
+    // get_fields returns [] when empty, {} or object when populated
+    if (!data?.acf || Array.isArray(data.acf)) return null;
+    return data.acf;
   } catch {
     return null;
   }

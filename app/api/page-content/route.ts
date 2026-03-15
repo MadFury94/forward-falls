@@ -13,7 +13,7 @@ const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.ho
 
 // Merge: WP value wins if truthy, otherwise fall back to default
 function pick<T>(wpVal: T | null | undefined, def: T): T {
-    if (wpVal === null || wpVal === undefined || wpVal === '' || (Array.isArray(wpVal) && wpVal.length === 0)) {
+    if (wpVal === null || wpVal === undefined || wpVal === '' || wpVal === false || (Array.isArray(wpVal) && wpVal.length === 0)) {
         return def;
     }
     return wpVal;
@@ -110,20 +110,16 @@ function mergeContent(acf: Record<string, unknown>) {
 export async function GET() {
     try {
         const res = await fetch(
-            `${WP_URL}/wp-json/acf/v3/options/options?_=${Date.now()}`,
+            `${WP_URL}/wp-json/ffi/v1/homepage`,
             { next: { revalidate: 60 } }
         );
 
         if (!res.ok) {
-            // WP not reachable — return pure defaults
-            return NextResponse.json({
-                success: true,
-                content: mergeContent({}),
-            });
+            return NextResponse.json({ success: true, content: mergeContent({}) });
         }
 
         const data = await res.json();
-        const acf: Record<string, unknown> = data?.acf || {};
+        const acf: Record<string, unknown> = Array.isArray(data?.acf) ? {} : (data?.acf || {});
         return NextResponse.json({ success: true, content: mergeContent(acf) });
     } catch {
         return NextResponse.json({ success: true, content: mergeContent({}) });
@@ -136,18 +132,21 @@ export async function PATCH(request: NextRequest) {
 
     const body = await request.json();
 
-    const res = await fetch(`${WP_URL}/wp-json/acf/v3/options/options`, {
+    const res = await fetch(`${WP_URL}/wp-json/ffi/v1/homepage`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fields: body }),
+        body: JSON.stringify(body),
     });
 
     if (!res.ok) {
-        const err = await res.text();
-        return NextResponse.json({ success: false, error: err }, { status: res.status });
+        const text = await res.text();
+        return NextResponse.json(
+            { success: false, error: `WP ${res.status}: ${text.slice(0, 300)}` },
+            { status: res.status }
+        );
     }
 
     return NextResponse.json({ success: true });

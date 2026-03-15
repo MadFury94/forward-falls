@@ -53,13 +53,17 @@ const AboutSection = ({ content }: AboutSectionProps) => {
                         className="relative z-10"
                     >
                         <div className="relative aspect-[4/5] w-full max-w-[450px] mx-auto lg:ml-0 overflow-hidden shadow-2xl">
-                            <Image
-                                src={image}
-                                alt="Forward Falls Initiative Impact"
-                                fill
-                                sizes="(max-width: 1024px) 100vw, 50vw"
-                                className="object-cover"
-                            />
+                            {image ? (
+                                <Image
+                                    src={image}
+                                    alt="Forward Falls Initiative Impact"
+                                    fill
+                                    sizes="(max-width: 1024px) 100vw, 50vw"
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-light-bg" />
+                            )}
                         </div>
 
                         <motion.div
