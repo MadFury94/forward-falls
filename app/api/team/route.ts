@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
         const body = await request.json();
-        const { name, title, featured_media, menu_order, acf } = body;
+        const { name, roles, featured_media, menu_order, acf } = body;
 
         if (!name) return NextResponse.json({ success: false, error: 'Name is required' }, { status: 400 });
 
@@ -55,6 +55,10 @@ export async function POST(request: NextRequest) {
                 status: 'publish',
                 ...(featured_media ? { featured_media: Number(featured_media) } : {}),
                 ...(menu_order !== undefined ? { menu_order: Number(menu_order) } : {}),
+                acf: {
+                    name: name,
+                    role: roles || '',
+                },
             }),
         });
 
@@ -64,21 +68,6 @@ export async function POST(request: NextRequest) {
         }
 
         const post = await postRes.json();
-
-        // Update ACF fields
-        const acfFields: Record<string, any> = {};
-        if (name) acfFields.name = name;
-        if (title) acfFields.title = title;
-        if (acf?.member_image) acfFields.member_image = acf.member_image;
-
-        if (Object.keys(acfFields).length > 0) {
-            await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${post.id}`, {
-                method: 'POST',
-                headers: { ...auth(token), 'Content-Type': 'application/json' },
-                body: JSON.stringify({ acf: acfFields }),
-            });
-        }
-
         return NextResponse.json({ success: true, member: { id: post.id } });
     } catch {
         return NextResponse.json({ success: false, error: 'Failed to create team member' }, { status: 500 });

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { getTeamMemberImage, WPTeamMember } from '@/lib/wordpress-api';
+import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName, WPTeamMember } from '@/lib/wordpress-api';
 
 const getInitials = (name: string): string =>
     name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
@@ -71,8 +71,8 @@ const Team = () => {
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {members.slice(0, 4).map((member, i) => {
-                        const name = member.acf?.name || member.title?.rendered || "";
-                        const role = member.acf?.title || "";
+                        const name = getTeamMemberName(member);
+                        const role = getTeamMemberRole(member);
                         const img = getTeamMemberImage(member);
                         return (
                             <div key={member.id} className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${BORDER_COLORS[i % BORDER_COLORS.length]}`}>
@@ -97,7 +97,7 @@ const Team = () => {
                                 </div>
                                 <div className="p-6 text-center">
                                     <h4 className="font-bold text-dark-grey group-hover:text-primary-green transition-colors mb-2">{name}</h4>
-                                    <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider">{role}</p>
+                                    <p className="text-xs text-primary-green font-semibold uppercase tracking-wider">{role}</p>
                                 </div>
                             </div>
                         );

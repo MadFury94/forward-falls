@@ -118,10 +118,16 @@ export async function fetchCategories(): Promise<WPCategory[]> {
 
 export interface WPTeamMember {
     id: number;
+    menu_order?: number;
     title: { rendered: string };
+    excerpt?: { rendered: string };
     acf?: {
         name?: string;
-        title?: string;
+        role?: string;        // ACF field named 'role'
+        roles?: string;       // legacy fallback
+        title?: string;       // legacy fallback
+        position?: string;
+        job_title?: string;
         member_image?: { url: string; alt: string } | string;
     };
     _embedded?: {
@@ -136,6 +142,23 @@ export function getTeamMemberImage(m: WPTeamMember): string | null {
     if (typeof img === "object" && img && "url" in img) return img.url;
     if (typeof img === "string" && img.startsWith("http")) return img;
     return null;
+}
+
+export function getTeamMemberName(m: WPTeamMember): string {
+    return m.acf?.name || m.title?.rendered?.replace(/<[^>]*>/g, "") || "";
+}
+
+export function getTeamMemberRole(m: WPTeamMember): string {
+    const acf = m.acf as any;
+    return (
+        acf?.role ||
+        acf?.roles ||
+        acf?.title ||
+        acf?.position ||
+        acf?.job_title ||
+        acf?.designation ||
+        ""
+    );
 }
 
 export async function fetchTeamMembers(): Promise<WPTeamMember[]> {

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
 import { boardMembers } from "@/data/team";
-import { getTeamMemberImage } from "@/lib/wordpress-api";
+import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName } from "@/lib/wordpress-api";
 import { useEffect, useState } from "react";
 
 const getInitials = (name: string): string => {
@@ -115,8 +115,8 @@ const BoardPage = () => {
                     {/* Featured Team with Images - Top Row */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {wpMembers.map((member, i) => {
-                            const name = member.acf?.name || member.title?.rendered || "";
-                            const role = member.acf?.title || "";
+                            const name = getTeamMemberName(member);
+                            const role = getTeamMemberRole(member);
                             const img = getTeamMemberImage(member);
                             return (
                                 <motion.div
@@ -145,7 +145,7 @@ const BoardPage = () => {
                                     </div>
                                     <div className="p-6 text-center">
                                         <h3 className="text-xl font-bold text-dark-grey mb-1 uppercase">{name}</h3>
-                                        <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest">{role}</p>
+                                        <p className="text-primary-green text-xs font-bold uppercase tracking-widest">{role}</p>
                                     </div>
                                 </motion.div>
                             );

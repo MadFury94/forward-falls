@@ -12,7 +12,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { id } = await params;
     const token = request.headers.get('x-wp-token') || '';
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team_members/${id}?acf_format=standard&_embed=wp:featuredmedia`, {
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${id}?acf_format=standard&_embed=wp:featuredmedia`, {
         headers: auth(token),
     });
 
@@ -27,14 +27,19 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
     const body = await request.json();
-    const { name, title, featured_media, menu_order } = body;
+    const { name, roles, featured_media, menu_order } = body;
 
-    const wpPayload: Record<string, any> = {};
+    const wpPayload: Record<string, any> = {
+        acf: {
+            name: name || '',
+            role: roles !== undefined ? roles : '',
+        },
+    };
     if (name) wpPayload.title = name;
     if (featured_media) wpPayload.featured_media = Number(featured_media);
     if (menu_order !== undefined) wpPayload.menu_order = Number(menu_order);
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team_members/${id}`, {
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${id}`, {
         method: 'POST',
         headers: { ...auth(token), 'Content-Type': 'application/json' },
         body: JSON.stringify(wpPayload),
@@ -45,19 +50,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         return NextResponse.json({ success: false, error: err.message }, { status: 400 });
     }
 
-    // Update ACF fields
-    const acfFields: Record<string, any> = {};
-    if (name) acfFields.name = name;
-    if (title !== undefined) acfFields.title = title;
-
-    if (Object.keys(acfFields).length > 0) {
-        await fetch(`${WP_URL}/wp-json/wp/v2/team_members/${id}`, {
-            method: 'POST',
-            headers: { ...auth(token), 'Content-Type': 'application/json' },
-            body: JSON.stringify({ acf: acfFields }),
-        });
-    }
-
     return NextResponse.json({ success: true });
 }
 
@@ -66,7 +58,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     const token = request.headers.get('x-wp-token') || '';
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
-    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team_members/${id}?force=true`, {
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${id}?force=true`, {
         method: 'DELETE',
         headers: auth(token),
     });

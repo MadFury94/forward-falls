@@ -25,8 +25,8 @@ function getMemberImage(m: TeamMember): string | null {
 }
 
 function getMemberRole(m: TeamMember): string {
-    // ACF field named 'title' — try both acf.title and acf.position
-    return m.acf?.title || m.acf?.position || "";
+    const acf = m.acf as any;
+    return acf?.roles || acf?.title || acf?.role || acf?.position || "";
 }
 
 function getMemberName(m: TeamMember): string {
