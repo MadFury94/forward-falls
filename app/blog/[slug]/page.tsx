@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User, Tag } from "lucide-react";
 import Header from "@/components/Header";
+
+export const runtime = 'edge';
 import Footer from "@/components/Footer";
 import { fetchPost, fetchPosts, getPostImage, getAuthorName, getPostCategories, formatDate } from "@/lib/wordpress-api";
 

@@ -3,6 +3,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
+
+export const runtime = 'edge';
 import PostCard from "@/components/blog/PostCard";
 import { fetchPosts, fetchCategories } from "@/lib/wordpress-api";
 
