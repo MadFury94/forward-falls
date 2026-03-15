@@ -20,9 +20,8 @@ export async function GET(request: NextRequest) {
     const simplified = Array.isArray(raw) ? raw.map((m: any) => ({
         id: m.id,
         wp_title: m.title?.rendered,
-        acf: m.acf,
-        meta: m.meta,
         menu_order: m.menu_order,
+        acf: m.acf,
         all_keys: Object.keys(m),
     })) : raw;
 

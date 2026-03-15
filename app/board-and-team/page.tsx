@@ -21,7 +21,7 @@ const BoardPage = () => {
     useEffect(() => {
         fetch("/api/team")
             .then(r => r.json())
-            .then(data => { if (data.success && Array.isArray(data.members)) setWpMembers(data.members); });
+            .then(data => { if (data.success && Array.isArray(data.members)) setWpMembers([...data.members].sort((a: any, b: any) => (a.acf?.order ?? 999) - (b.acf?.order ?? 999))); });
     }, []);
 
     return (

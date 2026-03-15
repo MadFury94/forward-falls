@@ -27,17 +27,19 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
     const body = await request.json();
-    const { name, roles, featured_media, menu_order } = body;
+    const { name, roles, featured_media, menu_order, acf_order } = body;
 
-    const wpPayload: Record<string, any> = {
-        acf: {
-            name: name || '',
-            role: roles !== undefined ? roles : '',
-        },
-    };
+    const wpPayload: Record<string, any> = {};
+    if (name !== undefined || roles !== undefined || acf_order !== undefined) {
+        wpPayload.acf = {
+            ...(name !== undefined ? { name } : {}),
+            ...(roles !== undefined ? { role: roles } : {}),
+            ...(acf_order !== undefined ? { order: acf_order } : {}),
+        };
+    }
     if (name) wpPayload.title = name;
     if (featured_media) wpPayload.featured_media = Number(featured_media);
-    if (menu_order !== undefined) wpPayload.menu_order = Number(menu_order);
+    if (menu_order !== undefined && menu_order !== null) wpPayload.menu_order = Number(menu_order);
 
     const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${id}`, {
         method: 'POST',

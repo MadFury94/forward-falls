@@ -24,7 +24,7 @@ const Team = () => {
             .then(r => r.json())
             .then(data => {
                 if (data.success && Array.isArray(data.members)) {
-                    setMembers(data.members);
+                    setMembers([...data.members].sort((a: any, b: any) => (a.acf?.order ?? 999) - (b.acf?.order ?? 999)));
                 }
                 setStatus("done");
             })
