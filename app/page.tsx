@@ -1,12 +1,5 @@
+import dynamic from "next/dynamic";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import AboutSection from "@/components/AboutSection";
-import AdoptionsSection from "@/components/AdoptionsSection";
-import Programs from "@/components/Programs";
-import Team from "@/components/Team";
-import Partners from "@/components/Partners";
-import PhotoMosaic from "@/components/PhotoMosaic";
-import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
 import EditableSection from "@/components/admin/EditableSection";
 import {
@@ -18,6 +11,16 @@ import {
 } from "@/lib/homepage-defaults";
 
 export const runtime = 'edge';
+
+// Dynamically import heavy client components — keeps edge worker under 3MB
+const Hero = dynamic(() => import("@/components/Hero"), { ssr: false });
+const AboutSection = dynamic(() => import("@/components/AboutSection"), { ssr: false });
+const AdoptionsSection = dynamic(() => import("@/components/AdoptionsSection"), { ssr: false });
+const Programs = dynamic(() => import("@/components/Programs"), { ssr: false });
+const Team = dynamic(() => import("@/components/Team"), { ssr: false });
+const Partners = dynamic(() => import("@/components/Partners"), { ssr: false });
+const PhotoMosaic = dynamic(() => import("@/components/PhotoMosaic"), { ssr: false });
+const BlogSection = dynamic(() => import("@/components/BlogSection"), { ssr: false });
 
 const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
 
