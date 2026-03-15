@@ -8,7 +8,23 @@ export const runtime = 'edge';
 import PostCard from "@/components/blog/PostCard";
 import { fetchPosts, fetchCategories } from "@/lib/wordpress-api";
 
-export const metadata = { title: "Blog | Forward Falls Initiative" };
+export const metadata = {
+    title: "Blog | Forward Falls Initiative",
+    description: "Stories, insights, and updates from the Forward Falls Initiative community.",
+    alternates: { canonical: "https://forwardfallsinitiative.org/blog" },
+    openGraph: {
+        title: "Blog | Forward Falls Initiative",
+        description: "Stories, insights, and updates from the Forward Falls Initiative community.",
+        url: "https://forwardfallsinitiative.org/blog",
+        siteName: "Forward Falls Initiative",
+        type: "website",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Blog | Forward Falls Initiative",
+        description: "Stories, insights, and updates from the Forward Falls Initiative community.",
+    },
+};
 
 export default async function BlogPage({
     searchParams,

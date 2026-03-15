@@ -9,10 +9,30 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Forward Falls Initiative | Democratizing Education",
+  title: {
+    default: "Forward Falls Initiative | Democratizing Education",
+    template: "%s | Forward Falls Initiative",
+  },
   description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
-  icons: {
-    icon: "/FFI.png",
+  metadataBase: new URL("https://forwardfallsinitiative.org"),
+  icons: { icon: "/FFI.png" },
+  openGraph: {
+    type: "website",
+    siteName: "Forward Falls Initiative",
+    title: "Forward Falls Initiative | Democratizing Education",
+    description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Forward Falls Initiative",
+    description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
+    images: ["/og-default.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 

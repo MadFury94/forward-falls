@@ -69,11 +69,14 @@ export async function POST(request: NextRequest) {
 
         const post = await postRes.json();
 
-        // Update ACF fields (summary, category, author_name)
+        // Update ACF fields (summary, category, author_name, SEO)
         const acfFields: Record<string, any> = {};
         if (acf?.summary) acfFields.summary = acf.summary;
         if (acf?.category) acfFields.category = acf.category;
         if (acf?.author_name) acfFields.author_name = acf.author_name;
+        if (acf?.meta_title !== undefined) acfFields.meta_title = acf.meta_title;
+        if (acf?.meta_description !== undefined) acfFields.meta_description = acf.meta_description;
+        if (acf?.og_image !== undefined) acfFields.og_image = acf.og_image;
 
         if (Object.keys(acfFields).length > 0) {
             const acfRes = await fetch(`${WP_URL}/wp-json/wp/v2/posts/${post.id}`, {

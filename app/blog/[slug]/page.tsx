@@ -6,15 +6,49 @@ import Header from "@/components/Header";
 
 export const runtime = 'edge';
 import Footer from "@/components/Footer";
-import { fetchPost, fetchPosts, getPostImage, getAuthorName, getPostCategories, formatDate } from "@/lib/wordpress-api";
+import { fetchPost, fetchPosts, getPostImage, getAuthorName, getPostCategories, formatDate, stripHtml } from "@/lib/wordpress-api";
+
+const SITE_URL = "https://forwardfallsinitiative.org";
+const SITE_NAME = "Forward Falls Initiative";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await fetchPost(slug);
     if (!post) return { title: "Post Not Found" };
+
+    const title = post.acf?.meta_title || stripHtml(post.title.rendered);
+    const description = post.acf?.meta_description || post.acf?.summary || stripHtml(post.excerpt?.rendered || "");
+    const imageUrl = (() => {
+        const og = post.acf?.og_image;
+        if (og && typeof og === "object" && "url" in og) return og.url;
+        if (og && typeof og === "string") return og;
+        return getPostImage(post) || `${SITE_URL}/og-default.jpg`;
+    })();
+    const canonical = `${SITE_URL}/blog/${slug}`;
+    const author = getAuthorName(post);
+    const categories = getPostCategories(post);
+
     return {
-        title: `${post.title.rendered} | Forward Falls Initiative`,
-        description: post.acf?.summary || "",
+        title: `${title} | ${SITE_NAME}`,
+        description,
+        alternates: { canonical },
+        openGraph: {
+            type: "article",
+            url: canonical,
+            title: `${title} | ${SITE_NAME}`,
+            description,
+            siteName: SITE_NAME,
+            images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+            publishedTime: post.date,
+            authors: author ? [author] : undefined,
+            tags: categories,
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: `${title} | ${SITE_NAME}`,
+            description,
+            images: [imageUrl],
+        },
     };
 }
 
@@ -31,9 +65,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     const author = getAuthorName(post);
     const categories = getPostCategories(post);
     const relatedPosts = related.filter((p) => p.slug !== slug).slice(0, 2);
+    const canonical = `${SITE_URL}/blog/${slug}`;
+
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: stripHtml(post.title.rendered),
+        description: post.acf?.meta_description || post.acf?.summary || "",
+        image: imageUrl || undefined,
+        datePublished: post.date,
+        dateModified: post.date,
+        author: { "@type": "Person", name: author || SITE_NAME },
+        publisher: {
+            "@type": "Organization",
+            name: SITE_NAME,
+            url: SITE_URL,
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+        keywords: categories.join(", "),
+    };
 
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Header />
             <main className="font-poppins">
                 {/* Hero Banner */}

@@ -14,6 +14,9 @@ export interface WPPost {
         summary?: string;
         category?: string;
         author_name?: string;
+        meta_title?: string;
+        meta_description?: string;
+        og_image?: { url: string; alt: string } | string;
     };
     _embedded?: {
         "wp:featuredmedia"?: Array<{ source_url: string; alt_text: string }>;

@@ -26,12 +26,13 @@ export default function EditPost() {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [uploadedImageId, setUploadedImageId] = useState<number | null>(null);
     const [showMediaPicker, setShowMediaPicker] = useState(false);
+    const [showOgImagePicker, setShowOgImagePicker] = useState(false);
 
     const [editorData, setEditorData] = useState<string>("");
     const [form, setForm] = useState({
         title: "",
         status: "draft" as "publish" | "draft",
-        acf: { summary: "", category: "", author_name: "" },
+        acf: { summary: "", category: "", author_name: "", meta_title: "", meta_description: "", og_image: "" },
     });
 
     useEffect(() => {
@@ -53,6 +54,9 @@ export default function EditPost() {
                     summary: post.acf?.summary || "",
                     category: post.acf?.category || "",
                     author_name: post.acf?.author_name || "",
+                    meta_title: post.acf?.meta_title || "",
+                    meta_description: post.acf?.meta_description || "",
+                    og_image: typeof post.acf?.og_image === "string" ? post.acf.og_image : (post.acf?.og_image as any)?.url || "",
                 },
             });
             const media = post._embedded?.["wp:featuredmedia"]?.[0];
@@ -166,6 +170,16 @@ export default function EditPost() {
                         setUploadedImageId(item.id);
                         setImageFile(null);
                         setShowMediaPicker(false);
+                    }}
+                />
+            )}
+            {showOgImagePicker && (
+                <MediaPickerModal
+                    token={token}
+                    onClose={() => setShowOgImagePicker(false)}
+                    onSelect={(item) => {
+                        setForm({ ...form, acf: { ...form.acf, og_image: item.source_url } });
+                        setShowOgImagePicker(false);
                     }}
                 />
             )}
@@ -320,6 +334,59 @@ export default function EditPost() {
                                     onChange={(e) => setForm({ ...form, acf: { ...form.acf, author_name: e.target.value } })}
                                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green"
                                     placeholder="Author's name..." />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* SEO */}
+                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div className="px-4 py-3 border-b border-gray-100 font-semibold text-sm text-dark-grey">SEO</div>
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Meta Title</label>
+                                <input type="text" value={form.acf.meta_title}
+                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, meta_title: e.target.value } })}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green"
+                                    placeholder="Defaults to post title" />
+                                <p className="text-xs text-gray-400 mt-1">{form.acf.meta_title.length}/60 chars</p>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Meta Description</label>
+                                <textarea
+                                    value={form.acf.meta_description}
+                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, meta_description: e.target.value } })}
+                                    rows={3}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green resize-none"
+                                    placeholder="Defaults to summary" />
+                                <p className={`text-xs mt-1 ${form.acf.meta_description.length > 160 ? "text-red-400" : "text-gray-400"}`}>
+                                    {form.acf.meta_description.length}/160 chars
+                                </p>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">OG Image</label>
+                                {form.acf.og_image ? (
+                                    <div className="space-y-2">
+                                        <div className="relative rounded-lg overflow-hidden border border-gray-200">
+                                            <img src={form.acf.og_image} alt="OG" className="w-full h-24 object-cover" />
+                                            <button type="button"
+                                                onClick={() => setForm({ ...form, acf: { ...form.acf, og_image: "" } })}
+                                                className="absolute top-1 right-1 p-1 bg-white rounded-full shadow hover:bg-red-50">
+                                                <X className="h-3 w-3 text-red-500" />
+                                            </button>
+                                        </div>
+                                        <button type="button" onClick={() => setShowOgImagePicker(true)}
+                                            className="w-full text-xs text-primary-green hover:underline text-center">
+                                            Replace OG image
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button type="button" onClick={() => setShowOgImagePicker(true)}
+                                        className="w-full flex items-center justify-center gap-2 px-3 py-2 border border-dashed border-gray-300 hover:border-primary-green text-gray-500 text-sm rounded-lg transition-all hover:bg-primary-green/5">
+                                        <Images className="h-4 w-4" />
+                                        Pick from media library
+                                    </button>
+                                )}
+                                <p className="text-xs text-gray-400 mt-1">Recommended: 1200×630px. Defaults to featured image.</p>
                             </div>
                         </div>
                     </div>

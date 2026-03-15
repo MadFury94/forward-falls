@@ -55,6 +55,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (acf?.summary !== undefined) acfFields.summary = acf.summary;
     if (acf?.category !== undefined) acfFields.category = acf.category;
     if (acf?.author_name !== undefined) acfFields.author_name = acf.author_name;
+    if (acf?.meta_title !== undefined) acfFields.meta_title = acf.meta_title;
+    if (acf?.meta_description !== undefined) acfFields.meta_description = acf.meta_description;
+    if (acf?.og_image !== undefined) acfFields.og_image = acf.og_image;
 
     if (Object.keys(acfFields).length > 0) {
         await fetch(`${WP_URL}/wp-json/wp/v2/posts/${id}`, {
