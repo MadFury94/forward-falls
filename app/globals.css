@@ -130,28 +130,19 @@ h1 {
   color: var(--primary-yellow);
 }
 
-/* Editor.js styles */
-.codex-editor {
-  font-family: var(--font-poppins);
+/* Page header fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.codex-editor__redactor {
-  padding-bottom: 100px !important;
-}
-
-.ce-block__content,
-.ce-toolbar__content {
-  max-width: unset !important;
-}
-
-.ce-toolbar__plus,
-.ce-toolbar__settings-btn {
-  color: var(--primary-green) !important;
-}
-
-.ce-inline-toolbar,
-.ce-conversion-toolbar,
-.ce-settings,
-.ce-toolbox {
-  z-index: 100 !important;
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out both;
 }

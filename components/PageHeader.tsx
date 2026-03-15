@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 interface PageHeaderProps {
     label?: string;
     title: string;
@@ -33,11 +31,7 @@ export default function PageHeader({
             </div>
 
             <div className="max-w-[1200px] mx-auto px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                >
+                <div className="animate-fade-in-up">
                     {label && (
                         <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">
                             {label}
@@ -56,7 +50,7 @@ export default function PageHeader({
                     {description && (
                         <p className="max-w-2xl text-gray-200 text-lg">{description}</p>
                     )}
-                </motion.div>
+                </div>
             </div>
         </section>
     );
