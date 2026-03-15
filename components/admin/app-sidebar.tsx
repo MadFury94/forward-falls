@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
-    LayoutDashboard, FileText, PenSquare, LogOut,
-    Users, Image, CreditCard, ChevronDown, UserPlus
+    LayoutDashboard, FileText, LogOut,
+    Users, Image, CreditCard, ChevronDown, Globe
 } from 'lucide-react'
 import {
     Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -39,6 +39,14 @@ const navGroups = [
         children: [
             { title: 'All Members', href: '/admin-dashboard/team', exact: true },
             { title: 'New Member', href: '/admin-dashboard/team/new' },
+        ],
+    },
+    {
+        title: 'Pages',
+        icon: Globe,
+        basePath: '/admin-dashboard/pages',
+        children: [
+            { title: 'Homepage', href: '/admin-dashboard/pages/homepage' },
         ],
     },
     {
