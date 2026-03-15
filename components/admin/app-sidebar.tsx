@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, PenSquare, BarChart3, Settings, LogOut, Users, Image, CreditCard } from 'lucide-react'
+import { LayoutDashboard, FileText, PenSquare, LogOut, Users, Image, CreditCard } from 'lucide-react'
 import {
     Sidebar,
     SidebarContent,
@@ -24,8 +24,6 @@ const navItems = [
     { title: 'Team Members', href: '/admin-dashboard/team', icon: Users },
     { title: 'Account Numbers', href: '/admin-dashboard/accounts', icon: CreditCard },
     { title: 'Media Library', href: '/admin-dashboard/media', icon: Image },
-    { title: 'Analytics', href: '#', icon: BarChart3 },
-    { title: 'Settings', href: '#', icon: Settings },
 ]
 
 export function AppSidebar() {
@@ -38,8 +36,8 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size='lg' asChild className='hover:bg-transparent active:bg-transparent'>
                             <Link href='/admin-dashboard'>
-                                <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-                                    <img src='/FFI.png' alt='FFI' className='size-4 object-contain brightness-0 invert' />
+                                <div className='flex aspect-square size-10 items-center justify-center rounded-lg overflow-hidden'>
+                                    <img src='/FFI.png' alt='FFI' className='size-10 object-contain' />
                                 </div>
                                 <div className='grid flex-1 text-start text-sm leading-tight'>
                                     <span className='truncate font-semibold'>FFI Admin</span>

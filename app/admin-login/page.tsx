@@ -312,8 +312,11 @@ export default function AdminLogin() {
                     </motion.div>
 
                     {/* Footer */}
-                    <div className="mt-8 text-center">
-                        <p className="text-sm text-gray-500">
+                    <div className="mt-8 text-center space-y-2">
+                        <Link href="/" className="inline-flex items-center gap-2 text-sm text-primary-green hover:underline font-medium">
+                            ← Back to Website
+                        </Link>
+                        <p className="text-xs text-gray-400">
                             &copy; 2026 Forward Falls Initiative. All rights reserved.
                         </p>
                     </div>
