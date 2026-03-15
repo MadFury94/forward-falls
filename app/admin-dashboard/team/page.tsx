@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { Plus, Edit2, Trash2, RefreshCw, Users, GripVertical, Loader2 } from "lucide-react";

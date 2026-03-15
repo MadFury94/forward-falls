@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Users, FileText, PenSquare, CreditCard, Image, TrendingUp } from "lucide-react";
