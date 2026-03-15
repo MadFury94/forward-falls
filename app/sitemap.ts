@@ -15,7 +15,7 @@ export default async function sitemap() {
     ];
 
     // Blog posts
-    let postPages: typeof staticPages = [];
+    let postPages: { url: string; lastModified: Date; changeFrequency: string; priority: number }[] = [];
     try {
         const { posts } = await fetchPosts({ perPage: 100 });
         postPages = posts.map((post) => ({
