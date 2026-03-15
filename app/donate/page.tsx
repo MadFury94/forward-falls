@@ -1,31 +1,34 @@
 "use client";
 
-import React, { useState } from 'react';
-import { ArrowLeft, Copy, Check } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Copy, Check, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
 
+const BORDER_COLORS = ['border-primary-green', 'border-primary-yellow', 'border-secondary-orange'];
+
 const DonatePage = () => {
     const [copiedAccount, setCopiedAccount] = useState<string | null>(null);
+    const [bankAccounts, setBankAccounts] = useState<any[]>([]);
+    const [loadingAccounts, setLoadingAccounts] = useState(true);
 
-    const bankAccounts = [
-        {
-            id: 'stl',
-            bank: 'Sterling Bank',
-            accountNumber: '0092858858',
-            accountName: 'Forward Falls Initiative',
-            color: 'border-primary-green'
-        },
-        // {
-        //     id: 'access',
-        //     bank: 'Access Bank',
-        //     accountNumber: '0987654321',
-        //     accountName: 'Forward Falls Initiative',
-        //     color: 'border-primary-yellow'
-        // }
-    ];
+    useEffect(() => {
+        fetch("/api/accounts")
+            .then(r => r.json())
+            .then(data => {
+                if (data.success && Array.isArray(data.accounts)) {
+                    setBankAccounts(data.accounts.map((a: any) => ({
+                        id: String(a.id),
+                        bank: a.acf?.bank_name || a.title?.rendered || "",
+                        accountNumber: a.acf?.account_number || "",
+                        accountName: a.acf?.account_name || "",
+                    })));
+                }
+            })
+            .finally(() => setLoadingAccounts(false));
+    }, []);
 
     const handleCopy = (accountNumber: string, accountId: string) => {
         navigator.clipboard.writeText(accountNumber);
@@ -119,39 +122,46 @@ const DonatePage = () => {
                             <h2 className="text-3xl font-bold mb-8 text-dark-grey uppercase">Bank <span className="text-primary-yellow">Details</span></h2>
 
                             <div className="space-y-6">
-                                {bankAccounts.map((account) => (
-                                    <div
-                                        key={account.id}
-                                        className={`bg-light-bg p-6 rounded-2xl border-l-4 ${account.color} hover:shadow-lg transition-all`}
-                                    >
-                                        <h3 className="font-bold text-dark-grey mb-4">{account.bank}</h3>
-
-                                        <div className="space-y-3 mb-4">
-                                            <div>
-                                                <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-1">Account Name</p>
-                                                <p className="text-dark-grey font-medium">{account.accountName}</p>
-                                            </div>
-
-                                            <div>
-                                                <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-1">Account Number</p>
-                                                <div className="flex items-center gap-3">
-                                                    <p className="text-dark-grey font-mono font-bold text-lg">{account.accountNumber}</p>
-                                                    <button
-                                                        onClick={() => handleCopy(account.accountNumber, account.id)}
-                                                        className="p-2 hover:bg-white rounded-lg transition-colors text-gray-600 hover:text-primary-green"
-                                                        title="Copy account number"
-                                                    >
-                                                        {copiedAccount === account.id ? (
-                                                            <Check size={18} className="text-primary-green" />
-                                                        ) : (
-                                                            <Copy size={18} />
-                                                        )}
-                                                    </button>
+                                {loadingAccounts ? (
+                                    <div className="flex items-center gap-2 text-gray-400 py-4">
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <span className="text-sm">Loading bank details...</span>
+                                    </div>
+                                ) : bankAccounts.length === 0 ? (
+                                    <p className="text-gray-400 text-sm">No bank accounts available.</p>
+                                ) : (
+                                    bankAccounts.map((account, i) => (
+                                        <div
+                                            key={account.id}
+                                            className={`bg-light-bg p-6 rounded-2xl border-l-4 ${BORDER_COLORS[i % BORDER_COLORS.length]} hover:shadow-lg transition-all`}
+                                        >
+                                            <h3 className="font-bold text-dark-grey mb-4">{account.bank}</h3>
+                                            <div className="space-y-3 mb-4">
+                                                <div>
+                                                    <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-1">Account Name</p>
+                                                    <p className="text-dark-grey font-medium">{account.accountName}</p>
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs text-gray-500 uppercase font-semibold tracking-wider mb-1">Account Number</p>
+                                                    <div className="flex items-center gap-3">
+                                                        <p className="text-dark-grey font-mono font-bold text-lg">{account.accountNumber}</p>
+                                                        <button
+                                                            onClick={() => handleCopy(account.accountNumber, account.id)}
+                                                            className="p-2 hover:bg-white rounded-lg transition-colors text-gray-600 hover:text-primary-green"
+                                                            title="Copy account number"
+                                                        >
+                                                            {copiedAccount === account.id ? (
+                                                                <Check size={18} className="text-primary-green" />
+                                                            ) : (
+                                                                <Copy size={18} />
+                                                            )}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                                )}
                             </div>
 
                             <div className="mt-8 p-4 bg-primary-green/10 border border-primary-green/20 rounded-xl">
