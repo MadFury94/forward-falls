@@ -2,32 +2,74 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, PenSquare, LogOut, Users, Image, CreditCard } from 'lucide-react'
+import { useState } from 'react'
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarGroup,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarRail,
+    LayoutDashboard, FileText, PenSquare, LogOut,
+    Users, Image, CreditCard, ChevronDown, UserPlus
+} from 'lucide-react'
+import {
+    Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
+    SidebarGroupLabel, SidebarHeader, SidebarMenu,
+    SidebarMenuButton, SidebarMenuItem, SidebarMenuSub,
+    SidebarMenuSubButton, SidebarMenuSubItem, SidebarRail,
 } from '@/components/ui/sidebar'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
-const navItems = [
-    { title: 'Dashboard', href: '/admin-dashboard', icon: LayoutDashboard },
-    { title: 'All Posts', href: '/admin-dashboard/posts', icon: FileText },
-    { title: 'New Post', href: '/admin-dashboard/posts/new', icon: PenSquare },
-    { title: 'Team Members', href: '/admin-dashboard/team', icon: Users },
-    { title: 'Account Numbers', href: '/admin-dashboard/accounts', icon: CreditCard },
-    { title: 'Media Library', href: '/admin-dashboard/media', icon: Image },
+const navGroups = [
+    {
+        title: 'Dashboard',
+        href: '/admin-dashboard',
+        icon: LayoutDashboard,
+        exact: true,
+    },
+    {
+        title: 'Posts',
+        icon: FileText,
+        basePath: '/admin-dashboard/posts',
+        children: [
+            { title: 'All Posts', href: '/admin-dashboard/posts', exact: true },
+            { title: 'New Post', href: '/admin-dashboard/posts/new' },
+        ],
+    },
+    {
+        title: 'Team Members',
+        icon: Users,
+        basePath: '/admin-dashboard/team',
+        children: [
+            { title: 'All Members', href: '/admin-dashboard/team', exact: true },
+            { title: 'New Member', href: '/admin-dashboard/team/new' },
+        ],
+    },
+    {
+        title: 'Account Numbers',
+        href: '/admin-dashboard/accounts',
+        icon: CreditCard,
+    },
+    {
+        title: 'Media Library',
+        href: '/admin-dashboard/media',
+        icon: Image,
+    },
 ]
 
 export function AppSidebar() {
     const pathname = usePathname()
+
+    // Track which groups are open — default open if current path is inside
+    const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+        const init: Record<string, boolean> = {}
+        navGroups.forEach((g) => {
+            if (g.basePath) init[g.title] = pathname.startsWith(g.basePath)
+        })
+        return init
+    })
+
+    const toggle = (title: string) =>
+        setOpenGroups((prev) => ({ ...prev, [title]: !prev[title] }))
+
+    const isActive = (href: string, exact?: boolean) =>
+        exact ? pathname === href : pathname.startsWith(href)
 
     return (
         <Sidebar collapsible='icon'>
@@ -51,22 +93,61 @@ export function AppSidebar() {
 
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>General</SidebarGroupLabel>
+                    <SidebarGroupLabel>Navigation</SidebarGroupLabel>
                     <SidebarMenu>
-                        {navItems.map(({ title, href, icon: Icon }) => {
-                            const isActive =
-                                href === '/admin-dashboard'
-                                    ? pathname === href
-                                    : pathname.startsWith(href)
+                        {navGroups.map((group) => {
+                            // Simple link (no children)
+                            if (!group.children) {
+                                return (
+                                    <SidebarMenuItem key={group.title}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={isActive(group.href!, group.exact)}
+                                            tooltip={group.title}
+                                        >
+                                            <Link href={group.href!}>
+                                                <group.icon />
+                                                <span>{group.title}</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                )
+                            }
+
+                            // Collapsible group with children
+                            const open = !!openGroups[group.title]
                             return (
-                                <SidebarMenuItem key={title}>
-                                    <SidebarMenuButton asChild isActive={isActive} tooltip={title}>
-                                        <Link href={href}>
-                                            <Icon />
-                                            <span>{title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+                                <Collapsible key={group.title} open={open} onOpenChange={() => toggle(group.title)} asChild>
+                                    <SidebarMenuItem>
+                                        <CollapsibleTrigger asChild>
+                                            <SidebarMenuButton
+                                                isActive={!open && pathname.startsWith(group.basePath!)}
+                                                tooltip={group.title}
+                                                className='w-full'
+                                            >
+                                                <group.icon />
+                                                <span>{group.title}</span>
+                                                <ChevronDown
+                                                    className={`ml-auto h-4 w-4 shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+                                                />
+                                            </SidebarMenuButton>
+                                        </CollapsibleTrigger>
+                                        <CollapsibleContent>
+                                            <SidebarMenuSub>
+                                                {group.children.map((child) => (
+                                                    <SidebarMenuSubItem key={child.href}>
+                                                        <SidebarMenuSubButton
+                                                            asChild
+                                                            isActive={isActive(child.href, child.exact)}
+                                                        >
+                                                            <Link href={child.href}>{child.title}</Link>
+                                                        </SidebarMenuSubButton>
+                                                    </SidebarMenuSubItem>
+                                                ))}
+                                            </SidebarMenuSub>
+                                        </CollapsibleContent>
+                                    </SidebarMenuItem>
+                                </Collapsible>
                             )
                         })}
                     </SidebarMenu>

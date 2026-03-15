@@ -5,8 +5,9 @@ export const runtime = 'edge';
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, Upload, Send, Save, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, Send, Save, X, CheckCircle, AlertCircle, Loader2, Images } from "lucide-react";
 import RichTextEditor from "@/components/editor/RichTextEditor";
+import MediaPickerModal from "@/components/editor/MediaPickerModal";
 
 const CATEGORY_OPTIONS = ["News", "Programs", "Events", "Announcements", "Stories"];
 
@@ -24,9 +25,9 @@ export default function EditPost() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [uploadedImageId, setUploadedImageId] = useState<number | null>(null);
+    const [showMediaPicker, setShowMediaPicker] = useState(false);
 
     const [editorData, setEditorData] = useState<string>("");
-
     const [form, setForm] = useState({
         title: "",
         status: "draft" as "publish" | "draft",
@@ -41,14 +42,10 @@ export default function EditPost() {
 
     const loadPost = async (t: string) => {
         try {
-            const res = await fetch(`/api/posts/${id}`, {
-                headers: { "x-wp-token": t },
-            });
+            const res = await fetch(`/api/posts/${id}`, { headers: { "x-wp-token": t } });
             const data = await res.json();
             if (!data.success) { setError("Post not found"); return; }
-
             const post = data.post;
-
             setForm({
                 title: post.title?.rendered || "",
                 status: post.status,
@@ -58,11 +55,11 @@ export default function EditPost() {
                     author_name: post.acf?.author_name || "",
                 },
             });
-
             const media = post._embedded?.["wp:featuredmedia"]?.[0];
-            if (media?.source_url) setImagePreview(media.source_url);
-
-            // Load existing content as HTML string
+            if (media?.source_url) {
+                setImagePreview(media.source_url);
+                setUploadedImageId(post.featured_media || null);
+            }
             setEditorData(post.content?.rendered || "");
         } catch {
             setError("Failed to load post");
@@ -71,7 +68,13 @@ export default function EditPost() {
         }
     };
 
-    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clearImage = () => {
+        setImagePreview(null);
+        setImageFile(null);
+        setUploadedImageId(null);
+    };
+
+    const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
         setImageFile(file);
@@ -79,7 +82,7 @@ export default function EditPost() {
         setImagePreview(URL.createObjectURL(file));
     };
 
-    const uploadImage = async (): Promise<number | null> => {
+    const uploadImageFile = async (): Promise<number | null> => {
         if (!imageFile) return null;
         try {
             const fd = new FormData();
@@ -102,11 +105,10 @@ export default function EditPost() {
     const submit = async (status: "publish" | "draft") => {
         setError("");
         status === "draft" ? setSavingDraft(true) : setLoading(true);
-
         try {
             let imageId = uploadedImageId;
             if (imageFile && !uploadedImageId) {
-                imageId = await uploadImage();
+                imageId = await uploadImageFile();
                 if (!imageId) { setLoading(false); setSavingDraft(false); return; }
             }
 
@@ -116,18 +118,16 @@ export default function EditPost() {
                 status,
                 acf: { ...form.acf },
             };
-
-            if (imageId) payload.acf.featured_image = imageId;
+            if (imageId) payload.featured_media = imageId;
 
             const res = await fetch(`/api/posts/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json", "x-wp-token": token },
                 body: JSON.stringify(payload),
             });
-
             const data = await res.json();
             if (data.success) {
-                setSuccess(status === "publish" ? "Post published!" : "Draft saved!");
+                setSuccess(status === "publish" ? "Post updated!" : "Draft saved!");
                 setTimeout(() => router.push("/admin-dashboard/posts"), 1500);
             } else {
                 setError(data.error || "Failed to update post");
@@ -140,141 +140,187 @@ export default function EditPost() {
         }
     };
 
+    const Spinner = () => (
+        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+    );
+
     if (fetching) {
         return (
-            <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary-green mx-auto mb-3" />
-                    <p className="text-gray-500 text-sm">Loading post...</p>
-                </div>
+            <main className="flex-1 bg-[#f0f0f1] min-h-screen flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary-green" />
             </main>
         );
     }
 
     return (
-        <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen">
-            <div className="max-w-3xl mx-auto">
-                <div className="flex items-center gap-4 mb-8">
-                    <Link href="/admin-dashboard/posts" className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
-                        <ArrowLeft className="h-5 w-5 text-dark-grey" />
+        <main className="flex-1 overflow-y-auto bg-[#f0f0f1] min-h-screen">
+            {showMediaPicker && (
+                <MediaPickerModal
+                    token={token}
+                    onClose={() => setShowMediaPicker(false)}
+                    onSelect={(item) => {
+                        setImagePreview(item.source_url);
+                        setUploadedImageId(item.id);
+                        setImageFile(null);
+                        setShowMediaPicker(false);
+                    }}
+                />
+            )}
+
+            {/* Top bar */}
+            <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+                <div className="flex items-center gap-3">
+                    <Link href="/admin-dashboard/posts" className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+                        <ArrowLeft className="h-5 w-5 text-gray-500" />
                     </Link>
                     <div>
-                        <h1 className="text-3xl font-bold text-dark-grey">Edit Post</h1>
-                        <p className="text-sm text-gray-400 mt-0.5">
-                            Status: <span className={`font-semibold ${form.status === "publish" ? "text-green-600" : "text-yellow-600"}`}>
-                                {form.status === "publish" ? "Published" : "Draft"}
-                            </span>
-                        </p>
+                        <span className="text-sm font-semibold text-dark-grey">Edit Post</span>
+                        <span className={`ml-2 text-xs font-semibold px-2 py-0.5 rounded-full ${form.status === "publish" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
+                            {form.status === "publish" ? "Published" : "Draft"}
+                        </span>
                     </div>
                 </div>
+                <div className="flex items-center gap-2">
+                    <button onClick={() => submit("draft")} disabled={savingDraft || loading || !form.title}
+                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-primary-green text-dark-grey text-sm font-semibold rounded-lg transition-all disabled:opacity-50">
+                        {savingDraft ? <Spinner /> : <Save className="h-4 w-4" />}
+                        Save Draft
+                    </button>
+                    <button onClick={() => submit("publish")} disabled={loading || savingDraft || !form.title}
+                        className="flex items-center gap-2 px-5 py-2 bg-primary-green hover:bg-primary-green/90 text-white text-sm font-semibold rounded-lg transition-all shadow disabled:opacity-50">
+                        {loading ? <Spinner /> : <Send className="h-4 w-4" />}
+                        {form.status === "publish" ? "Update" : "Publish"}
+                    </button>
+                </div>
+            </div>
 
-                {success && (
-                    <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 text-green-700">
-                        <CheckCircle className="h-5 w-5 flex-shrink-0" /> {success}
-                    </div>
-                )}
-                {error && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-600">
-                        <AlertCircle className="h-5 w-5 flex-shrink-0" /> {error}
-                    </div>
-                )}
+            {/* Alerts */}
+            {(success || error) && (
+                <div className="max-w-6xl mx-auto px-6 pt-4">
+                    {success && (
+                        <div className="p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 text-green-700">
+                            <CheckCircle className="h-5 w-5 flex-shrink-0" /> {success}
+                        </div>
+                    )}
+                    {error && (
+                        <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3 text-red-600">
+                            <AlertCircle className="h-5 w-5 flex-shrink-0" /> {error}
+                        </div>
+                    )}
+                </div>
+            )}
 
-                <div className="space-y-6">
-                    {/* Title */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                        <label className="block text-sm font-semibold text-dark-grey mb-2">Post Title *</label>
+            {/* Two-column layout */}
+            <div className="max-w-6xl mx-auto px-6 py-6 flex gap-6 items-start">
+                {/* LEFT — Title + Content */}
+                <div className="flex-1 min-w-0 space-y-4">
+                    <div className="bg-white rounded-xl shadow-sm">
                         <input
                             type="text"
                             value={form.title}
                             onChange={(e) => setForm({ ...form, title: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green text-lg"
-                            placeholder="Enter post title..."
+                            className="w-full px-6 py-5 text-2xl font-bold text-dark-grey placeholder-gray-300 focus:outline-none rounded-xl"
+                            placeholder="Add title"
                         />
                     </div>
-
-                    {/* Rich Text Editor */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                        <label className="block text-sm font-semibold text-dark-grey mb-4">Content</label>
+                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                         <RichTextEditor value={editorData} onChange={setEditorData} />
                     </div>
+                </div>
 
-                    {/* Post Details */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm">
-                        <h2 className="text-base font-semibold text-dark-grey mb-4">Post Details</h2>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
-                                {imagePreview ? (
-                                    <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
-                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                        <button type="button"
-                                            onClick={() => { setImagePreview(null); setImageFile(null); setUploadedImageId(null); }}
-                                            className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-red-50">
-                                            <X className="h-4 w-4 text-red-500" />
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-green hover:bg-primary-green/5 transition-colors">
-                                        <Upload className="h-8 w-8 text-gray-400 mb-2" />
-                                        <span className="text-sm text-gray-500">Click to upload featured image</span>
-                                        <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-                                    </label>
-                                )}
+                {/* RIGHT — Sidebar */}
+                <div className="w-72 flex-shrink-0 space-y-4">
+                    {/* Publish panel */}
+                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div className="px-4 py-3 border-b border-gray-100 font-semibold text-sm text-dark-grey">Post</div>
+                        <div className="p-4 space-y-3">
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-gray-500">Status</span>
+                                <span className={`font-semibold ${form.status === "publish" ? "text-green-600" : "text-yellow-600"}`}>
+                                    {form.status === "publish" ? "Published" : "Draft"}
+                                </span>
                             </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Summary</label>
-                                <input type="text" value={form.acf.summary}
-                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, summary: e.target.value } })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green"
-                                    placeholder="Short summary..." />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                <select value={form.acf.category}
-                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, category: e.target.value } })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green bg-white">
-                                    <option value="">Select a category...</option>
-                                    {CATEGORY_OPTIONS.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Author Name</label>
-                                <input type="text" value={form.acf.author_name}
-                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, author_name: e.target.value } })}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green"
-                                    placeholder="Author's name..." />
+                            <div className="pt-2 flex flex-col gap-2">
+                                <button onClick={() => submit("draft")} disabled={savingDraft || loading || !form.title}
+                                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 hover:border-primary-green text-dark-grey text-sm font-semibold rounded-lg transition-all disabled:opacity-50">
+                                    {savingDraft ? <Spinner /> : <Save className="h-4 w-4" />}
+                                    Save Draft
+                                </button>
+                                <button onClick={() => submit("publish")} disabled={loading || savingDraft || !form.title}
+                                    className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-primary-green hover:bg-primary-green/90 text-white text-sm font-semibold rounded-lg transition-all shadow disabled:opacity-50">
+                                    {loading ? <Spinner /> : <Send className="h-4 w-4" />}
+                                    {form.status === "publish" ? "Update" : "Publish"}
+                                </button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Action Buttons */}
-                    <div className="bg-white rounded-xl p-6 shadow-sm flex items-center justify-between gap-4">
-                        <Link href="/admin-dashboard/posts" className="text-sm text-gray-500 hover:text-dark-grey transition-colors">
-                            Cancel
-                        </Link>
-                        <div className="flex items-center gap-3">
-                            <button
-                                type="button"
-                                onClick={() => submit("draft")}
-                                disabled={savingDraft || loading || !form.title}
-                                className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 hover:border-primary-green text-dark-grey font-semibold rounded-xl transition-all disabled:opacity-50"
-                            >
-                                {savingDraft ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                                Save Draft
-                            </button>
+                    {/* Featured Image */}
+                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div className="px-4 py-3 border-b border-gray-100 font-semibold text-sm text-dark-grey">Featured Image</div>
+                        <div className="p-4">
+                            {imagePreview ? (
+                                <div className="space-y-3">
+                                    <div className="relative rounded-lg overflow-hidden border border-gray-200">
+                                        <img src={imagePreview} alt="Featured" className="w-full h-40 object-cover" />
+                                        <button type="button" onClick={clearImage}
+                                            className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-red-50 transition-colors">
+                                            <X className="h-3.5 w-3.5 text-red-500" />
+                                        </button>
+                                    </div>
+                                    <button type="button" onClick={() => setShowMediaPicker(true)}
+                                        className="w-full text-xs text-primary-green hover:underline text-center">
+                                        Replace image
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="space-y-2">
+                                    <button type="button" onClick={() => setShowMediaPicker(true)}
+                                        className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-gray-300 hover:border-primary-green text-dark-grey text-sm font-semibold rounded-lg transition-all">
+                                        <Images className="h-4 w-4" />
+                                        Set Featured Image
+                                    </button>
+                                    <label className="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-dashed border-gray-300 hover:border-primary-green text-gray-500 text-sm rounded-lg cursor-pointer transition-all hover:bg-primary-green/5">
+                                        Upload from device
+                                        <input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} />
+                                    </label>
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
-                            <button
-                                type="button"
-                                onClick={() => submit("publish")}
-                                disabled={loading || savingDraft || !form.title}
-                                className="flex items-center gap-2 px-6 py-3 bg-primary-green hover:bg-primary-green/90 text-white font-semibold rounded-xl transition-all shadow-lg disabled:opacity-50"
-                            >
-                                {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                                {form.status === "publish" ? "Update" : "Publish"}
-                            </button>
+                    {/* Post Details */}
+                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div className="px-4 py-3 border-b border-gray-100 font-semibold text-sm text-dark-grey">Post Details</div>
+                        <div className="p-4 space-y-4">
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Summary</label>
+                                <textarea
+                                    value={form.acf.summary}
+                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, summary: e.target.value } })}
+                                    rows={3}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green resize-none"
+                                    placeholder="Short summary..." />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Category</label>
+                                <select value={form.acf.category}
+                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, category: e.target.value } })}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green bg-white">
+                                    <option value="">Select category...</option>
+                                    {CATEGORY_OPTIONS.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Author</label>
+                                <input type="text" value={form.acf.author_name}
+                                    onChange={(e) => setForm({ ...form, acf: { ...form.acf, author_name: e.target.value } })}
+                                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green"
+                                    placeholder="Author's name..." />
+                            </div>
                         </div>
                     </div>
                 </div>

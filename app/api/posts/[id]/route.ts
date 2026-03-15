@@ -29,13 +29,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
     const body = await request.json();
-    const { title, content, status, acf } = body;
+    const { title, content, status, acf, featured_media } = body;
 
     const wpPayload: Record<string, any> = {};
     if (title !== undefined) wpPayload.title = title;
     if (content !== undefined) wpPayload.content = content;
     if (status !== undefined) wpPayload.status = status;
-    if (acf?.featured_image) wpPayload.featured_media = Number(acf.featured_image);
+    // Accept featured_media at top level or legacy acf.featured_image
+    const featuredMediaId = featured_media || acf?.featured_image || null;
+    if (featuredMediaId) wpPayload.featured_media = Number(featuredMediaId);
 
     const res = await fetch(`${WP_URL}/wp-json/wp/v2/posts/${id}`, {
         method: 'POST',

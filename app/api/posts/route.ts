@@ -44,9 +44,11 @@ export async function POST(request: NextRequest) {
         if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
         const body = await request.json();
-        const { title, content, status = 'publish', acf } = body;
+        const { title, content, status = 'publish', acf, featured_media } = body;
 
         if (!title) return NextResponse.json({ success: false, error: 'Title is required' }, { status: 400 });
+
+        const featuredMediaId = featured_media || acf?.featured_image || null;
 
         // Create post with native featured_media
         const postRes = await fetch(`${WP_URL}/wp-json/wp/v2/posts`, {
@@ -56,7 +58,7 @@ export async function POST(request: NextRequest) {
                 title,
                 content,
                 status,
-                ...(acf?.featured_image ? { featured_media: Number(acf.featured_image) } : {}),
+                ...(featuredMediaId ? { featured_media: Number(featuredMediaId) } : {}),
             }),
         });
 
