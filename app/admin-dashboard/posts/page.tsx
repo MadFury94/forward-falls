@@ -90,7 +90,7 @@ export default function PostsPage() {
   );
 
   return (
-    <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen">
+    <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-light-bg min-h-screen">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -108,23 +108,25 @@ export default function PostsPage() {
         </div>
 
         {/* Status Tabs */}
-        <div className="flex gap-1 mb-4 bg-white rounded-xl p-1 shadow-sm w-fit">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => setActiveTab(tab.value)}
-              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${activeTab === tab.value
-                ? "bg-primary-green text-white"
-                : "text-gray-500 hover:text-dark-grey"
-                }`}
-            >
-              {tab.label}
-              <span className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.value ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
-                }`}>
-                {counts[tab.value as keyof typeof counts]}
-              </span>
-            </button>
-          ))}
+        <div className="overflow-x-auto mb-4 -mx-1 px-1">
+          <div className="flex gap-1 bg-white rounded-xl p-1 shadow-sm w-max">
+            {STATUS_TABS.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setActiveTab(tab.value)}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap ${activeTab === tab.value
+                  ? "bg-primary-green text-white"
+                  : "text-gray-500 hover:text-dark-grey"
+                  }`}
+              >
+                {tab.label}
+                <span className={`ml-1.5 text-xs px-1.5 py-0.5 rounded-full ${activeTab === tab.value ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"
+                  }`}>
+                  {counts[tab.value as keyof typeof counts]}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Search */}
