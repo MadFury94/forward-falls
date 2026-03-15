@@ -3,13 +3,10 @@
 export const runtime = 'edge';
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Upload, Send, Save, X, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
-import { editorJsToHtml } from "@/lib/editorjs-to-html";
-
-const EditorJS = dynamic(() => import("@/components/editor/EditorJS"), { ssr: false });
+import RichTextEditor from "@/components/editor/RichTextEditor";
 
 const CATEGORY_OPTIONS = ["News", "Programs", "Events", "Announcements", "Stories"];
 
@@ -24,16 +21,11 @@ export default function EditPost() {
     const [error, setError] = useState("");
     const [token, setToken] = useState("");
 
-    // Image state
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [uploadedImageId, setUploadedImageId] = useState<number | null>(null);
-    const [existingImageId, setExistingImageId] = useState<number | null>(null);
 
-    // Editor state
-    const [initialEditorData, setInitialEditorData] = useState<any>(null);
-    const [editorData, setEditorData] = useState<any>(null);
-    const [editorReady, setEditorReady] = useState(false);
+    const [editorData, setEditorData] = useState<string>("");
 
     const [form, setForm] = useState({
         title: "",
@@ -67,23 +59,15 @@ export default function EditPost() {
                 },
             });
 
-            // Featured image
             const media = post._embedded?.["wp:featuredmedia"]?.[0];
             if (media?.source_url) setImagePreview(media.source_url);
-            if (post.featured_media) setExistingImageId(post.featured_media);
 
-            // Parse content back to Editor.js blocks (store raw HTML as paragraph for now)
-            // We'll pass the raw WP content as initial data
-            if (post.content?.rendered) {
-                setInitialEditorData({
-                    blocks: [{ type: "paragraph", data: { text: post.content.rendered } }],
-                });
-            }
+            // Load existing content as HTML string
+            setEditorData(post.content?.rendered || "");
         } catch {
             setError("Failed to load post");
         } finally {
             setFetching(false);
-            setEditorReady(true);
         }
     };
 
@@ -126,16 +110,13 @@ export default function EditPost() {
                 if (!imageId) { setLoading(false); setSavingDraft(false); return; }
             }
 
-            const content = editorData ? editorJsToHtml(editorData) : "";
-
             const payload: Record<string, any> = {
                 title: form.title,
-                content,
+                content: editorData,
                 status,
                 acf: { ...form.acf },
             };
 
-            // Only update featured_media if a new image was uploaded
             if (imageId) payload.acf.featured_image = imageId;
 
             const res = await fetch(`/api/posts/${id}`, {
@@ -173,7 +154,6 @@ export default function EditPost() {
     return (
         <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen">
             <div className="max-w-3xl mx-auto">
-                {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
                     <Link href="/admin-dashboard/posts" className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                         <ArrowLeft className="h-5 w-5 text-dark-grey" />
@@ -212,35 +192,23 @@ export default function EditPost() {
                         />
                     </div>
 
-                    {/* Editor.js */}
+                    {/* Rich Text Editor */}
                     <div className="bg-white rounded-xl p-6 shadow-sm">
                         <label className="block text-sm font-semibold text-dark-grey mb-4">Content</label>
-                        <div className="border border-gray-200 rounded-lg p-4 min-h-[400px]">
-                            {editorReady && (
-                                <EditorJS
-                                    onChange={setEditorData}
-                                    initialData={initialEditorData}
-                                    token={token}
-                                />
-                            )}
-                        </div>
-                        <p className="text-xs text-gray-400 mt-2">
-                            Press <kbd className="px-1 py-0.5 bg-gray-100 rounded text-xs">Tab</kbd> to add blocks — headings, lists, images, quotes, embeds and more.
-                        </p>
+                        <RichTextEditor value={editorData} onChange={setEditorData} />
                     </div>
 
                     {/* Post Details */}
                     <div className="bg-white rounded-xl p-6 shadow-sm">
                         <h2 className="text-base font-semibold text-dark-grey mb-4">Post Details</h2>
                         <div className="space-y-4">
-                            {/* Featured Image */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
                                 {imagePreview ? (
                                     <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
                                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                         <button type="button"
-                                            onClick={() => { setImagePreview(null); setImageFile(null); setUploadedImageId(null); setExistingImageId(null); }}
+                                            onClick={() => { setImagePreview(null); setImageFile(null); setUploadedImageId(null); }}
                                             className="absolute top-2 right-2 p-1 bg-white rounded-full shadow hover:bg-red-50">
                                             <X className="h-4 w-4 text-red-500" />
                                         </button>
@@ -254,7 +222,6 @@ export default function EditPost() {
                                 )}
                             </div>
 
-                            {/* Summary */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Summary</label>
                                 <input type="text" value={form.acf.summary}
@@ -263,7 +230,6 @@ export default function EditPost() {
                                     placeholder="Short summary..." />
                             </div>
 
-                            {/* Category */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                                 <select value={form.acf.category}
@@ -274,7 +240,6 @@ export default function EditPost() {
                                 </select>
                             </div>
 
-                            {/* Author */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Author Name</label>
                                 <input type="text" value={form.acf.author_name}

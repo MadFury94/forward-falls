@@ -1,13 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Upload, Send, Save, X, CheckCircle, AlertCircle } from "lucide-react";
-import { editorJsToHtml } from "@/lib/editorjs-to-html";
-
-const EditorJS = dynamic(() => import("@/components/editor/EditorJS"), { ssr: false });
+import RichTextEditor from "@/components/editor/RichTextEditor";
 
 const CATEGORY_OPTIONS = ["News", "Programs", "Events", "Announcements", "Stories"];
 
@@ -19,9 +16,8 @@ export default function NewPost() {
     const [error, setError] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [uploadingImage, setUploadingImage] = useState(false);
     const [uploadedImageId, setUploadedImageId] = useState<number | null>(null);
-    const [editorData, setEditorData] = useState<any>(null);
+    const [editorData, setEditorData] = useState<string>("");
     const [token, setToken] = useState("");
 
     const [form, setForm] = useState({
@@ -43,7 +39,6 @@ export default function NewPost() {
 
     const uploadImage = async (): Promise<number | null> => {
         if (!imageFile) return null;
-        setUploadingImage(true);
         try {
             const fd = new FormData();
             fd.append("file", imageFile);
@@ -56,8 +51,9 @@ export default function NewPost() {
             if (data.success) { setUploadedImageId(data.id); return data.id; }
             setError(`Image upload failed: ${data.error}`);
             return null;
-        } finally {
-            setUploadingImage(false);
+        } catch {
+            setError("Image upload failed");
+            return null;
         }
     };
 
@@ -72,14 +68,12 @@ export default function NewPost() {
                 if (!imageId && imageFile) { setLoading(false); setSavingDraft(false); return; }
             }
 
-            const content = editorData ? editorJsToHtml(editorData) : "";
-
             const res = await fetch("/api/posts", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-wp-token": token },
                 body: JSON.stringify({
                     title: form.title,
-                    content,
+                    content: editorData,
                     status,
                     acf: { ...form.acf, ...(imageId ? { featured_image: imageId } : {}) },
                 }),
@@ -103,7 +97,6 @@ export default function NewPost() {
     return (
         <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen">
             <div className="max-w-3xl mx-auto">
-                {/* Header */}
                 <div className="flex items-center gap-4 mb-8">
                     <Link href="/admin-dashboard/posts" className="p-2 hover:bg-gray-200 rounded-lg transition-colors">
                         <ArrowLeft className="h-5 w-5 text-dark-grey" />
@@ -135,22 +128,16 @@ export default function NewPost() {
                         />
                     </div>
 
-                    {/* Editor.js */}
+                    {/* Rich Text Editor */}
                     <div className="bg-white rounded-xl p-6 shadow-sm">
                         <label className="block text-sm font-semibold text-dark-grey mb-4">Content</label>
-                        <div className="border border-gray-200 rounded-lg p-4 min-h-[400px]">
-                            <EditorJS onChange={setEditorData} token={token} />
-                        </div>
-                        <p className="text-xs text-gray-400 mt-2">
-                            Press <kbd className="px-1 py-0.5 bg-gray-100 rounded text-xs">Tab</kbd> to add blocks — headings, lists, images, quotes, embeds and more.
-                        </p>
+                        <RichTextEditor value={editorData} onChange={setEditorData} />
                     </div>
 
                     {/* Post Details */}
                     <div className="bg-white rounded-xl p-6 shadow-sm">
                         <h2 className="text-base font-semibold text-dark-grey mb-4">Post Details</h2>
                         <div className="space-y-4">
-                            {/* Featured Image */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Featured Image</label>
                                 {imagePreview ? (
@@ -171,7 +158,6 @@ export default function NewPost() {
                                 )}
                             </div>
 
-                            {/* Summary */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Summary</label>
                                 <input type="text" value={form.acf.summary}
@@ -180,7 +166,6 @@ export default function NewPost() {
                                     placeholder="Short summary..." />
                             </div>
 
-                            {/* Category */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                                 <select value={form.acf.category}
@@ -191,7 +176,6 @@ export default function NewPost() {
                                 </select>
                             </div>
 
-                            {/* Author */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">Author Name</label>
                                 <input type="text" value={form.acf.author_name}
@@ -208,7 +192,6 @@ export default function NewPost() {
                             Cancel
                         </Link>
                         <div className="flex items-center gap-3">
-                            {/* Save Draft */}
                             <button
                                 type="button"
                                 onClick={() => submit("draft")}
@@ -224,7 +207,6 @@ export default function NewPost() {
                                 Save Draft
                             </button>
 
-                            {/* Publish */}
                             <button
                                 type="button"
                                 onClick={() => submit("publish")}
