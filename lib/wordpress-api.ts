@@ -113,3 +113,44 @@ export async function fetchCategories(): Promise<WPCategory[]> {
     const cats = await res.json();
     return Array.isArray(cats) ? cats.filter((c: WPCategory) => c.name !== "Uncategorized") : [];
 }
+
+// ---- Team Members ----
+
+export interface WPTeamMember {
+    id: number;
+    title: { rendered: string };
+    acf?: {
+        name?: string;
+        title?: string;
+        member_image?: { url: string; alt: string } | string;
+    };
+    _embedded?: {
+        "wp:featuredmedia"?: Array<{ source_url: string; alt_text: string }>;
+    };
+}
+
+export function getTeamMemberImage(m: WPTeamMember): string | null {
+    const media = m._embedded?.["wp:featuredmedia"]?.[0];
+    if (media?.source_url) return media.source_url;
+    const img = m.acf?.member_image;
+    if (typeof img === "object" && img && "url" in img) return img.url;
+    if (typeof img === "string" && img.startsWith("http")) return img;
+    return null;
+}
+
+export async function fetchTeamMembers(): Promise<WPTeamMember[]> {
+    const qs = new URLSearchParams({
+        acf_format: "standard",
+        _embed: "wp:featuredmedia",
+        per_page: "100",
+        status: "publish",
+        orderby: "menu_order",
+        order: "asc",
+    });
+    const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member?${qs}`, {
+        next: { revalidate: 60 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data) ? data : [];
+}

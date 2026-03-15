@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, FileText, PenSquare, BarChart3, Settings, LogOut } from 'lucide-react'
+import { LayoutDashboard, FileText, PenSquare, BarChart3, Settings, LogOut, Users, Image } from 'lucide-react'
 import {
     Sidebar,
     SidebarContent,
@@ -21,6 +21,8 @@ const navItems = [
     { title: 'Dashboard', href: '/admin-dashboard', icon: LayoutDashboard },
     { title: 'All Posts', href: '/admin-dashboard/posts', icon: FileText },
     { title: 'New Post', href: '/admin-dashboard/posts/new', icon: PenSquare },
+    { title: 'Team Members', href: '/admin-dashboard/team', icon: Users },
+    { title: 'Media Library', href: '/admin-dashboard/media', icon: Image },
     { title: 'Analytics', href: '#', icon: BarChart3 },
     { title: 'Settings', href: '#', icon: Settings },
 ]

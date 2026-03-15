@@ -5,16 +5,24 @@ import Footer from "@/components/Footer";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { User } from "lucide-react";
-import { teamMembers, boardMembers } from "@/data/team";
+import { boardMembers } from "@/data/team";
+import { getTeamMemberImage } from "@/lib/wordpress-api";
+import { useEffect, useState } from "react";
 
 const getInitials = (name: string): string => {
     return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
 };
 
+const BORDER_COLORS = ["border-primary-green", "border-primary-yellow", "border-secondary-orange"];
+
 const BoardPage = () => {
-    // Separate featured (with images) and other team members
-    const featuredMembers = teamMembers.filter(m => m.featured);
-    const otherMembers = teamMembers.filter(m => !m.featured);
+    const [wpMembers, setWpMembers] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetch("/api/team")
+            .then(r => r.json())
+            .then(data => { if (data.success && Array.isArray(data.members)) setWpMembers(data.members); });
+    }, []);
 
     return (
         <main className="min-h-screen font-poppins">
@@ -106,58 +114,42 @@ const BoardPage = () => {
 
                     {/* Featured Team with Images - Top Row */}
                     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                        {featuredMembers.map((member, i) => (
-                            <motion.div
-                                key={i}
-                                className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${member.color}`}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: i * 0.1 }}
-                            >
-                                <div className="w-full h-64 relative bg-gray-100 overflow-hidden">
-                                    {member.image && (
-                                        <Image
-                                            src={member.image}
-                                            alt={`${member.name} - ${member.role}`}
-                                            fill
-                                            unoptimized={member.image.includes('drive.google.com')}
-                                            sizes="(max-width: 1024px) 50vw, 25vw"
-                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                            style={{ objectPosition: 'center 20%' }}
-                                        />
-                                    )}
-                                </div>
-                                <div className="p-6 text-center">
-                                    <h3 className="text-xl font-bold text-dark-grey mb-1 uppercase">{member.name}</h3>
-                                    <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest mb-3">{member.role}</p>
-                                    <p className="text-gray-500 text-sm leading-relaxed">{member.bio}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Other Team Members */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {otherMembers.map((member, i) => (
-                            <motion.div
-                                key={i}
-                                className={`bg-white p-8 rounded-2xl border-t-4 ${member.color} hover:shadow-lg transition-all`}
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.5, delay: i * 0.1 }}
-                            >
-                                <div className="w-24 h-24 rounded-full mb-6 mx-auto flex items-center justify-center bg-gradient-to-br from-primary-green/20 to-primary-yellow/20">
-                                    <span className="text-4xl font-bold text-dark-grey/30">
-                                        {getInitials(member.name)}
-                                    </span>
-                                </div>
-                                <h3 className="text-xl font-bold text-dark-grey text-center mb-1 uppercase">{member.name}</h3>
-                                <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest text-center mb-4">{member.role}</p>
-                                <p className="text-gray-500 text-center text-sm leading-relaxed">{member.bio}</p>
-                            </motion.div>
-                        ))}
+                        {wpMembers.map((member, i) => {
+                            const name = member.acf?.name || member.title?.rendered || "";
+                            const role = member.acf?.title || "";
+                            const img = getTeamMemberImage(member);
+                            return (
+                                <motion.div
+                                    key={member.id}
+                                    className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${BORDER_COLORS[i % BORDER_COLORS.length]}`}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.5, delay: (i % 4) * 0.1 }}
+                                >
+                                    <div className="w-full h-64 relative bg-gray-100 overflow-hidden">
+                                        {img ? (
+                                            <Image
+                                                src={img}
+                                                alt={`${name} - ${role}`}
+                                                fill
+                                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                style={{ objectPosition: 'center 20%' }}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-green/20 to-primary-yellow/20">
+                                                <span className="text-6xl font-bold text-dark-grey/30">{getInitials(name)}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="p-6 text-center">
+                                        <h3 className="text-xl font-bold text-dark-grey mb-1 uppercase">{name}</h3>
+                                        <p className="text-primary-yellow text-xs font-bold uppercase tracking-widest">{role}</p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
                     </div>
 
                     <motion.div

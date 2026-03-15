@@ -34,6 +34,7 @@ export default async function BlogPage({
                     title="Our"
                     titleHighlight="Blog"
                     description="Stories, insights, and updates from the Forward Falls Initiative community."
+                    backgroundImage="/blog.jpg"
                 />
 
                 {/* Search + Filter Bar */}
