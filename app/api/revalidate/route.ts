@@ -7,20 +7,25 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { paths, tags } = await req.json().catch(() => ({ paths: ['/'], tags: [] }));
+    const body = await req.json().catch(() => ({ paths: ['/'] }));
+    const { paths, tags } = body as { paths?: string[]; tags?: string[] };
 
     const revalidatedPaths: string[] = [];
-    const revalidatedTags: string[] = [];
-
-    for (const path of (paths ?? ['/'])) {
+    for (const path of (paths ?? [])) {
         revalidatePath(path);
         revalidatedPaths.push(path);
     }
 
+    const revalidatedTags: string[] = [];
     for (const tag of (tags ?? [])) {
-        revalidateTag(tag);
+        revalidateTag(tag, 'default');
         revalidatedTags.push(tag);
     }
 
-    return NextResponse.json({ revalidated: true, paths: revalidatedPaths, tags: revalidatedTags });
+    if (revalidatedPaths.length === 0 && revalidatedTags.length === 0) {
+        revalidatePath('/');
+        revalidatedPaths.push('/');
+    }
+
+    return NextResponse.json({ revalidatedPaths, revalidatedTags });
 }
