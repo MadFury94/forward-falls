@@ -1,8 +1,147 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useState } from 'react';
 import Link from 'next/link';
+
+interface NewsItem {
+    id: number;
+    title: string;
+    excerpt: string;
+    date: string;
+    category: string;
+    image: string;
+    link: string;
+}
+
+const newsItems: NewsItem[] = [
+    {
+        id: 1,
+        title: "New Scholarship Program Launched",
+        excerpt: "Forward Falls Initiative announces expanded scholarship opportunities for students in conflict-affected regions.",
+        date: "14 Mar",
+        category: "PROGRAMS",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop",
+        link: "/news/1"
+    },
+    {
+        id: 2,
+        title: "Community Impact Report Released",
+        excerpt: "Our latest impact report shows 45% increase in students served and 89% graduation rate across all programs.",
+        date: "10 Mar",
+        category: "IMPACT",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop",
+        link: "/news/2"
+    },
+    {
+        id: 3,
+        title: "Partnership with Global Education NGO",
+        excerpt: "Forward Falls partners with international organization to expand educational initiatives across multiple countries.",
+        date: "05 Mar",
+        category: "PARTNERSHIP",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop",
+        link: "/news/3"
+    },
+    {
+        id: 4,
+        title: "Student Success Stories",
+        excerpt: "Meet the remarkable students whose lives have been transformed through Forward Falls educational programs.",
+        date: "01 Mar",
+        category: "TESTIMONIALS",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop",
+        link: "/news/4"
+    }
+];
+
+const categoryColors: { [key: string]: string } = {
+    'PROGRAMS': 'bg-[#00baa3]',
+    'IMPACT': 'bg-[#efc94c]',
+    'PARTNERSHIP': 'bg-[#d55342]',
+    'TESTIMONIALS': 'bg-[#2d2d2d]'
+};
+
+const extendedItems = [...newsItems, ...newsItems];
+
+const NewsTicker = () => {
+    const trackRef = useRef<HTMLDivElement>(null);
+    const [paused, setPaused] = useState(false);
+
+    return (
+        <section className="w-full bg-white py-12 font-poppins border-b border-gray-100">
+            <div className="max-w-[1200px] mx-auto px-6">
+                <div className="mb-12 text-center">
+                    <p className="text-xs md:text-sm font-light uppercase tracking-[0.2em] text-[#00baa3] mb-3">NEWS & UPDATES</p>
+                    <h2 className="text-3xl md:text-4xl font-light text-[#2d2d2d] mb-3">Latest Stories</h2>
+                    <p className="text-sm md:text-base text-gray-600 font-light max-w-2xl mx-auto">
+                        Stay informed about our latest initiatives, impact stories, and educational programs transforming lives in conflict-affected communities.
+                    </p>
+                </div>
+
+                <div
+                    className="relative overflow-hidden rounded-lg"
+                    onMouseEnter={() => setPaused(true)}
+                    onMouseLeave={() => setPaused(false)}
+                >
+                    <div
+                        ref={trackRef}
+                        className="flex gap-6"
+                        style={{
+                            animation: `ticker-scroll 40s linear infinite`,
+                            animationPlayState: paused ? 'paused' : 'running',
+                            width: 'max-content',
+                        }}
+                    >
+                        {extendedItems.map((item, idx) => (
+                            <Link
+                                key={`${item.id}-${idx}`}
+                                href={item.link}
+                                className="flex-shrink-0 w-72 group"
+                            >
+                                <div className="h-full bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
+                                    <div className="relative h-48 overflow-hidden bg-gray-200">
+                                        <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                        <div className="absolute top-4 right-4 bg-[#00baa3] text-white px-3 py-2 rounded-sm text-xs font-bold">
+                                            <div className="text-xs font-bold leading-none">{item.date.split(' ')[0]}</div>
+                                            <div className="text-[10px]">{item.date.split(' ')[1]}</div>
+                                        </div>
+                                    </div>
+                                    <div className="p-5">
+                                        <div className="mb-3">
+                                            <span className={`inline-block ${categoryColors[item.category] || 'bg-gray-400'} text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-sm`}>
+                                                {item.category}
+                                            </span>
+                                        </div>
+                                        <h3 className="text-sm font-semibold text-[#2d2d2d] mb-3 line-clamp-2 group-hover:text-[#00baa3] transition-colors">{item.title}</h3>
+                                        <p className="text-xs text-gray-600 font-light line-clamp-2 leading-relaxed">{item.excerpt}</p>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                    <div className="absolute top-0 left-0 w-12 h-full bg-gradient-to-r from-white via-white to-transparent z-10 pointer-events-none" />
+                    <div className="absolute top-0 right-0 w-12 h-full bg-gradient-to-l from-white via-white to-transparent z-10 pointer-events-none" />
+                </div>
+
+                <div className="mt-6 text-center">
+                    <p className="text-xs text-gray-500 font-light">Hover to pause • Scroll to explore latest updates</p>
+                </div>
+                <div className="mt-10 text-center">
+                    <Link href="/news" className="inline-block border-2 border-[#00baa3] text-[#00baa3] px-8 py-3 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-[#00baa3] hover:text-white transition-all duration-300">
+                        View All News
+                    </Link>
+                </div>
+            </div>
+
+            <style>{`
+                @keyframes ticker-scroll {
+                    from { transform: translateX(0); }
+                    to { transform: translateX(-50%); }
+                }
+            `}</style>
+        </section>
+    );
+};
+
+export default NewsTicker;
 
 interface NewsItem {
     id: number;
@@ -84,7 +223,7 @@ const NewsTicker = () => {
                 </div>
 
                 {/* Scrolling Ticker Container */}
-                <div 
+                <div
                     className="relative overflow-hidden rounded-lg"
                     onMouseEnter={() => setIsPaused(true)}
                     onMouseLeave={() => setIsPaused(false)}
