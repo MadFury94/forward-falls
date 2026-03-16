@@ -96,6 +96,14 @@ export function AppSidebar() {
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild tooltip='Visit Website' className='text-sidebar-foreground/60 hover:text-[#00baa3]'>
+                            <a href='/' target='_blank' rel='noopener noreferrer'>
+                                <Globe className='h-4 w-4' />
+                                <span>Visit Website</span>
+                            </a>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
 

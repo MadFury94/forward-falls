@@ -12,14 +12,15 @@ export async function GET(request: NextRequest) {
     // Step 1: optionally POST a test value
     let writeResult: { status: number; body: string } | null = null;
     if (doWrite) {
+        const testVal = 'TEST_' + Date.now();
         try {
             const res = await fetch(`${WP_URL}/wp-json/ffi/v1/homepage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ about_eyebrow: 'TEST_VALUE_' + Date.now() }),
+                body: JSON.stringify({ about_eyebrow: testVal }),
             });
             const text = await res.text();
-            writeResult = { status: res.status, body: text };
+            writeResult = { status: res.status, body: text, attempted_value: testVal } as any;
         } catch (e) {
             writeResult = { status: 0, body: String(e) };
         }

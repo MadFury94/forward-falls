@@ -96,12 +96,12 @@ export default function MediaLibraryPage() {
     };
 
     return (
-        <main className="flex-1 p-8 overflow-y-auto bg-light-bg min-h-screen">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-light-bg min-h-screen">
             <div className="max-w-6xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-dark-grey">Media Library</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-dark-grey">Media Library</h1>
                         <p className="text-sm text-gray-400 mt-1">{total} item{total !== 1 ? "s" : ""}</p>
                     </div>
                     <form onSubmit={handleSearch} className="relative">
@@ -110,7 +110,7 @@ export default function MediaLibraryPage() {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Search media..."
-                            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green w-64"
+                            className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-green w-full sm:w-64"
                         />
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                     </form>

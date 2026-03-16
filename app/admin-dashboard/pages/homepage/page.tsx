@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';// Token is stor
 function getToken(): string { return typeof window !== 'undefined' ? localStorage.getItem('wp_token') || '' : ''; }
 import { heroDefaults, aboutDefaults, visionMissionDefaults, programsDefaults, partnersDefaults } from '@/lib/homepage-defaults';
 import { Save, Plus, Trash2, ChevronDown, ChevronUp, ExternalLink, Loader2 } from 'lucide-react';
+import { revalidatePages } from '@/lib/revalidate';
 import MediaPickerModal from '@/components/editor/MediaPickerModal';
 
 // ── Types ──────────────────────────────────────────────────────────────────
@@ -198,8 +199,10 @@ export default function HomepageEditor() {
                 body: JSON.stringify(fields),
             });
             const data = await res.json();
-            if (data.success) showToast('Homepage saved successfully', 'success');
-            else showToast(data.error || 'Save failed', 'error');
+            if (data.success) {
+                showToast('Homepage saved successfully', 'success');
+                await revalidatePages({ paths: ['/'], tags: ['homepage'] });
+            } else showToast(data.error || 'Save failed', 'error');
         } catch {
             showToast('Network error', 'error');
         } finally {
@@ -218,12 +221,12 @@ export default function HomepageEditor() {
     return (
         <div className="max-w-4xl mx-auto px-4 py-8">
             {/* Header */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 className="text-2xl font-bold text-gray-900">Homepage Editor</h1>
                     <p className="text-sm text-gray-500 mt-1">Changes override hardcoded defaults. Leave blank to use defaults.</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-shrink-0">
                     <a href="/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm hover:bg-gray-50 transition-colors">
                         <ExternalLink size={15} /> Preview
                     </a>

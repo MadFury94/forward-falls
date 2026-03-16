@@ -8,6 +8,7 @@ import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, Send, Save, X, CheckCircle, AlertCircle, Loader2, Images } from "lucide-react";
 import RichTextEditor from "@/components/editor/RichTextEditor";
 import MediaPickerModal from "@/components/editor/MediaPickerModal";
+import { revalidatePages } from "@/lib/revalidate";
 
 const CATEGORY_OPTIONS = ["News", "Programs", "Events", "Announcements", "Stories"];
 
@@ -132,6 +133,7 @@ export default function EditPost() {
             const data = await res.json();
             if (data.success) {
                 setSuccess(status === "publish" ? "Post updated!" : "Draft saved!");
+                if (status === "publish") await revalidatePages(['/blog', '/']);
                 setTimeout(() => router.push("/admin-dashboard/posts"), 1500);
             } else {
                 setError(data.error || "Failed to update post");
@@ -185,7 +187,7 @@ export default function EditPost() {
             )}
 
             {/* Top bar */}
-            <div className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between sticky top-0 z-30">
+            <div className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-30">
                 <div className="flex items-center gap-3">
                     <Link href="/admin-dashboard/posts" className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
                         <ArrowLeft className="h-5 w-5 text-gray-500" />
@@ -199,14 +201,14 @@ export default function EditPost() {
                 </div>
                 <div className="flex items-center gap-2">
                     <button onClick={() => submit("draft")} disabled={savingDraft || loading || !form.title}
-                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 hover:border-primary-green text-dark-grey text-sm font-semibold rounded-lg transition-all disabled:opacity-50">
+                        className="flex items-center gap-2 px-3 md:px-4 py-2 border border-gray-300 hover:border-primary-green text-dark-grey text-sm font-semibold rounded-lg transition-all disabled:opacity-50">
                         {savingDraft ? <Spinner /> : <Save className="h-4 w-4" />}
-                        Save Draft
+                        <span className="hidden sm:inline">Save Draft</span>
                     </button>
                     <button onClick={() => submit("publish")} disabled={loading || savingDraft || !form.title}
-                        className="flex items-center gap-2 px-5 py-2 bg-primary-green hover:bg-primary-green/90 text-white text-sm font-semibold rounded-lg transition-all shadow disabled:opacity-50">
+                        className="flex items-center gap-2 px-3 md:px-5 py-2 bg-primary-green hover:bg-primary-green/90 text-white text-sm font-semibold rounded-lg transition-all shadow disabled:opacity-50">
                         {loading ? <Spinner /> : <Send className="h-4 w-4" />}
-                        {form.status === "publish" ? "Update" : "Publish"}
+                        <span className="hidden sm:inline">{form.status === "publish" ? "Update" : "Publish"}</span>
                     </button>
                 </div>
             </div>
@@ -228,9 +230,9 @@ export default function EditPost() {
             )}
 
             {/* Two-column layout */}
-            <div className="max-w-6xl mx-auto px-6 py-6 flex gap-6 items-start">
+            <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 flex flex-col md:flex-row gap-6 items-start">
                 {/* LEFT — Title + Content */}
-                <div className="flex-1 min-w-0 space-y-4">
+                <div className="flex-1 min-w-0 w-full space-y-4">
                     <div className="bg-white rounded-xl shadow-sm">
                         <input
                             type="text"
@@ -246,7 +248,7 @@ export default function EditPost() {
                 </div>
 
                 {/* RIGHT — Sidebar */}
-                <div className="w-72 flex-shrink-0 space-y-4">
+                <div className="w-full md:w-72 flex-shrink-0 space-y-4">
                     {/* Publish panel */}
                     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                         <div className="px-4 py-3 border-b border-gray-100 font-semibold text-sm text-dark-grey">Post</div>

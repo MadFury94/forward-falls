@@ -91,13 +91,13 @@ export default function AccountsPage() {
     return (
         <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-light-bg min-h-screen">
             <div className="max-w-3xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-dark-grey">Account Numbers</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold text-dark-grey">Account Numbers</h1>
                         <p className="text-gray-500 text-sm mt-1">{accounts.length} account{accounts.length !== 1 ? "s" : ""}</p>
                     </div>
                     <button onClick={openNew}
-                        className="flex items-center gap-2 bg-primary-green text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-primary-green/90 transition-all shadow-sm">
+                        className="flex items-center gap-2 bg-primary-green text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-primary-green/90 transition-all shadow-sm self-start sm:self-auto">
                         <Plus className="h-4 w-4" /> Add Account
                     </button>
                 </div>
@@ -165,7 +165,7 @@ export default function AccountsPage() {
                 ) : (
                     <div className="space-y-3">
                         {accounts.map(a => (
-                            <div key={a.id} className="bg-white rounded-xl shadow-sm p-5 flex items-center justify-between gap-4">
+                            <div key={a.id} className="bg-white rounded-xl shadow-sm p-4 md:p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div className="flex items-center gap-4">
                                     <div className="w-10 h-10 rounded-full bg-primary-green/10 flex items-center justify-center flex-shrink-0">
                                         <CreditCard className="h-5 w-5 text-primary-green" />

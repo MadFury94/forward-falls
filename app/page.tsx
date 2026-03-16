@@ -20,11 +20,10 @@ function pick<T>(wpVal: T | null | undefined, def: T): T {
 async function getHomepageContent() {
   try {
     const res = await fetch(`${WP_URL}/wp-json/ffi/v1/homepage`, {
-      next: { revalidate: 0 },
+      cache: 'no-store',
     });
     if (!res.ok) return null;
     const data = await res.json();
-    // get_fields returns [] when empty, {} or object when populated
     if (!data?.acf || Array.isArray(data.acf)) return null;
     return data.acf;
   } catch {

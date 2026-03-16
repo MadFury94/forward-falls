@@ -1,14 +1,9 @@
-'use client';
-
-import dynamic from 'next/dynamic';
-
-const Hero = dynamic(() => import('@/components/Hero'), { ssr: false });
-const AboutSection = dynamic(() => import('@/components/AboutSection'), { ssr: false });
-const AdoptionsSection = dynamic(() => import('@/components/AdoptionsSection'), { ssr: false });
-const Programs = dynamic(() => import('@/components/Programs'), { ssr: false });
-const Team = dynamic(() => import('@/components/Team'), { ssr: false });
-const Partners = dynamic(() => import('@/components/Partners'), { ssr: false });
-const PhotoMosaic = dynamic(() => import('@/components/PhotoMosaic'), { ssr: false });
-const BlogSection = dynamic(() => import('@/components/BlogSection'), { ssr: false });
-
-export { Hero, AboutSection, AdoptionsSection, Programs, Team, Partners, PhotoMosaic, BlogSection };
+// Re-export all homepage section components directly (no dynamic/ssr:false needed on Vercel)
+export { default as Hero } from '@/components/Hero';
+export { default as AboutSection } from '@/components/AboutSection';
+export { default as AdoptionsSection } from '@/components/AdoptionsSection';
+export { default as Programs } from '@/components/Programs';
+export { default as Team } from '@/components/Team';
+export { default as Partners } from '@/components/Partners';
+export { default as PhotoMosaic } from '@/components/PhotoMosaic';
+export { default as BlogSection } from '@/components/BlogSection';

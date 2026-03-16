@@ -20,15 +20,15 @@ function pick<T>(wpVal: T | null | undefined, def: T): T {
 }
 
 function mergeContent(acf: Record<string, unknown>) {
-    // ── Hero ──
+    // ── Hero ── (stored via update_option directly, clean field names)
     const wpSlides = acf.hero_slides as Array<Record<string, string>> | null;
     const hero = {
         slides: wpSlides && wpSlides.length > 0
             ? wpSlides.map((s, i) => ({
-                image: pick(s.slide_image, heroDefaults.slides[i]?.image ?? heroDefaults.slides[0].image),
-                title: pick(s.slide_title, heroDefaults.slides[i]?.title ?? ''),
+                image: pick(s.slide_image_ ?? s.slide_image, heroDefaults.slides[i]?.image ?? heroDefaults.slides[0].image),
+                title: pick(s.slide_text ?? s.slide_title, heroDefaults.slides[i]?.title ?? ''),
                 description: pick(s.slide_description, heroDefaults.slides[i]?.description ?? ''),
-                button_text: pick(s.slide_button_text, heroDefaults.slides[i]?.button_text ?? 'DONATE NOW'),
+                button_text: pick(s.slide_button_text_ ?? s.slide_button_text, heroDefaults.slides[i]?.button_text ?? 'DONATE NOW'),
                 button_link: pick(s.slide_button_link, heroDefaults.slides[i]?.button_link ?? '/donate'),
             }))
             : heroDefaults.slides,
@@ -111,7 +111,7 @@ export async function GET() {
     try {
         const res = await fetch(
             `${WP_URL}/wp-json/ffi/v1/homepage`,
-            { next: { revalidate: 60 } }
+            { cache: 'no-store' }
         );
 
         if (!res.ok) {
@@ -149,5 +149,12 @@ export async function PATCH(request: NextRequest) {
         );
     }
 
-    return NextResponse.json({ success: true });
+    // Immediately re-fetch to confirm WP persisted the data
+    try {
+        const verify = await fetch(`${WP_URL}/wp-json/ffi/v1/homepage`, { cache: 'no-store' });
+        const verifyData = await verify.json();
+        return NextResponse.json({ success: true, saved: verifyData?.acf || {} });
+    } catch {
+        return NextResponse.json({ success: true });
+    }
 }
