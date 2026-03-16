@@ -166,7 +166,15 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip='Logout'>
-                            <Link href='/admin-login' className='text-sidebar-foreground/70 hover:text-destructive'>
+                            <Link
+                                href='/admin-login'
+                                className='text-sidebar-foreground/70 hover:text-destructive'
+                                onClick={() => {
+                                    localStorage.removeItem('wp_token');
+                                    localStorage.removeItem('wp_user');
+                                    document.cookie = 'wp_token=; path=/; max-age=0';
+                                }}
+                            >
                                 <LogOut />
                                 <span>Logout</span>
                             </Link>

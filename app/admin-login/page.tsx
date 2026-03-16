@@ -45,6 +45,7 @@ export default function AdminLogin() {
             if (response.ok && data.success) {
                 localStorage.setItem("wp_token", data.token);
                 localStorage.setItem("wp_user", JSON.stringify(data.user));
+                document.cookie = `wp_token=${data.token}; path=/; max-age=86400; SameSite=Lax`;
                 router.push("/admin-dashboard");
             } else {
                 setError(data.error || "Invalid credentials");
