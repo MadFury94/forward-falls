@@ -11,9 +11,9 @@ const Header = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
     const navLinks = [
-        { name: 'Home', href: '/' },
         { name: 'About Us', href: '/about' },
         { name: 'Programs', href: '/programs' },
+        { name: 'Blog', href: '/blog' },
         { name: 'Leadership', href: '/board-and-team' },
         { name: 'Contact', href: '/contact' },
     ];

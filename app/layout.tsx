@@ -17,7 +17,13 @@ export const metadata: Metadata = {
   },
   description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
   metadataBase: new URL("https://forwardfallsinitiative.org"),
-  icons: { icon: "/FFI.png" },
+  icons: {
+    icon: [
+      { url: '/FFI.png', type: 'image/png' },
+    ],
+    apple: '/FFI.png',
+    shortcut: '/FFI.png',
+  },
   openGraph: {
     type: "website",
     siteName: "Forward Falls Initiative",

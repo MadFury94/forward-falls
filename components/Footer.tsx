@@ -60,9 +60,9 @@ const Footer = () => {
                     <div className="col-span-1 lg:col-span-1">
                         <h4 className="text-lg font-bold mb-6 uppercase tracking-wider text-primary-yellow">Quick Links</h4>
                         <ul className="text-sm text-gray-400 space-y-4">
-                            <li><Link href="/" className="hover:text-primary-green transition-colors">Home</Link></li>
                             <li><Link href="/about" className="hover:text-primary-green transition-colors">Our Why</Link></li>
                             <li><Link href="/programs" className="hover:text-primary-green transition-colors">Programs</Link></li>
+                            <li><Link href="/blog" className="hover:text-primary-green transition-colors">Blog</Link></li>
                             <li><Link href="/board-and-team" className="hover:text-primary-green transition-colors">Advisory Board</Link></li>
                         </ul>
                     </div>
