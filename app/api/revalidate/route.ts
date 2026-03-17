@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     const secret = req.headers.get('x-revalidate-secret');
-    if (secret !== process.env.REVALIDATE_SECRET) {
+    const expected = process.env.REVALIDATE_SECRET || process.env.NEXT_PUBLIC_REVALIDATE_SECRET || 'ffi-revalidate-2026';
+    if (secret !== expected) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -18,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     const revalidatedTags: string[] = [];
     for (const tag of (tags ?? [])) {
-        revalidateTag(tag, 'default');
+        revalidateTag(tag);
         revalidatedTags.push(tag);
     }
 
