@@ -7,8 +7,6 @@ import {
     partnersDefaults,
 } from '@/lib/homepage-defaults';
 
-export const runtime = 'edge';
-
 const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
 
 // Merge: WP value wins if truthy, otherwise fall back to default

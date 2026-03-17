@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
-
 const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
 
 function authHeader(token: string) {
@@ -86,6 +84,17 @@ export async function POST(request: NextRequest) {
             });
             console.log('ACF update:', acfRes.status, await acfRes.text());
         }
+
+        // Revalidate blog pages
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://forwardfalls.com';
+        fetch(`${baseUrl}/api/revalidate`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-revalidate-secret': process.env.REVALIDATE_SECRET || '',
+            },
+            body: JSON.stringify({ paths: ['/blog', `/blog/${post.slug}`] }),
+        }).catch(() => { });
 
         return NextResponse.json({ success: true, post: { id: post.id, slug: post.slug, title: post.title.rendered } });
     } catch (error) {

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
 
 const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
 
@@ -68,6 +67,18 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     const post = await res.json();
+
+    // Revalidate blog pages
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://forwardfalls.com';
+    fetch(`${baseUrl}/api/revalidate`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'x-revalidate-secret': process.env.REVALIDATE_SECRET || '',
+        },
+        body: JSON.stringify({ paths: ['/blog', `/blog/${post.slug}`] }),
+    }).catch(() => { });
+
     return NextResponse.json({ success: true, post: { id: post.id, slug: post.slug, status: post.status } });
 }
 

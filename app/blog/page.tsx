@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageHeader from "@/components/PageHeader";
 
-export const runtime = 'edge';
+export const revalidate = 0;
 import PostCard from "@/components/blog/PostCard";
 import { fetchPosts, fetchCategories } from "@/lib/wordpress-api";
 

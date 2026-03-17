@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createWordPressUser, getWordPressUsers, testWordPressConnection } from '@/lib/wordpress';
 
-export const runtime = 'edge';
-
 export async function GET() {
     try {
         const isConnected = await testWordPressConnection();
