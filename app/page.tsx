@@ -2,6 +2,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EditableSection from "@/components/admin/EditableSection";
 import { Hero, AboutSection, AdoptionsSection, Programs, Team, Partners, PhotoMosaic, BlogSection } from "@/components/HomeSections";
+
+export const revalidate = 0;
 import {
   heroDefaults,
   aboutDefaults,
