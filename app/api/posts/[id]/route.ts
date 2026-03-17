@@ -97,5 +97,13 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     });
 
     if (!res.ok) return NextResponse.json({ success: false, error: 'Failed to delete' }, { status: 400 });
+
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://forwardfalls.com';
+    fetch(`${baseUrl}/api/revalidate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-revalidate-secret': process.env.REVALIDATE_SECRET || '' },
+        body: JSON.stringify({ paths: ['/blog'] }),
+    }).catch(() => { });
+
     return NextResponse.json({ success: true });
 }
