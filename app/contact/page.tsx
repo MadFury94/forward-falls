@@ -32,7 +32,7 @@ const ContactPage = () => {
 
             console.log("Sending payload:", payload);
 
-            const res = await fetch("https://forwardfalls-contact.onochieazukaeme.workers.dev", {
+            const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
