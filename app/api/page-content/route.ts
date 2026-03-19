@@ -5,9 +5,9 @@ import {
     visionMissionDefaults,
     programsDefaults,
     partnersDefaults,
-} from '@/lib/homepage-defaults';
+} from '@/content/defaults/homepage';
 
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 // Merge: WP value wins if truthy, otherwise fall back to default
 function pick<T>(wpVal: T | null | undefined, def: T): T {

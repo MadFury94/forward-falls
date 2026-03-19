@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName, WPTeamMember } from '@/lib/wordpress-api';
+import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName } from '@/lib/wordpress-api';
+import type { CMSTeamMember } from '@/lib/cms';
+import config from '@/config/framework.config';
 
 const getInitials = (name: string): string =>
     name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
@@ -16,7 +18,7 @@ const BORDER_COLORS = [
 ];
 
 const Team = () => {
-    const [members, setMembers] = useState<WPTeamMember[]>([]);
+    const [members, setMembers] = useState<CMSTeamMember[]>([]);
     const [status, setStatus] = useState<"loading" | "done">("loading");
 
     useEffect(() => {
@@ -24,7 +26,7 @@ const Team = () => {
             .then(r => r.json())
             .then(data => {
                 if (data.success && Array.isArray(data.members)) {
-                    setMembers([...data.members].sort((a: any, b: any) => (a.acf?.order ?? 999) - (b.acf?.order ?? 999)));
+                    setMembers([...data.members].sort((a: CMSTeamMember, b: CMSTeamMember) => (a.order ?? 999) - (b.order ?? 999)));
                 }
                 setStatus("done");
             })
@@ -66,8 +68,7 @@ const Team = () => {
                     <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
                     <p className="text-gray-500 max-w-2xl mx-auto">
                         A collective of young, vibrant professionals and volunteers driving educational change across communities.
-                    </p>
-                </div>
+                    </p>                </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                     {members.slice(0, 4).map((member, i) => {

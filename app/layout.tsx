@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import AdminBar from "@/components/admin/AdminBar";
 import { AdminProvider } from "@/lib/admin-context";
+import config from "@/config/framework.config";
 
 const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
@@ -12,30 +13,28 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default: "Forward Falls Initiative | Democratizing Education",
-    template: "%s | Forward Falls Initiative",
+    default: config.seo.defaultTitle,
+    template: config.seo.titleTemplate,
   },
-  description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
-  metadataBase: new URL("https://forwardfallsinitiative.org"),
+  description: config.seo.description,
+  metadataBase: new URL(config.site.metadataBase),
   icons: {
-    icon: [
-      { url: '/FFI.png', type: 'image/png' },
-    ],
-    apple: '/FFI.png',
-    shortcut: '/FFI.png',
+    icon: [{ url: config.org.favicon, type: 'image/png' }],
+    apple: config.org.favicon,
+    shortcut: config.org.favicon,
   },
   openGraph: {
     type: "website",
-    siteName: "Forward Falls Initiative",
-    title: "Forward Falls Initiative | Democratizing Education",
-    description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
-    images: [{ url: "/og-default.jpg", width: 1200, height: 630 }],
+    siteName: config.org.name,
+    title: config.seo.defaultTitle,
+    description: config.seo.description,
+    images: [{ url: config.org.ogImage, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Forward Falls Initiative",
-    description: "A youth-led non-profit dedicated to democratizing access to post-secondary education and quality learning opportunities.",
-    images: ["/og-default.jpg"],
+    title: config.org.name,
+    description: config.seo.description,
+    images: [config.org.ogImage],
   },
   robots: {
     index: true,

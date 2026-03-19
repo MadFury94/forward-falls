@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 // GET /api/page-content/debug        — reads current WP options
 // GET /api/page-content/debug?write=1 — writes a test value then reads back

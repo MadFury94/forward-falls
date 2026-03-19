@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useInView, animate, useMotionValue, useTransform } from 'framer-motion';
+import config from '@/config/framework.config';
 
 const AnimatedCounter = ({ target, duration = 2 }: { target: number, duration?: number }) => {
     const count = useMotionValue(0);
@@ -104,11 +105,11 @@ const AboutSection = ({ content }: AboutSectionProps) => {
                                 <Image src="/teacher.jpg" alt="Director" fill sizes="64px" className="object-cover" />
                             </div>
                             <div>
-                                <h4 className="text-xl font-bold text-dark-grey m-0">Forward Falls Director</h4>
+                                <h4 className="text-xl font-bold text-dark-grey m-0">{config.org.name} Director</h4>
                                 <p className="text-xs text-primary-green font-bold tracking-[2px] uppercase">LEADERSHIP</p>
                             </div>
                             <div className="ml-auto hidden md:block">
-                                <span className="text-3xl font-serif italic text-gray-300 transform -rotate-6 block">Forward Falls</span>
+                                <span className="text-3xl font-serif italic text-gray-300 transform -rotate-6 block">{config.org.shortName}</span>
                             </div>
                         </div>
                     </motion.div>

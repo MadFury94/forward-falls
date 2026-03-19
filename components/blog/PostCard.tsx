@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Calendar, User, ArrowRight } from "lucide-react";
-import { WPPost, getPostImage, getPostCategories, getAuthorName, formatDate } from "@/lib/wordpress-api";
+import { formatDate } from "@/lib/wordpress-api";
+import type { CMSPost } from "@/lib/cms";
 
-export default function PostCard({ post }: { post: WPPost }) {
-    const image = getPostImage(post);
-    const categories = getPostCategories(post);
-    const author = getAuthorName(post);
+export default function PostCard({ post }: { post: CMSPost }) {
+    const image = post.image;
+    const categories = post.categories;
+    const author = post.author;
 
     return (
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all group border-t-4 border-primary-green flex flex-col">
@@ -15,7 +16,7 @@ export default function PostCard({ post }: { post: WPPost }) {
                 {image ? (
                     <Image
                         src={image}
-                        alt={post.title.rendered}
+                        alt={post.title}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -49,7 +50,7 @@ export default function PostCard({ post }: { post: WPPost }) {
 
                 <h3
                     className="font-bold text-dark-grey text-lg mb-3 group-hover:text-primary-green transition-colors line-clamp-2 flex-1"
-                    dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                    dangerouslySetInnerHTML={{ __html: post.title }}
                 />
 
                 {post.acf?.summary && (

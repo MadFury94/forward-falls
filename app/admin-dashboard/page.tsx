@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Users, FileText, PenSquare, CreditCard, Image, TrendingUp, ExternalLink, Globe, LayoutDashboard } from "lucide-react";
+import { TrendingUp, ExternalLink, Globe } from "lucide-react";
+import config from "@/config/framework.config";
+import { statCards as statCardConfig, quickActions as quickActionConfig } from "@/config/admin-nav";
 
 export default function Dashboard() {
     const [stats, setStats] = useState({ posts: 0, team: 0, accounts: 0, media: 0 });
@@ -30,21 +32,8 @@ export default function Dashboard() {
         }).finally(() => setLoading(false));
     }, []);
 
-    const statCards = [
-        { label: "Published Posts", value: stats.posts, icon: FileText, accent: "#00baa3", bg: "bg-[#00baa3]/10", href: "/admin-dashboard/posts" },
-        { label: "Team Members", value: stats.team, icon: Users, accent: "#efc94c", bg: "bg-[#efc94c]/15", href: "/admin-dashboard/team" },
-        { label: "Bank Accounts", value: stats.accounts, icon: CreditCard, accent: "#d55342", bg: "bg-[#d55342]/10", href: "/admin-dashboard/accounts" },
-        { label: "Media Files", value: stats.media, icon: Image, accent: "#6366f1", bg: "bg-indigo-50", href: "/admin-dashboard/media" },
-    ];
-
-    const quickActions = [
-        { href: "/admin-dashboard/posts/new", icon: PenSquare, label: "Write a Post", sub: "Create new content", accent: "#00baa3" },
-        { href: "/admin-dashboard/posts", icon: FileText, label: "Manage Posts", sub: "Edit or delete posts", accent: "#00baa3" },
-        { href: "/admin-dashboard/team", icon: Users, label: "Team Members", sub: "Update the team", accent: "#efc94c" },
-        { href: "/admin-dashboard/pages/homepage", icon: LayoutDashboard, label: "Edit Homepage", sub: "Update page content", accent: "#d55342" },
-        { href: "/admin-dashboard/accounts", icon: CreditCard, label: "Bank Accounts", sub: "Manage donation details", accent: "#6366f1" },
-        { href: "/admin-dashboard/media", icon: Image, label: "Media Library", sub: "Browse uploaded files", accent: "#00baa3" },
-    ];
+    const statCards = statCardConfig.map((c) => ({ ...c, value: stats[c.statKey], accent: c.accentHex }));
+    const quickActions = quickActionConfig.map((c) => ({ ...c, accent: c.accentHex }));
 
     return (
         <main className="flex-1 p-6 md:p-8 bg-[#f7f8fa] min-h-screen font-poppins">
@@ -54,7 +43,7 @@ export default function Dashboard() {
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-bold tracking-[3px] uppercase text-[#00baa3]">Forward Falls Initiative</span>
+                            <span className="text-xs font-bold tracking-[3px] uppercase text-[#00baa3]">{config.org.name}</span>
                         </div>
                         <h1 className="text-2xl md:text-3xl font-bold text-[#2d2d2d]">
                             Welcome back{user?.name ? `, ${user.name}` : ''} 👋
@@ -120,7 +109,7 @@ export default function Dashboard() {
 
                 {/* Footer note */}
                 <p className="text-center text-xs text-gray-300 mt-8">
-                    Forward Falls Initiative Admin · {new Date().getFullYear()}
+                    {config.org.name} Admin · {new Date().getFullYear()}
                 </p>
             </div>
         </main>

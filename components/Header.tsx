@@ -1,22 +1,17 @@
 "use client";
 
 import React from 'react';
-import { Phone, Mail, Facebook, Twitter, Instagram, Youtube, Search } from 'lucide-react';
+import { Phone, Mail, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import config from '@/config/framework.config';
 
 const Header = () => {
     const pathname = usePathname();
     const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
-    const navLinks = [
-        { name: 'About Us', href: '/about' },
-        { name: 'Programs', href: '/programs' },
-        { name: 'Blog', href: '/blog' },
-        { name: 'Leadership', href: '/board-and-team' },
-        { name: 'Contact', href: '/contact' },
-    ];
+    const navLinks = config.nav;
 
     return (
         <header className="w-full font-poppins sticky top-0 z-50 shadow-sm">
@@ -26,11 +21,11 @@ const Header = () => {
                     <div className="flex gap-4">
                         <div className="flex items-center gap-1">
                             <Mail size={14} className="text-primary-yellow" />
-                            <span>forwardfalls@gmail.com</span>
+                            <span>{config.contact.email}</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <Phone size={14} className="text-primary-yellow" />
-                            <span>+234 702 082 9533</span>
+                            <span>{config.contact.phone}</span>
                         </div>
                     </div>
                     <div className="hidden md:flex gap-4 items-center">
@@ -47,8 +42,8 @@ const Header = () => {
                 <div className="max-w-[1200px] mx-auto px-6 py-4 flex justify-between items-center">
                     <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                         <Image
-                            src="/FFI.png"
-                            alt="Forward Falls Initiative Logo"
+                            src={config.org.logo}
+                            alt={`${config.org.name} Logo`}
                             width={66}
                             height={66}
                             className="h-16 w-auto"
@@ -72,9 +67,9 @@ const Header = () => {
                             );
                         })}
                         <div className="flex items-center gap-2 ml-4">
-                            <Link href="/donate">
+                            <Link href={config.cta.href}>
                                 <button className="bg-primary-green text-white px-6 py-3 rounded-full text-xs font-bold hover:bg-dark-grey transition-all shadow-md">
-                                    DONATE NOW
+                                    {config.cta.label}
                                 </button>
                             </Link>
                         </div>
@@ -113,9 +108,9 @@ const Header = () => {
                                 );
                             })}
                             <div className="pt-3 border-t border-gray-200">
-                                <Link href="/donate" className="block">
+                                <Link href={config.cta.href} className="block">
                                     <button className="w-full bg-primary-green text-white py-3 rounded text-xs font-bold uppercase tracking-widest hover:bg-dark-grey transition-all">
-                                        Donate Now
+                                        {config.cta.label}
                                     </button>
                                 </Link>
                             </div>

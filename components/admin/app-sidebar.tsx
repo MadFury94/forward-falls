@@ -3,10 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import {
-    LayoutDashboard, FileText, LogOut,
-    Users, Image, CreditCard, ChevronDown, Globe
-} from 'lucide-react'
+import { LogOut, ChevronDown } from 'lucide-react'
 import {
     Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
     SidebarGroupLabel, SidebarHeader, SidebarMenu,
@@ -15,51 +12,8 @@ import {
 } from '@/components/ui/sidebar'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-
-const navGroups = [
-    {
-        title: 'Dashboard',
-        href: '/admin-dashboard',
-        icon: LayoutDashboard,
-        exact: true,
-    },
-    {
-        title: 'Posts',
-        icon: FileText,
-        basePath: '/admin-dashboard/posts',
-        children: [
-            { title: 'All Posts', href: '/admin-dashboard/posts', exact: true },
-            { title: 'New Post', href: '/admin-dashboard/posts/new' },
-        ],
-    },
-    {
-        title: 'Team Members',
-        icon: Users,
-        basePath: '/admin-dashboard/team',
-        children: [
-            { title: 'All Members', href: '/admin-dashboard/team', exact: true },
-            { title: 'New Member', href: '/admin-dashboard/team/new' },
-        ],
-    },
-    {
-        title: 'Pages',
-        icon: Globe,
-        basePath: '/admin-dashboard/pages',
-        children: [
-            { title: 'Homepage', href: '/admin-dashboard/pages/homepage' },
-        ],
-    },
-    {
-        title: 'Account Numbers',
-        href: '/admin-dashboard/accounts',
-        icon: CreditCard,
-    },
-    {
-        title: 'Media Library',
-        href: '/admin-dashboard/media',
-        icon: Image,
-    },
-]
+import config from '@/config/framework.config'
+import { navGroups } from '@/config/admin-nav'
 
 export function AppSidebar() {
     const pathname = usePathname()
@@ -87,11 +41,11 @@ export function AppSidebar() {
                         <SidebarMenuButton size='lg' asChild className='hover:bg-transparent active:bg-transparent'>
                             <Link href='/admin-dashboard'>
                                 <div className='flex aspect-square size-10 items-center justify-center rounded-lg overflow-hidden'>
-                                    <img src='/FFI.png' alt='FFI' className='size-10 object-contain' />
+                                    <img src={config.org.logo} alt={config.org.adminLabel} className='size-10 object-contain' />
                                 </div>
                                 <div className='grid flex-1 text-start text-sm leading-tight'>
-                                    <span className='truncate font-semibold'>FFI Admin</span>
-                                    <span className='truncate text-xs text-sidebar-foreground/60'>Forward Falls Initiative</span>
+                                    <span className='truncate font-semibold'>{config.org.adminLabel}</span>
+                                    <span className='truncate text-xs text-sidebar-foreground/60'>{config.org.name}</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>

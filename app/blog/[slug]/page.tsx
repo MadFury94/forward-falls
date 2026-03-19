@@ -6,27 +6,23 @@ import Header from "@/components/Header";
 
 export const runtime = 'edge';
 import Footer from "@/components/Footer";
-import { fetchPost, fetchPosts, getPostImage, getAuthorName, getPostCategories, formatDate, stripHtml } from "@/lib/wordpress-api";
+import { fetchPost, fetchPosts, formatDate, stripHtml } from "@/lib/wordpress-api";
+import config from "@/config/framework.config";
 
-const SITE_URL = "https://forwardfallsinitiative.org";
-const SITE_NAME = "Forward Falls Initiative";
+const SITE_URL = config.site.metadataBase;
+const SITE_NAME = config.org.name;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
     const post = await fetchPost(slug);
     if (!post) return { title: "Post Not Found" };
 
-    const title = post.acf?.meta_title || stripHtml(post.title.rendered);
-    const description = post.acf?.meta_description || post.acf?.summary || stripHtml(post.excerpt?.rendered || "");
-    const imageUrl = (() => {
-        const og = post.acf?.og_image;
-        if (og && typeof og === "object" && "url" in og) return og.url;
-        if (og && typeof og === "string") return og;
-        return getPostImage(post) || `${SITE_URL}/og-default.jpg`;
-    })();
+    const title = post.acf?.meta_title || stripHtml(post.title);
+    const description = post.acf?.meta_description || post.acf?.summary || stripHtml(post.excerpt || "");
+    const imageUrl = post.acf?.og_image || post.image || `${SITE_URL}/og-default.jpg`;
     const canonical = `${SITE_URL}/blog/${slug}`;
-    const author = getAuthorName(post);
-    const categories = getPostCategories(post);
+    const author = post.author;
+    const categories = post.categories;
 
     return {
         title: `${title} | ${SITE_NAME}`,
@@ -61,16 +57,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     if (!post) notFound();
 
-    const imageUrl = getPostImage(post);
-    const author = getAuthorName(post);
-    const categories = getPostCategories(post);
+    const imageUrl = post.image;
+    const author = post.author;
+    const categories = post.categories;
     const relatedPosts = related.filter((p) => p.slug !== slug).slice(0, 2);
     const canonical = `${SITE_URL}/blog/${slug}`;
 
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
-        headline: stripHtml(post.title.rendered),
+        headline: stripHtml(post.title),
         description: post.acf?.meta_description || post.acf?.summary || "",
         image: imageUrl || undefined,
         datePublished: post.date,
@@ -128,7 +124,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         {/* Title */}
                         <h1
                             className="text-3xl md:text-5xl font-bold text-white max-w-3xl leading-tight"
-                            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                            dangerouslySetInnerHTML={{ __html: post.title }}
                         />
 
                         {/* Meta */}
@@ -175,7 +171,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                   prose-blockquote:bg-light-bg prose-blockquote:px-6 prose-blockquote:py-4
                   prose-blockquote:rounded-r-xl prose-blockquote:not-italic
                   prose-blockquote:text-dark-grey prose-blockquote:font-medium"
-                                dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                                dangerouslySetInnerHTML={{ __html: post.content }}
                             />
 
                             {/* Tags */}
@@ -220,22 +216,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                     </h3>
                                     <div className="space-y-5">
                                         {relatedPosts.map((rp) => {
-                                            const rpImage = getPostImage(rp);
+                                            const rpImage = rp.image;
                                             return (
                                                 <Link key={rp.id} href={`/blog/${rp.slug}`} className="flex gap-4 group">
                                                     <div className="relative w-20 h-20 rounded-xl overflow-hidden flex-shrink-0 bg-gray-200">
                                                         {rpImage ? (
-                                                            <Image src={rpImage} alt={rp.title.rendered} fill className="object-cover group-hover:scale-105 transition-transform" />
+                                                            <Image src={rpImage} alt={rp.title} fill className="object-cover group-hover:scale-105 transition-transform" />
                                                         ) : (
                                                             <div className="w-full h-full bg-primary-green/20 flex items-center justify-center">
-                                                                <span className="text-xs font-bold text-primary-green">FFI</span>
+                                                                <span className="text-xs font-bold text-primary-green">{config.org.shortName}</span>
                                                             </div>
                                                         )}
                                                     </div>
                                                     <div className="flex-1 min-w-0">
                                                         <p
                                                             className="font-semibold text-dark-grey text-sm line-clamp-2 group-hover:text-primary-green transition-colors"
-                                                            dangerouslySetInnerHTML={{ __html: rp.title.rendered }}
+                                                            dangerouslySetInnerHTML={{ __html: rp.title }}
                                                         />
                                                         <p className="text-xs text-gray-400 mt-1">{formatDate(rp.date)}</p>
                                                     </div>

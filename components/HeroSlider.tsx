@@ -6,7 +6,7 @@ import { Autoplay, EffectFade, Navigation, Pagination } from 'swiper/modules';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import type { HeroSlide } from '@/lib/homepage-defaults';
+import type { HeroSlide } from '@/content/defaults/homepage';
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { fetchPosts } from "@/lib/wordpress-api";
 import PostCard from "@/components/blog/PostCard";
+import config from "@/config/framework.config";
 
 export default async function BlogSection() {
     const { posts } = await fetchPosts({ perPage: 3 });
@@ -17,7 +18,7 @@ export default async function BlogSection() {
                     <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">From Our Blog</h2>
                     <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
                     <p className="text-gray-500 max-w-2xl mx-auto">
-                        Stories, insights, and updates from the Forward Falls Initiative community.
+                        Stories, insights, and updates from the {config.org.name} community.
                     </p>
                 </div>
 

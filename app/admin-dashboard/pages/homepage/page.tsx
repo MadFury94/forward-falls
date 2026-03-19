@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react';// Token is stored in localStorage under 'wp_token'
 function getToken(): string { return typeof window !== 'undefined' ? localStorage.getItem('wp_token') || '' : ''; }
-import { heroDefaults, aboutDefaults, visionMissionDefaults, programsDefaults, partnersDefaults } from '@/lib/homepage-defaults';
+import { heroDefaults, aboutDefaults, visionMissionDefaults, programsDefaults, partnersDefaults } from '@/content/defaults/homepage';
 import { Save, Plus, Trash2, ChevronDown, ChevronUp, ExternalLink, Loader2 } from 'lucide-react';
 import { revalidatePages } from '@/lib/revalidate';
 import MediaPickerModal from '@/components/editor/MediaPickerModal';

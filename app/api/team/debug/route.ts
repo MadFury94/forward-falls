@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 export async function GET(request: NextRequest) {
     const token = request.headers.get('x-wp-token') || '';

@@ -1,4 +1,4 @@
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 export interface JWTUser {
     token: string;

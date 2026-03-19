@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 function auth(token: string) {
     return { 'Authorization': `Bearer ${token}` };

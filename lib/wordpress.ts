@@ -1,9 +1,9 @@
 import { env } from 'process';
 
 // Securely load environment variables
-const WP_API_URL = process.env.WORDPRESS_API_URL || 'https://azure-dugong-563921.hostingersite.com/wp-json/wp/v2';
-const WP_USERNAME = process.env.WORDPRESS_AUTH_USERNAME || 'admin';
-const WP_PASSWORD = process.env.WORDPRESS_AUTH_PASSWORD || 'iLTrxF^0YWh9s*fLx9lPGszj';
+const WP_API_URL = process.env.WORDPRESS_API_URL || '';
+const WP_USERNAME = process.env.WORDPRESS_AUTH_USERNAME || '';
+const WP_PASSWORD = process.env.WORDPRESS_AUTH_PASSWORD || '';
 
 // Create Basic Auth header
 const getAuthHeader = (): string => {

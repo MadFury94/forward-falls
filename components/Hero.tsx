@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HeroSlider from './HeroSlider';
-import type { HeroSlide } from '@/lib/homepage-defaults';
+import type { HeroSlide } from '@/content/defaults/homepage';
 
 interface HeroProps {
     content: { slides: HeroSlide[] };
