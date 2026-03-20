@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import config from '@/config/framework.config';
 
 export async function POST(req: NextRequest) {
     const { name, email, subject, message } = await req.json();
@@ -10,9 +9,16 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ success: false, error: 'Missing required fields' }, { status: 400 });
     }
 
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+        return NextResponse.json({ success: false, error: 'Email service not configured' }, { status: 503 });
+    }
+
+    const resend = new Resend(apiKey);
+
     const { error } = await resend.emails.send({
-        from: 'Forward Falls Contact <onboarding@resend.dev>',
-        to: 'forwardfalls@gmail.com',
+        from: `${config.org.name} Contact <onboarding@resend.dev>`,
+        to: config.contact.email,
         replyTo: email,
         subject: subject || `New message from ${name}`,
         html: `

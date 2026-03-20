@@ -6,7 +6,7 @@
 
 import {
     LayoutDashboard, FileText, Users, Image,
-    CreditCard, Globe, PenSquare,
+    CreditCard, Globe, PenSquare, Settings,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -67,6 +67,11 @@ export const navGroups: NavGroup[] = [
         title: 'Media Library',
         href: '/admin-dashboard/media',
         icon: Image,
+    },
+    {
+        title: 'Settings',
+        href: '/admin-dashboard/settings',
+        icon: Settings,
     },
 ]
 
