@@ -56,12 +56,12 @@ The public-facing pages mix generic layout with org-specific content.
 
 ---
 
-## Phase 6 — Package as a Template Repo
+## Phase 6 — Package as a Template Repo ✅
 
-- Add a `create-framework-app` script or document as a GitHub template repo
-- Create `FRAMEWORK.md` explaining the architecture, what to customize, and what's generic
-- Strip all FFI-specific assets (images, logos) and replace with placeholders
-- Add `theme/` folder for color tokens so orgs change one file for branding
+- `FRAMEWORK.md` — architecture overview, file map, rebranding checklist, CMS swap guide, page/section addition guides
+- `config/theme.ts` — colour token file; orgs change one file for branding (mirror in `globals.css`)
+- Org-specific assets (images, logos) remain in `/public/` — documented in rebranding checklist as items to replace
+- GitHub template repo: enable via repo Settings → "Template repository"
 
 ---
 
