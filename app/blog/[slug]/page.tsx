@@ -94,7 +94,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     {imageUrl ? (
                         <Image
                             src={imageUrl}
-                            alt={post.title.rendered}
+                            alt={stripHtml(post.title)}
                             fill
                             priority
                             className="object-cover opacity-40"
@@ -200,7 +200,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                                     <div>
                                         <p className="text-xs text-gray-400 uppercase tracking-widest font-semibold mb-1">Written by</p>
                                         <p className="font-bold text-dark-grey text-lg">{author}</p>
-                                        <p className="text-sm text-gray-500">Forward Falls Initiative</p>
+                                        <p className="text-sm text-gray-500">{config.org.name}</p>
                                     </div>
                                 </div>
                             )}

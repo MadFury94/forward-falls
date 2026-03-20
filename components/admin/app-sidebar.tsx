@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { LogOut, ChevronDown } from 'lucide-react'
+import { LogOut, ChevronDown, Globe } from 'lucide-react'
 import {
     Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
     SidebarGroupLabel, SidebarHeader, SidebarMenu,
