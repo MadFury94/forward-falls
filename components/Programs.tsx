@@ -2,32 +2,87 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useInView, animate, useMotionValue } from 'framer-motion';
 import { BookOpen, Award, Users, TrendingUp } from 'lucide-react';
 
 const AnimatedCounter = ({ target, duration = 2 }: { target: number; duration?: number }) => {
-    const count = useMotionValue(0);
     const [displayValue, setDisplayValue] = useState(0);
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.5 });
+    const ref = useRef<HTMLSpanElement>(null);
+    const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
-        if (isInView) {
-            const controls = animate(count, target, {
-                duration,
-                ease: "easeOut",
-                onUpdate: (latest) => setDisplayValue(Math.round(latest)),
-            });
-            return controls.stop;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
         }
-    }, [isInView, count, target, duration]);
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isInView) return;
+
+        let start = 0;
+        const increment = target / (duration * 60); // 60fps
+        let animationFrameId: number;
+
+        const animate = () => {
+            start += increment;
+            if (start >= target) {
+                setDisplayValue(target);
+                return;
+            }
+            setDisplayValue(Math.round(start));
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animationFrameId = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    }, [isInView, target, duration]);
 
     return <span ref={ref}>{displayValue}</span>;
 };
 
 const ProgressBar = ({ label, percent, color, delay = 0 }: { label: string; percent: number; color: string; delay?: number }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.5 });
+    const ref = useRef<HTMLDivElement>(null);
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, []);
 
     return (
         <div ref={ref} className="mb-5">
@@ -36,12 +91,13 @@ const ProgressBar = ({ label, percent, color, delay = 0 }: { label: string; perc
                 <span className="text-sm font-bold" style={{ color }}>{percent}%</span>
             </div>
             <div className="w-full h-[6px] bg-gray-100 rounded-full overflow-hidden">
-                <motion.div
+                <div
                     className="h-full rounded-full"
-                    style={{ backgroundColor: color }}
-                    initial={{ width: 0 }}
-                    animate={isInView ? { width: `${percent}%` } : { width: 0 }}
-                    transition={{ duration: 1.4, delay, ease: "easeOut" }}
+                    style={{
+                        backgroundColor: color,
+                        width: isInView ? `${percent}%` : '0%',
+                        transition: `width 1.4s ease-out ${delay}s`
+                    }}
                 />
             </div>
         </div>
@@ -66,18 +122,37 @@ interface ProgramsContent {
 
 const Programs = ({ content }: { content: ProgramsContent }) => {
     const { eyebrow, heading, description, stats, progress_bars, initiatives } = content;
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const section = document.getElementById('programs');
+        if (section) {
+            observer.observe(section);
+        }
+
+        return () => {
+            if (section) {
+                observer.unobserve(section);
+            }
+        };
+    }, []);
 
     return (
         <section id="programs" className="py-24 bg-white font-poppins">
             <div className="max-w-[1200px] mx-auto px-6">
 
                 <div className="flex flex-col lg:flex-row gap-16 items-center mb-24">
-                    <motion.div
-                        initial={{ opacity: 0, x: -40 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.9 }}
-                        viewport={{ once: true }}
-                        className="relative w-full lg:w-[50%] min-h-[480px]"
+                    <div
+                        className={`relative w-full lg:w-[50%] min-h-[480px] transition-all duration-900 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
                     >
                         <div className="absolute top-0 left-0 w-[55%] h-[420px] overflow-hidden shadow-xl z-0">
                             <Image src="/kid11.jpg" alt="Students learning" fill priority sizes="(max-width: 1024px) 50vw, 30vw" className="object-cover" style={{ objectPosition: 'left 20%' }} />
@@ -85,12 +160,8 @@ const Programs = ({ content }: { content: ProgramsContent }) => {
                         <div className="absolute top-12 left-[30%] w-[48%] h-[420px] overflow-hidden shadow-xl z-10">
                             <Image src="/kids.jpg" alt="Education impact" fill sizes="(max-width: 1024px) 50vw, 30vw" className="object-cover" style={{ objectPosition: 'center 20%' }} />
                         </div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 0.7 }}
-                            viewport={{ once: true }}
-                            className="absolute top-8 right-0 bg-white shadow-2xl z-20 py-6 px-5 flex flex-col gap-4 min-w-[110px]"
+                        <div
+                            className={`absolute top-8 right-0 bg-white shadow-2xl z-20 py-6 px-5 flex flex-col gap-4 min-w-[110px] transition-all duration-700 delay-400 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                         >
                             {stats.map((stat, i) => (
                                 <div key={i} className="text-center border-b border-gray-100 last:border-0 pb-3 last:pb-0">
@@ -100,15 +171,11 @@ const Programs = ({ content }: { content: ProgramsContent }) => {
                                     <span className="text-[10px] font-bold text-gray-400 tracking-[0.15em] uppercase">{stat.label}</span>
                                 </div>
                             ))}
-                        </motion.div>
-                    </motion.div>
+                        </div>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 40 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.9 }}
-                        viewport={{ once: true }}
-                        className="lg:w-1/2 w-full"
+                    <div
+                        className={`lg:w-1/2 w-full transition-all duration-900 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}
                     >
                         <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">{eyebrow}</span>
                         <h2 className="text-4xl md:text-5xl font-bold mb-8 text-dark-grey leading-tight uppercase">{heading}</h2>
@@ -116,15 +183,11 @@ const Programs = ({ content }: { content: ProgramsContent }) => {
                         {progress_bars.map((bar, i) => (
                             <ProgressBar key={i} label={bar.label} percent={bar.percent} color={bar.color} delay={i * 0.15} />
                         ))}
-                    </motion.div>
+                    </div>
                 </div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                    className="grid grid-cols-2 md:grid-cols-4 gap-10 border-t border-gray-100 pt-14"
+                <div
+                    className={`grid grid-cols-2 md:grid-cols-4 gap-10 border-t border-gray-100 pt-14 transition-all duration-800 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
                     {progress_bars.slice(0, 4).map((bar, i) => {
                         const icon = featureIcons[i] || featureIcons[0];
@@ -140,7 +203,7 @@ const Programs = ({ content }: { content: ProgramsContent }) => {
                             </div>
                         );
                     })}
-                </motion.div>
+                </div>
 
                 <div className="mt-32">
                     <div className="text-center mb-16">

@@ -4,8 +4,8 @@ import React from 'react';
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { BookOpen, Award, Users, TrendingUp, Heart, Globe, Video, ExternalLink } from 'lucide-react';
-import { motion } from "framer-motion";
 import Link from 'next/link';
+import { Animate } from "@/components/ui/animate";
 
 const ProgramsPage = () => {
     return (
@@ -24,10 +24,9 @@ const ProgramsPage = () => {
                 </div>
 
                 <div className="max-w-[1200px] mx-auto px-6 relative z-10">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, ease: "easeOut" }}
+                    <Animate
+                        animation="fadeInUp"
+                        duration={0.8}
                     >
                         <span className="text-white font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Our Impact</span>
                         <h1 className="text-5xl md:text-6xl font-bold uppercase mb-6 text-white">Programs & <span className="text-primary-yellow">Initiatives</span></h1>
@@ -35,7 +34,7 @@ const ProgramsPage = () => {
                         <p className="max-w-2xl text-white/90 text-lg font-medium">
                             Empowering youth through targeted educational support, mentorship, and civic engagement.
                         </p>
-                    </motion.div>
+                    </Animate>
                 </div>
             </section>
 
@@ -43,12 +42,10 @@ const ProgramsPage = () => {
             <section className="py-24 bg-white">
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="flex flex-col lg:flex-row gap-16 items-start">
-                        <motion.div
+                        <Animate
                             className="lg:w-1/2"
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
+                            animation="fadeInLeft"
+                            duration={0.6}
                         >
                             <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">Flagship Initiative</span>
                             <h2 className="text-4xl font-bold mb-8 text-dark-grey uppercase">Forward Scholars <span className="text-primary-green">Program</span></h2>
@@ -91,14 +88,13 @@ const ProgramsPage = () => {
                                     </li>
                                 </ul>
                             </div>
-                        </motion.div>
+                        </Animate>
 
-                        <motion.div
+                        <Animate
                             className="lg:w-1/2 w-full grid grid-cols-1 gap-6"
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
+                            animation="fadeInRight"
+                            duration={0.6}
+                            delay={0.2}
                         >
                             <img src="/images/utme.jpg" alt="UTME Classes" className="w-full h-64 object-cover rounded-2xl shadow-lg" />
                             <img src="/images/awards.jpg" alt="Award Ceremony" className="w-full h-64 object-cover rounded-2xl shadow-lg" />
@@ -121,7 +117,7 @@ const ProgramsPage = () => {
                                     </a>
                                 </div>
                             </div>
-                        </motion.div>
+                        </Animate>
                     </div>
                 </div>
             </section>
@@ -130,26 +126,20 @@ const ProgramsPage = () => {
             <section className="py-24 bg-light-bg">
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="text-center mb-16">
-                        <motion.h2
-                            className="text-4xl font-bold mb-4 text-dark-grey uppercase"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            Expanding Our <span className="text-primary-yellow">Reach</span>
-                        </motion.h2>
+                        <Animate animation="fadeInUp" duration={0.6}>
+                            <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">
+                                Expanding Our <span className="text-primary-yellow">Reach</span>
+                            </h2>
+                        </Animate>
                         <div className="w-20 h-1 bg-primary-green mx-auto"></div>
                     </div>
 
                     <div className="grid lg:grid-cols-2 gap-12">
                         {/* Activism */}
-                        <motion.div
+                        <Animate
                             className="bg-white p-10 rounded-3xl shadow-sm border-b-8 border-primary-green relative overflow-hidden group"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
+                            animation="fadeInUp"
+                            duration={0.6}
                         >
                             <div className="relative z-10">
                                 <div className="text-primary-green mb-6"><TrendingUp size={48} /></div>
@@ -162,15 +152,14 @@ const ProgramsPage = () => {
                                 </div>
                             </div>
                             <div className="absolute top-10 right-10 opacity-[0.03] rotate-12 group-hover:rotate-0 transition-transform"><TrendingUp size={200} /></div>
-                        </motion.div>
+                        </Animate>
 
                         {/* Life Lessons */}
-                        <motion.div
+                        <Animate
                             className="bg-white p-10 rounded-3xl shadow-sm border-b-8 border-primary-yellow relative overflow-hidden group"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
+                            animation="fadeInUp"
+                            duration={0.6}
+                            delay={0.1}
                         >
                             <div className="relative z-10">
                                 <div className="text-primary-yellow mb-6"><Video size={48} /></div>
@@ -183,15 +172,14 @@ const ProgramsPage = () => {
                                 </div>
                             </div>
                             <div className="absolute top-10 right-10 opacity-[0.03] -rotate-12 group-hover:rotate-0 transition-transform"><Video size={200} /></div>
-                        </motion.div>
+                        </Animate>
 
                         {/* Outreach */}
-                        <motion.div
+                        <Animate
                             className="bg-white p-10 rounded-3xl shadow-sm border-b-8 border-secondary-orange relative overflow-hidden group"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
+                            animation="fadeInUp"
+                            duration={0.6}
+                            delay={0.2}
                         >
                             <div className="relative z-10">
                                 <div className="text-secondary-orange mb-6"><Heart size={48} /></div>
@@ -202,15 +190,14 @@ const ProgramsPage = () => {
                                 <span className="bg-secondary-orange/10 text-secondary-orange text-[10px] font-bold px-3 py-1 rounded-full uppercase">Community Focus</span>
                             </div>
                             <div className="absolute top-10 right-10 opacity-[0.03] rotate-45 group-hover:rotate-0 transition-transform"><Heart size={200} /></div>
-                        </motion.div>
+                        </Animate>
 
                         {/* Fellowship */}
-                        <motion.div
+                        <Animate
                             className="bg-dark-grey p-10 rounded-3xl shadow-sm border-b-8 border-primary-green relative overflow-hidden group text-white"
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
+                            animation="fadeInUp"
+                            duration={0.6}
+                            delay={0.3}
                         >
                             <div className="relative z-10">
                                 <div className="text-primary-green mb-6"><Globe size={48} /></div>
@@ -221,7 +208,7 @@ const ProgramsPage = () => {
                                 <div className="inline-block bg-primary-green text-white px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">Register for Updates</div>
                             </div>
                             <div className="absolute top-10 right-10 opacity-[0.05] -rotate-12 group-hover:rotate-0 transition-transform"><Globe size={200} /></div>
-                        </motion.div>
+                        </Animate>
                     </div>
                 </div>
             </section>

@@ -14,6 +14,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import config from '@/config/framework.config'
 import { navGroups } from '@/config/admin-nav'
+import dashboardConfig from '@/config/admin-dashboard'
 
 export function AppSidebar() {
     const pathname = usePathname()
@@ -41,11 +42,11 @@ export function AppSidebar() {
                         <SidebarMenuButton size='lg' asChild className='hover:bg-transparent active:bg-transparent'>
                             <Link href='/admin-dashboard'>
                                 <div className='flex aspect-square size-10 items-center justify-center rounded-lg overflow-hidden'>
-                                    <img src={config.org.logo} alt={config.org.adminLabel} className='size-10 object-contain' />
+                                    <img src={dashboardConfig.logo} alt={dashboardConfig.adminLabel} className='size-10 object-contain' />
                                 </div>
                                 <div className='grid flex-1 text-start text-sm leading-tight'>
-                                    <span className='truncate font-semibold'>{config.org.adminLabel}</span>
-                                    <span className='truncate text-xs text-sidebar-foreground/60'>{config.org.name}</span>
+                                    <span className='truncate font-semibold'>{dashboardConfig.adminLabel}</span>
+                                    <span className='truncate text-xs text-sidebar-foreground/60'>{dashboardConfig.orgName}</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>

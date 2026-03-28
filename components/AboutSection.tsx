@@ -2,26 +2,59 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useInView, animate, useMotionValue, useTransform } from 'framer-motion';
 import config from '@/config/framework.config';
 
 const AnimatedCounter = ({ target, duration = 2 }: { target: number, duration?: number }) => {
-    const count = useMotionValue(0);
-    const rounded = useTransform(count, (latest) => Math.round(latest));
     const [displayValue, setDisplayValue] = useState(0);
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, amount: 0.5 });
+    const ref = useRef<HTMLSpanElement>(null);
+    const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
-        if (isInView) {
-            const controls = animate(count, target, {
-                duration,
-                ease: "easeOut",
-                onUpdate: (latest) => setDisplayValue(Math.round(latest))
-            });
-            return controls.stop;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.5 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
         }
-    }, [isInView, count, target, duration]);
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isInView) return;
+
+        let start = 0;
+        const increment = target / (duration * 60); // 60fps
+        let animationFrameId: number;
+
+        const animate = () => {
+            start += increment;
+            if (start >= target) {
+                setDisplayValue(target);
+                return;
+            }
+            setDisplayValue(Math.round(start));
+            animationFrameId = requestAnimationFrame(animate);
+        };
+
+        animationFrameId = requestAnimationFrame(animate);
+
+        return () => {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        };
+    }, [isInView, target, duration]);
 
     return <span ref={ref}>{displayValue}</span>;
 };
@@ -41,17 +74,37 @@ interface AboutSectionProps {
 
 const AboutSection = ({ content }: AboutSectionProps) => {
     const { eyebrow, heading, paragraphs, stat_number, stat_label, image } = content;
+    const [isInView, setIsInView] = useState(false);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsInView(true);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        const section = document.querySelector('section');
+        if (section) {
+            observer.observe(section);
+        }
+
+        return () => {
+            if (section) {
+                observer.unobserve(section);
+            }
+        };
+    }, []);
 
     return (
         <section className="py-20 px-6 bg-white font-poppins overflow-hidden">
             <div className="max-w-[1200px] mx-auto flex flex-col lg:flex-row gap-16 items-center">
 
                 <div className="relative w-full lg:w-1/2">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1 }}
-                        className="relative z-10"
+                    <div
+                        className={`relative z-10 transition-all duration-1000 ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}
                     >
                         <div className="relative aspect-[4/5] w-full max-w-[450px] mx-auto lg:ml-0 overflow-hidden shadow-2xl">
                             {image ? (
@@ -67,27 +120,23 @@ const AboutSection = ({ content }: AboutSectionProps) => {
                             )}
                         </div>
 
-                        <motion.div
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
-                            transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
-                            className="absolute -bottom-10 -left-6 md:-left-10 bg-secondary-orange text-white p-8 md:p-10 shadow-xl z-20 min-w-[180px]"
+                        <div
+                            className={`absolute -bottom-10 -left-6 md:-left-10 bg-secondary-orange text-white p-8 md:p-10 shadow-xl z-20 min-w-[180px] transition-all duration-700 delay-500 ${isInView ? 'scale-100' : 'scale-0'}`}
+                            style={{ transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }}
                         >
                             <h3 className="text-4xl md:text-5xl font-bold mb-1">
                                 +<AnimatedCounter target={stat_number} />
                             </h3>
                             <p className="text-xs md:text-sm font-bold tracking-[2px] uppercase whitespace-pre-line">{stat_label}</p>
-                        </motion.div>
-                    </motion.div>
+                        </div>
+                    </div>
 
                     <div className="absolute top-10 right-0 w-full h-full bg-light-bg -z-0 translate-x-10 -translate-y-10 hidden lg:block"></div>
                 </div>
 
                 <div className="w-full lg:w-1/2">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                    <div
+                        className={`transition-all duration-800 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                     >
                         <span className="text-primary-green text-sm font-bold tracking-[3px] uppercase mb-4 block">{eyebrow}</span>
                         <h2 className="text-2xl md:text-4xl lg:text-4xl font-bold text-dark-grey mb-8 leading-tight whitespace-pre-line">
@@ -112,7 +161,7 @@ const AboutSection = ({ content }: AboutSectionProps) => {
                                 <span className="text-3xl font-serif italic text-gray-300 transform -rotate-6 block">{config.org.shortName}</span>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
 
             </div>

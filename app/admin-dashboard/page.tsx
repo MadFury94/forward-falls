@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { TrendingUp, ExternalLink, Globe } from "lucide-react";
 import config from "@/config/framework.config";
-import { statCards as statCardConfig, quickActions as quickActionConfig } from "@/config/admin-nav";
+import dashboardConfig from "@/config/admin-dashboard";
 
 export default function Dashboard() {
     const [stats, setStats] = useState({ posts: 0, team: 0, accounts: 0, media: 0 });
@@ -32,8 +32,8 @@ export default function Dashboard() {
         }).finally(() => setLoading(false));
     }, []);
 
-    const statCards = statCardConfig.map((c) => ({ ...c, value: stats[c.statKey], accent: c.accentHex }));
-    const quickActions = quickActionConfig.map((c) => ({ ...c, accent: c.accentHex }));
+    const statCards = dashboardConfig.statCards.map((c) => ({ ...c, value: stats[c.statKey], accent: c.accentHex }));
+    const quickActions = dashboardConfig.quickActions.map((c) => ({ ...c, accent: c.accentHex }));
 
     return (
         <main className="flex-1 p-6 md:p-8 bg-[#f7f8fa] min-h-screen font-poppins">
@@ -43,10 +43,10 @@ export default function Dashboard() {
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-8">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-bold tracking-[3px] uppercase text-[#00baa3]">{config.org.name}</span>
+                            <span className="text-xs font-bold tracking-[3px] uppercase text-[#00baa3]">{dashboardConfig.orgName}</span>
                         </div>
                         <h1 className="text-2xl md:text-3xl font-bold text-[#2d2d2d]">
-                            Welcome back{user?.name ? `, ${user.name}` : ''} 👋
+                            {dashboardConfig.welcomeMessage.replace('{name}', user?.name ? `, ${user.name}` : '')}
                         </h1>
                         <p className="text-gray-400 mt-1 text-sm">Here's what's happening with your site today.</p>
                     </div>
@@ -109,7 +109,7 @@ export default function Dashboard() {
 
                 {/* Footer note */}
                 <p className="text-center text-xs text-gray-300 mt-8">
-                    {config.org.name} Admin · {new Date().getFullYear()}
+                    {dashboardConfig.orgName} Admin · {new Date().getFullYear()}
                 </p>
             </div>
         </main>

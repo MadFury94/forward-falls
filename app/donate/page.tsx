@@ -5,7 +5,7 @@ import { ArrowLeft, Copy, Check, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { motion } from 'framer-motion';
+import { Animate } from '@/components/ui/animate';
 
 const BORDER_COLORS = ['border-primary-green', 'border-primary-yellow', 'border-secondary-orange'];
 
@@ -69,11 +69,9 @@ const DonatePage = () => {
                 <div className="max-w-[1200px] mx-auto px-6">
                     <div className="grid lg:grid-cols-2 gap-16 mb-16">
                         {/* Impact Section */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6 }}
+                        <Animate
+                            animation="fadeInLeft"
+                            duration={0.6}
                         >
                             <h2 className="text-3xl font-bold mb-8 text-dark-grey uppercase">Your Impact <span className="text-primary-green">Matters</span></h2>
 
@@ -110,14 +108,13 @@ const DonatePage = () => {
                                     </div>
                                 </div>
                             </div>
-                        </motion.div>
+                        </Animate>
 
                         {/* Bank Accounts Section */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.6, delay: 0.2 }}
+                        <Animate
+                            animation="fadeInRight"
+                            duration={0.6}
+                            delay={0.2}
                         >
                             <h2 className="text-3xl font-bold mb-8 text-dark-grey uppercase">Bank <span className="text-primary-yellow">Details</span></h2>
 
@@ -169,15 +166,13 @@ const DonatePage = () => {
                                     <span className="font-bold">Note:</span> Please include your name or contact information in the transfer reference so we can send you a receipt and thank you message.
                                 </p>
                             </div>
-                        </motion.div>
+                        </Animate>
                     </div>
 
                     {/* Additional Ways to Help */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                    <Animate
+                        animation="fadeInUp"
+                        duration={0.6}
                         className="bg-light-bg p-12 rounded-3xl"
                     >
                         <h2 className="text-3xl font-bold mb-8 text-dark-grey uppercase text-center">Other Ways to <span className="text-primary-green">Help</span></h2>
@@ -209,7 +204,7 @@ const DonatePage = () => {
                                 </button>
                             </Link>
                         </div>
-                    </motion.div>
+                    </Animate>
                 </div>
             </section>
 

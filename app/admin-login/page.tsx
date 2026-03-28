@@ -4,6 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Animate } from "@/components/ui/animate";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
     Lock,
     Mail,
@@ -17,7 +24,6 @@ import {
     LogIn,
     AlertCircle
 } from "lucide-react";
-import { motion } from "framer-motion";
 
 export default function AdminLogin() {
     const router = useRouter();
@@ -69,28 +75,16 @@ export default function AdminLogin() {
                 </div>
 
                 {/* Decorative Elements */}
-                <motion.div
-                    animate={{ y: [0, -20, 0] }}
-                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-20 right-20 w-64 h-64 bg-white/10 rounded-full"
-                />
-                <motion.div
-                    animate={{ y: [0, 15, 0] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                    className="absolute bottom-40 left-20 w-48 h-48 bg-white/10 rounded-full"
-                />
-                <motion.div
-                    animate={{ y: [0, -10, 0] }}
-                    transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                    className="absolute top-1/2 left-1/3 w-32 h-32 bg-primary-yellow/30 rounded-full"
-                />
+                <div className="absolute top-20 right-20 w-64 h-64 bg-white/10 rounded-full" />
+                <div className="absolute bottom-40 left-20 w-48 h-48 bg-white/10 rounded-full" />
+                <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-primary-yellow/30 rounded-full animate-pulse" style={{ animationDuration: '7s' }} />
 
                 {/* Content */}
                 <div className="relative z-10 flex flex-col justify-center items-center w-full h-full px-16 text-white">
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
+                    <Animate
+                        animation="fadeInDown"
+                        delay={0}
+                        duration={0.6}
                         className="mb-8"
                     >
                         <Image
@@ -100,40 +94,40 @@ export default function AdminLogin() {
                             height={120}
                             className="filter brightness-0 invert"
                         />
-                    </motion.div>
+                    </Animate>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
+                    <Animate
+                        animation="scaleIn"
+                        delay={0.2}
+                        duration={0.5}
                         className="mb-6 px-6 py-2 bg-white/20 backdrop-blur-sm rounded-full"
                     >
                         <span className="text-sm font-medium tracking-wide">ADMIN PORTAL</span>
-                    </motion.div>
+                    </Animate>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
+                    <Animate
+                        animation="fadeInUp"
+                        delay={0.3}
+                        duration={0.5}
                         className="text-4xl font-bold text-center mb-6"
                     >
                         Welcome Back
-                    </motion.h1>
+                    </Animate>
 
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
+                    <Animate
+                        animation="fadeIn"
+                        delay={0.4}
+                        duration={0.5}
                         className="text-lg text-center text-white/80 mb-12 max-w-md"
                     >
                         Access the admin dashboard to manage programs, users, and content
-                    </motion.p>
+                    </Animate>
 
                     {/* Feature Cards */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.5 }}
+                    <Animate
+                        animation="fadeInUp"
+                        delay={0.5}
+                        duration={0.5}
                         className="grid grid-cols-2 gap-4 w-full max-w-md"
                     >
                         <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 hover:bg-white/20 transition-colors">
@@ -156,173 +150,167 @@ export default function AdminLogin() {
                             <h3 className="font-semibold">Settings</h3>
                             <p className="text-sm text-white/70">Configure system</p>
                         </div>
-                    </motion.div>
+                    </Animate>
                 </div>
             </div>
 
-            {/* Right Side - Login Form */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 lg:p-16 bg-light-bg">
-                <div className="w-full max-w-md">
-                    {/* Mobile Logo */}
-                    <div className="lg:hidden text-center mb-8">
-                        <Image
-                            src="/FFI.png"
-                            alt="Forward Falls Initiative Logo"
-                            width={80}
-                            height={80}
-                            className="mx-auto mb-4"
-                        />
-                        <h1 className="text-2xl font-bold text-dark-grey">Admin Portal</h1>
+            {/* Right Side - Login Form */ }
+    <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 lg:p-16 bg-light-bg">
+        <div className="w-full max-w-md">
+            {/* Mobile Logo */}
+            <div className="lg:hidden text-center mb-8">
+                <Image
+                    src="/FFI.png"
+                    alt="Forward Falls Initiative Logo"
+                    width={80}
+                    height={80}
+                    className="mx-auto mb-4"
+                />
+                <h1 className="text-2xl font-bold text-dark-grey">Admin Portal</h1>
+            </div>
+
+            {/* Login Card */}
+            <Animate
+                animation="fadeInUp"
+                delay={0}
+                duration={0.5}
+                className="bg-white rounded-2xl shadow-xl p-8"
+            >
+                {/* Card Header */}
+                <div className="text-center mb-8">
+                    <div className="w-16 h-16 bg-primary-green rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Lock className="h-8 w-8 text-white" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-dark-grey">Admin Login</h2>
+                    <p className="mt-2 text-gray-500">Enter your credentials to access the dashboard</p>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                    <Alert variant="destructive" className="mb-6">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+
+                {/* Login Form */}
+                <form onSubmit={handleSubmit}>
+                    {/* Email */}
+                    <div className="mb-6">
+                        <Label htmlFor="email" className="mb-2">
+                            Username or Email
+                        </Label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <Mail className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <Input
+                                id="email"
+                                type="text"
+                                name="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all"
+                                placeholder="username or email@example.com"
+                                required
+                                autoComplete="username"
+                            />
+                        </div>
                     </div>
 
-                    {/* Login Card */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="bg-white rounded-2xl shadow-xl p-8"
-                    >
-                        {/* Card Header */}
-                        <div className="text-center mb-8">
-                            <div className="w-16 h-16 bg-primary-green rounded-full flex items-center justify-center mx-auto mb-4">
-                                <Lock className="h-8 w-8 text-white" />
-                            </div>
-                            <h2 className="text-2xl font-bold text-dark-grey">Admin Login</h2>
-                            <p className="mt-2 text-gray-500">Enter your credentials to access the dashboard</p>
+                    {/* Password */}
+                    <div className="mb-6">
+                        <div className="flex items-center justify-between mb-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Link href="#" className="text-sm text-primary-green hover:underline font-medium">
+                                Forgot password?
+                            </Link>
                         </div>
-
-                        {/* Error Message */}
-                        {error && (
-                            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-600">
-                                <AlertCircle className="h-5 w-5 flex-shrink-0" />
-                                <span className="text-sm">{error}</span>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <Lock className="h-5 w-5 text-gray-400" />
                             </div>
-                        )}
-
-                        {/* Login Form */}
-                        <form onSubmit={handleSubmit}>
-                            {/* Email */}
-                            <div className="mb-6">
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Username or Email
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <Mail className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        id="email"
-                                        type="text"
-                                        name="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all"
-                                        placeholder="username or email@example.com"
-                                        required
-                                        autoComplete="username"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Password */}
-                            <div className="mb-6">
-                                <div className="flex items-center justify-between mb-2">
-                                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                                        Password
-                                    </label>
-                                    <Link href="#" className="text-sm text-primary-green hover:underline font-medium">
-                                        Forgot password?
-                                    </Link>
-                                </div>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <Lock className="h-5 w-5 text-gray-400" />
-                                    </div>
-                                    <input
-                                        id="password"
-                                        type={showPassword ? "text" : "password"}
-                                        name="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full pl-12 pr-12 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all"
-                                        placeholder="••••••••"
-                                        required
-                                        autoComplete="current-password"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute inset-y-0 right-0 pr-4 flex items-center"
-                                    >
-                                        {showPassword ? (
-                                            <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                                        ) : (
-                                            <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Remember Me */}
-                            <div className="mb-6">
-                                <label className="inline-flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        name="remember"
-                                        className="w-5 h-5 text-primary-green border-gray-300 rounded focus:ring-primary-green"
-                                    />
-                                    <span className="ml-3 text-sm text-gray-600">Remember me for 30 days</span>
-                                </label>
-                            </div>
-
-                            {/* Submit Button */}
+                            <Input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full pl-12 pr-12 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all"
+                                placeholder="••••••••"
+                                required
+                                autoComplete="current-password"
+                            />
                             <button
-                                type="submit"
-                                disabled={loading}
-                                className="w-full py-4 px-6 bg-primary-green hover:bg-primary-green/90 disabled:bg-gray-400 text-white font-semibold rounded-xl shadow-lg flex items-center justify-center transition-all hover:shadow-xl hover:-translate-y-0.5"
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-0 pr-4 flex items-center"
                             >
-                                {loading ? (
-                                    <span className="flex items-center">
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Verifying...
-                                    </span>
+                                {showPassword ? (
+                                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                                 ) : (
-                                    <>
-                                        <LogIn className="h-5 w-5 mr-2" />
-                                        Sign In to Dashboard
-                                    </>
+                                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
                                 )}
                             </button>
-                        </form>
-
-                        {/* Divider */}
-                        <div className="flex items-center my-8">
-                            <div className="flex-1 border-t border-gray-200"></div>
-                            <span className="px-4 text-sm text-gray-400">Secure Access</span>
-                            <div className="flex-1 border-t border-gray-200"></div>
                         </div>
-
-                        {/* Security Badge */}
-                        <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
-                            <Shield className="h-5 w-5 text-green-500" />
-                            <span>256-bit SSL Encrypted Connection</span>
-                        </div>
-                    </motion.div>
-
-                    {/* Footer */}
-                    <div className="mt-8 text-center space-y-2">
-                        <Link href="/" className="inline-flex items-center gap-2 text-sm text-primary-green hover:underline font-medium">
-                            ← Back to Website
-                        </Link>
-                        <p className="text-xs text-gray-400">
-                            &copy; 2026 Forward Falls Initiative. All rights reserved.
-                        </p>
                     </div>
+
+                    {/* Remember Me */}
+                    <div className="mb-6">
+                        <label className="inline-flex items-center">
+                            <Checkbox id="remember" />
+                            <span className="ml-3 text-sm text-gray-600">Remember me for 30 days</span>
+                        </label>
+                    </div>
+
+                    {/* Submit Button */}
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-4 px-6 bg-primary-green hover:bg-primary-green/90 disabled:bg-gray-400 text-white font-semibold rounded-xl shadow-lg flex items-center justify-center transition-all hover:shadow-xl hover:-translate-y-0.5"
+                    >
+                        {loading ? (
+                            <span className="flex items-center">
+                                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Verifying...
+                            </span>
+                        ) : (
+                            <>
+                                <LogIn className="h-5 w-5 mr-2" />
+                                Sign In to Dashboard
+                            </>
+                        )}
+                    </Button>
+                </form>
+
+                {/* Divider */}
+                <div className="flex items-center my-8">
+                    <div className="flex-1 border-t border-gray-200"></div>
+                    <span className="px-4 text-sm text-gray-400">Secure Access</span>
+                    <div className="flex-1 border-t border-gray-200"></div>
                 </div>
-            </div>
+
+                {/* Security Badge */}
+                <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
+                    <Shield className="h-5 w-5 text-green-500" />
+                    <span>256-bit SSL Encrypted Connection</span>
+                </div>
+            </Animate>
+
+        {/* Footer */}
+        <div className="mt-8 text-center space-y-2">
+            <Link href="/" className="inline-flex items-center gap-2 text-sm text-primary-green hover:underline font-medium">
+                ← Back to Website
+            </Link>
+            <p className="text-xs text-gray-400">
+                &copy; 2026 Forward Falls Initiative. All rights reserved.
+            </p>
         </div>
+    </div>
+        </div >
+        </div >
     );
 }
