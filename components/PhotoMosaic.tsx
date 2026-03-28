@@ -23,18 +23,20 @@ const SocialIcons = () => (
 
 /* ── Info Card tile (full colored card) ── */
 const InfoTile = ({ card, bgImage }: { card: ProfileCard; bgImage?: string }) => (
-    <div className={`${card.bgColor} text-white p-6 md:p-8 flex flex-col justify-center h-full relative overflow-hidden`}>
+    <div className={`${card.bgColor} text-white p-4 md:p-8 flex flex-col justify-center h-full relative overflow-hidden`}>
         {bgImage && (
             <div className="absolute inset-0 -z-10 opacity-20">
                 <Image src={bgImage} alt="bg" fill sizes="25vw" className="object-cover" />
             </div>
         )}
-        <span className="text-[11px] font-bold tracking-[0.25em] uppercase opacity-90 mb-2 block">
+        <span className="text-[9px] md:text-[11px] font-bold tracking-[0.25em] uppercase opacity-90 mb-1 md:mb-2 block">
             {card.subtitle}
         </span>
-        <h3 className="text-2xl md:text-3xl font-bold mb-3 leading-tight">{card.name}</h3>
-        <p className="text-sm leading-relaxed opacity-90">{card.description}</p>
-        <SocialIcons />
+        <h3 className="text-xl md:text-3xl font-bold mb-2 md:mb-3 leading-tight">{card.name}</h3>
+        <p className="text-[11px] md:text-sm leading-relaxed opacity-90 line-clamp-4 md:line-clamp-none">{card.description}</p>
+        <div className="hidden md:block">
+            <SocialIcons />
+        </div>
     </div>
 );
 
@@ -108,7 +110,7 @@ const PhotoMosaic = () => {
         setDragDelta(0);
     };
 
-    const ROW_HEIGHT = "clamp(220px, 35vw, 360px)";
+    const ROW_HEIGHT = "clamp(260px, 35vw, 360px)";
 
     const trackWidthStyle: React.CSSProperties = { width: `${slides.length * 100}%` };
     const childWidthPercent = 100 / slides.length;

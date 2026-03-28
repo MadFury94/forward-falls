@@ -7,6 +7,7 @@ import { ArrowRight } from 'lucide-react';
 import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName } from '@/lib/wordpress-api';
 import type { CMSTeamMember } from '@/lib/cms';
 import config from '@/config/framework.config';
+import { fetchTeamMembers } from '@/lib/wordpress-api';
 
 const getInitials = (name: string): string =>
     name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
@@ -22,11 +23,10 @@ const Team = () => {
     const [status, setStatus] = useState<"loading" | "done">("loading");
 
     useEffect(() => {
-        fetch("/api/team")
-            .then(r => r.json())
+        fetchTeamMembers()
             .then(data => {
-                if (data.success && Array.isArray(data.members)) {
-                    setMembers([...data.members].sort((a: CMSTeamMember, b: CMSTeamMember) => (a.order ?? 999) - (b.order ?? 999)));
+                if (Array.isArray(data)) {
+                    setMembers([...data].sort((a, b) => (a.order ?? 999) - (b.order ?? 999)));
                 }
                 setStatus("done");
             })
