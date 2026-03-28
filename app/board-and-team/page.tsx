@@ -3,11 +3,13 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
+import Link from "next/link";
 import { User } from "lucide-react";
 import { Animate } from "@/components/ui/animate";
 import { boardMembers } from "@/data/team";
-import { getTeamMemberImage, getTeamMemberRole, getTeamMemberName } from "@/lib/wordpress-api";
 import { useEffect, useState } from "react";
+import { fetchTeamMembers, getTeamMemberImage, getTeamMemberRole, getTeamMemberName } from "@/lib/wordpress-api";
+import type { CMSTeamMember } from "@/lib/cms";
 
 const getInitials = (name: string): string => {
     return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2);
@@ -16,12 +18,15 @@ const getInitials = (name: string): string => {
 const BORDER_COLORS = ["border-primary-green", "border-primary-yellow", "border-secondary-orange"];
 
 const BoardPage = () => {
-    const [wpMembers, setWpMembers] = useState<any[]>([]);
+    const [wpMembers, setWpMembers] = useState<CMSTeamMember[]>([]);
 
     useEffect(() => {
-        fetch("/api/team")
-            .then(r => r.json())
-            .then(data => { if (data.success && Array.isArray(data.members)) setWpMembers([...data.members].sort((a: any, b: any) => (a.acf?.order ?? 999) - (b.acf?.order ?? 999))); });
+        fetchTeamMembers()
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setWpMembers([...data].sort((a, b) => (a.order ?? 999) - (b.order ?? 999)));
+                }
+            });
     }, []);
 
     return (
@@ -50,6 +55,85 @@ const BoardPage = () => {
                         <p className="max-w-2xl text-gray-200 text-lg font-medium">
                             Guided by experts and driven by passionate young leaders committed to social change.
                         </p>
+                    </Animate>
+                </div>
+            </section>
+
+            {/* Core Team (Engine Room) */}
+            <section className="py-24 bg-light-bg">
+                <div className="max-w-[1200px] mx-auto px-6">
+                    <Animate
+                        className="text-center mb-16"
+                        animation="fadeInUp"
+                        duration={0.6}
+                    >
+                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">The Engine Room</span>
+                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Meet The <span className="text-primary-yellow">Team</span></h2>
+                        <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
+                        <p className="max-w-2xl mx-auto text-gray-500">
+                            We are a collective of young, vibrant professionals and volunteers. From medical students to software engineers, our diverse backgrounds fuel our innovative approach to solving education inequality.
+                        </p>
+                    </Animate>
+
+                    {/* Featured Team with Images - Top Row */}
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                        {wpMembers.map((member, i) => {
+                            const name = getTeamMemberName(member);
+                            const role = getTeamMemberRole(member);
+                            const img = getTeamMemberImage(member);
+                            return (
+                                <Link
+                                    key={member.id}
+                                    href={`/team/${member.id}`}
+                                    className="block"
+                                >
+                                    <Animate
+                                        className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden h-full ${BORDER_COLORS[i % BORDER_COLORS.length]}`}
+                                        animation="fadeInUp"
+                                        duration={0.5}
+                                        delay={(i % 4) * 0.1}
+                                    >
+                                        <div className="w-full h-64 relative bg-gray-100 overflow-hidden">
+                                            {img ? (
+                                                <Image
+                                                    src={img}
+                                                    alt={`${name} - ${role}`}
+                                                    fill
+                                                    sizes="(max-width: 1024px) 50vw, 25vw"
+                                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                    style={{ objectPosition: 'center 20%' }}
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-green/20 to-primary-yellow/20">
+                                                    <span className="text-6xl font-bold text-dark-grey/30">{getInitials(name)}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="p-6 text-center">
+                                            <h3 className="text-xl font-bold text-dark-grey mb-1 uppercase line-clamp-1">{name}</h3>
+                                            <p className="text-primary-green text-xs font-bold uppercase tracking-widest">{role}</p>
+                                        </div>
+                                    </Animate>
+                                </Link>
+                            );
+                        })}
+                    </div>
+
+                    <Animate
+                        className="mt-16 text-center bg-white p-8 rounded-xl border-l-4 border-primary-green shadow-sm max-w-3xl mx-auto"
+                        animation="fadeInUp"
+                        duration={0.6}
+                    >
+                        <p className="text-dark-grey font-semibold mb-2">
+                            <strong className="text-2xl text-primary-green">50+ Active Volunteers</strong>
+                        </p>
+                        <p className="text-gray-500">
+                            Working across operations, communications, partnerships, and program implementation.
+                        </p>
+                        <div className="mt-6 pt-6 border-t border-gray-200">
+                            <p className="italic text-gray-500 text-sm">"Volunteering with Forward Falls has given me a platform to give back while learning critical leadership skills."</p>
+                            <p className="text-right text-xs font-bold text-primary-green mt-2 uppercase">- Volunteer Testimony</p>
+                        </div>
                     </Animate>
                 </div>
             </section>
@@ -87,80 +171,6 @@ const BoardPage = () => {
                             </Animate>
                         ))}
                     </div>
-                </div>
-            </section>
-
-            {/* Core Team */}
-            <section className="py-24 bg-light-bg">
-                <div className="max-w-[1200px] mx-auto px-6">
-                    <Animate
-                        className="text-center mb-16"
-                        animation="fadeInUp"
-                        duration={0.6}
-                    >
-                        <span className="text-primary-green font-bold tracking-[0.3em] uppercase text-sm mb-4 block">The Engine Room</span>
-                        <h2 className="text-4xl font-bold mb-4 text-dark-grey uppercase">Meet The <span className="text-primary-yellow">Team</span></h2>
-                        <div className="w-20 h-1 bg-primary-yellow mx-auto mb-6"></div>
-                        <p className="max-w-2xl mx-auto text-gray-500">
-                            We are a collective of young, vibrant professionals and volunteers. From medical students to software engineers, our diverse backgrounds fuel our innovative approach to solving education inequality.
-                        </p>
-                    </Animate>
-
-                    {/* Featured Team with Images - Top Row */}
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                        {wpMembers.map((member, i) => {
-                            const name = getTeamMemberName(member);
-                            const role = getTeamMemberRole(member);
-                            const img = getTeamMemberImage(member);
-                            return (
-                                <Animate
-                                    key={member.id}
-                                    className={`bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all group border-t-4 overflow-hidden ${BORDER_COLORS[i % BORDER_COLORS.length]}`}
-                                    animation="fadeInUp"
-                                    duration={0.5}
-                                    delay={(i % 4) * 0.1}
-                                >
-                                    <div className="w-full h-64 relative bg-gray-100 overflow-hidden">
-                                        {img ? (
-                                            <Image
-                                                src={img}
-                                                alt={`${name} - ${role}`}
-                                                fill
-                                                sizes="(max-width: 1024px) 50vw, 25vw"
-                                                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                style={{ objectPosition: 'center 20%' }}
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-green/20 to-primary-yellow/20">
-                                                <span className="text-6xl font-bold text-dark-grey/30">{getInitials(name)}</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="p-6 text-center">
-                                        <h3 className="text-xl font-bold text-dark-grey mb-1 uppercase">{name}</h3>
-                                        <p className="text-primary-green text-xs font-bold uppercase tracking-widest">{role}</p>
-                                    </div>
-                                </Animate>
-                            );
-                        })}
-                    </div>
-
-                    <Animate
-                        className="mt-16 text-center bg-white p-8 rounded-xl border-l-4 border-primary-green shadow-sm max-w-3xl mx-auto"
-                        animation="fadeInUp"
-                        duration={0.6}
-                    >
-                        <p className="text-dark-grey font-semibold mb-2">
-                            <strong className="text-2xl text-primary-green">50+ Active Volunteers</strong>
-                        </p>
-                        <p className="text-gray-500">
-                            Working across operations, communications, partnerships, and program implementation.
-                        </p>
-                        <div className="mt-6 pt-6 border-t border-gray-200">
-                            <p className="italic text-gray-500 text-sm">"Volunteering with Forward Falls has given me a platform to give back while learning critical leadership skills."</p>
-                            <p className="text-right text-xs font-bold text-primary-green mt-2 uppercase">- Volunteer Testimony</p>
-                        </div>
-                    </Animate>
                 </div>
             </section>
 

@@ -40,6 +40,7 @@ export interface CMSTeamMember {
     name: string;
     role: string;
     image: string | null;
+    bio?: string;
     order?: number;
     _raw?: unknown;
 }
@@ -85,7 +86,7 @@ export interface ICMSAdapter {
 
     // Team
     fetchTeamMembers(): Promise<CMSTeamMember[]>;
-    fetchTeamMember(id: number, token: string): Promise<CMSTeamMember | null>;
+    fetchTeamMember(id: number, token?: string): Promise<CMSTeamMember | null>;
     createTeamMember(data: Partial<CMSTeamMember> & { name: string }, token: string): Promise<{ id: number }>;
     updateTeamMember(id: number, data: Partial<CMSTeamMember>, token: string): Promise<void>;
     deleteTeamMember(id: number, token: string): Promise<void>;

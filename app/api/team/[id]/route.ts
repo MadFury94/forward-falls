@@ -26,13 +26,14 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
     const body = await request.json();
-    const { name, roles, featured_media, menu_order, acf_order } = body;
+    const { name, roles, bio, featured_media, menu_order, acf_order } = body;
 
     const wpPayload: Record<string, any> = {};
     if (name !== undefined || roles !== undefined || acf_order !== undefined) {
         wpPayload.acf = {
             ...(name !== undefined ? { name } : {}),
             ...(roles !== undefined ? { role: roles } : {}),
+            ...(bio !== undefined ? { bio } : {}),
             ...(acf_order !== undefined ? { order: acf_order } : {}),
         };
     }

@@ -13,7 +13,7 @@ export default function NewTeamMember() {
     const [token, setToken] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
-    const [form, setForm] = useState({ name: "", roles: "", order: 0 });
+    const [form, setForm] = useState({ name: "", roles: "", bio: "", order: 0 });
 
     useEffect(() => {
         setToken(localStorage.getItem("wp_token") || "");
@@ -57,6 +57,7 @@ export default function NewTeamMember() {
                 body: JSON.stringify({
                     name: form.name,
                     roles: form.roles,
+                    bio: form.bio,
                     menu_order: form.order,
                     ...(imageId ? { featured_media: imageId } : {}),
                 }),
@@ -130,6 +131,14 @@ export default function NewTeamMember() {
                             onChange={(e) => setForm({ ...form, roles: e.target.value })}
                             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green"
                             placeholder="e.g. Program Director" />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-dark-grey mb-2">Short Bio</label>
+                        <textarea value={form.bio}
+                            onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green min-h-[120px] resize-none"
+                            placeholder="Tell us about this team member..." />
                     </div>
 
                     <div>

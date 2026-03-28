@@ -17,7 +17,7 @@ export default function EditTeamMember() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [uploadedImageId, setUploadedImageId] = useState<number | null>(null);
-    const [form, setForm] = useState({ name: "", roles: "", order: 0 });
+    const [form, setForm] = useState({ name: "", roles: "", bio: "", order: 0 });
 
     useEffect(() => {
         const t = localStorage.getItem("wp_token") || "";
@@ -34,6 +34,7 @@ export default function EditTeamMember() {
             setForm({
                 name: m.acf?.name || m.title?.rendered?.replace(/<[^>]*>/g, "") || "",
                 roles: m.acf?.role || m.acf?.roles || "",
+                bio: m.acf?.bio || "",
                 order: m.menu_order ?? 0,
             });
             const media = m._embedded?.["wp:featuredmedia"]?.[0];
@@ -94,6 +95,7 @@ export default function EditTeamMember() {
                 body: JSON.stringify({
                     name: form.name,
                     roles: form.roles,
+                    bio: form.bio,
                     menu_order: form.order,
                     ...(imageId ? { featured_media: imageId } : {}),
                 }),
@@ -175,6 +177,14 @@ export default function EditTeamMember() {
                             onChange={(e) => setForm({ ...form, roles: e.target.value })}
                             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green"
                             placeholder="e.g. Program Director" />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-dark-grey mb-2">Short Bio</label>
+                        <textarea value={form.bio}
+                            onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green min-h-[120px] resize-none"
+                            placeholder="Tell us about this team member..." />
                     </div>
 
                     <div>

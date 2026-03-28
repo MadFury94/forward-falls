@@ -130,7 +130,8 @@ function mapTeamMember(m: WPTeamMember): CMSTeamMember {
     }
     const role = (acf?.role || acf?.roles || acf?.title || acf?.position || acf?.job_title || acf?.designation || '') as string;
     const name = (acf?.name as string) || m.title?.rendered?.replace(/<[^>]*>/g, '') || '';
-    return { id: m.id, name, role, image, order: m.menu_order, _raw: m };
+    const bio = (acf?.bio || acf?.member_bio || '') as string;
+    return { id: m.id, name, role, image, bio, order: m.menu_order, _raw: m };
 }
 
 // ── WordPress Adapter ─────────────────────────────────────────
@@ -247,24 +248,23 @@ export class WordPressAdapter implements ICMSAdapter {
     // ── Team ───────────────────────────────────────────────────
 
     async fetchTeamMembers() {
-        const qs = new URLSearchParams({
-            acf_format: 'standard',
-            _embed: 'wp:featuredmedia',
-            per_page: '100',
-            status: 'publish',
-            orderby: 'menu_order',
-            order: 'asc',
-        });
-        const res = await fetch(`${this.base}/wp-json/wp/v2/team-member?${qs}`, { next: { revalidate: 60 } });
+        // Fetch via internal API proxy to handle errors and URL construction correctly
+        const res = await fetch('/api/team', { cache: 'no-store' });
         if (!res.ok) return [];
-        const data: WPTeamMember[] = await res.json();
-        return Array.isArray(data) ? data.map(mapTeamMember) : [];
+        const data = await res.json();
+        if (data.success && Array.isArray(data.members)) {
+            return data.members.map(mapTeamMember);
+        }
+        return [];
     }
 
-    async fetchTeamMember(id: number, token: string) {
+    async fetchTeamMember(id: number, token?: string) {
+        const headers: Record<string, string> = {};
+        if (token) Object.assign(headers, bearer(token));
+        
         const res = await fetch(
             `${this.base}/wp-json/wp/v2/team-member/${id}?acf_format=standard&_embed=wp:featuredmedia`,
-            { headers: bearer(token) }
+            { headers }
         );
         if (!res.ok) return null;
         return mapTeamMember(await res.json());
@@ -279,7 +279,7 @@ export class WordPressAdapter implements ICMSAdapter {
                 status: 'publish',
                 ...(data.image ? { featured_media: Number(data.image) } : {}),
                 ...(data.order !== undefined ? { menu_order: data.order } : {}),
-                acf: { name: data.name, role: data.role ?? '' },
+                acf: { name: data.name, role: data.role ?? '', bio: data.bio ?? '' },
             }),
         });
         if (!res.ok) throw new Error((await res.json()).message || 'Failed to create team member');
@@ -291,6 +291,7 @@ export class WordPressAdapter implements ICMSAdapter {
         const payload: Record<string, unknown> = {};
         if (data.name) { payload.title = data.name; payload.acf = { name: data.name }; }
         if (data.role !== undefined) payload.acf = { ...(payload.acf as object ?? {}), role: data.role };
+        if (data.bio !== undefined) payload.acf = { ...(payload.acf as object ?? {}), bio: data.bio };
         if (data.image) payload.featured_media = Number(data.image);
         if (data.order !== undefined) payload.menu_order = data.order;
 
