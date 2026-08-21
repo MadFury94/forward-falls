@@ -1,4 +1,4 @@
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
 
 export interface JWTUser {
     token: string;
@@ -22,7 +22,7 @@ export async function getJWTToken(username: string, password: string): Promise<J
 }
 
 /**
- * Validate an existing JWT token
+ * Validate an existing JWT token against WordPress
  */
 export async function validateJWTToken(token: string): Promise<boolean> {
     const res = await fetch(`${WP_URL}/wp-json/jwt-auth/v1/token/validate`, {
@@ -33,7 +33,7 @@ export async function validateJWTToken(token: string): Promise<boolean> {
 }
 
 /**
- * Build auth header from stored JWT token
+ * Build a Bearer Authorization header from a JWT token
  */
 export function getBearerHeader(token: string) {
     return { 'Authorization': `Bearer ${token}` };

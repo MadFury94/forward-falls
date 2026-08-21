@@ -1,11 +1,16 @@
-import { env } from 'process';
+// All credentials must come from environment variables — no hardcoded fallbacks.
+const WP_API_URL = process.env.WORDPRESS_API_URL;
+const WP_USERNAME = process.env.WORDPRESS_AUTH_USERNAME;
+const WP_PASSWORD = process.env.WORDPRESS_AUTH_PASSWORD;
 
-// Securely load environment variables
-const WP_API_URL = process.env.WORDPRESS_API_URL || 'https://azure-dugong-563921.hostingersite.com/wp-json/wp/v2';
-const WP_USERNAME = process.env.WORDPRESS_AUTH_USERNAME || 'admin';
-const WP_PASSWORD = process.env.WORDPRESS_AUTH_PASSWORD || 'iLTrxF^0YWh9s*fLx9lPGszj';
+if (!WP_API_URL || !WP_USERNAME || !WP_PASSWORD) {
+    throw new Error(
+        'Missing required WordPress environment variables: ' +
+        'WORDPRESS_API_URL, WORDPRESS_AUTH_USERNAME, WORDPRESS_AUTH_PASSWORD'
+    );
+}
 
-// Create Basic Auth header
+// Create Basic Auth header (used for admin-level WP operations only)
 const getAuthHeader = (): string => {
     const credentials = Buffer.from(`${WP_USERNAME}:${WP_PASSWORD}`).toString('base64');
     return `Basic ${credentials}`;
@@ -20,8 +25,8 @@ interface WordPressUser {
 }
 
 /**
- * Create a new WordPress user with admin role
- * Requires existing admin credentials
+ * Create a new WordPress user with admin role.
+ * Requires existing admin credentials from environment variables.
  */
 export async function createWordPressUser(
     username: string,
@@ -58,7 +63,7 @@ export async function createWordPressUser(
 }
 
 /**
- * Get all WordPress users
+ * Get all WordPress users.
  */
 export async function getWordPressUsers(): Promise<WordPressUser[]> {
     try {
@@ -80,7 +85,7 @@ export async function getWordPressUsers(): Promise<WordPressUser[]> {
 }
 
 /**
- * Delete a WordPress user by ID
+ * Delete a WordPress user by ID.
  */
 export async function deleteWordPressUser(userId: number): Promise<boolean> {
     try {
@@ -99,7 +104,7 @@ export async function deleteWordPressUser(userId: number): Promise<boolean> {
 }
 
 /**
- * Test WordPress connection and authentication
+ * Test WordPress connection and authentication.
  */
 export async function testWordPressConnection(): Promise<boolean> {
     try {
@@ -115,5 +120,3 @@ export async function testWordPressConnection(): Promise<boolean> {
         return false;
     }
 }
-
-export { WP_API_URL, WP_USERNAME, WP_PASSWORD };

@@ -30,8 +30,6 @@ const ContactPage = () => {
                 message: formData.get("message"),
             };
 
-            console.log("Sending payload:", payload);
-
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: {
@@ -40,11 +38,7 @@ const ContactPage = () => {
                 body: JSON.stringify(payload),
             });
 
-            console.log("Response status:", res.status);
-            console.log("Response headers:", res.headers);
-
             const text = await res.text();
-            console.log("Worker raw response:", text);
 
             let result: any = {};
             try {
@@ -59,20 +53,12 @@ const ContactPage = () => {
                 throw new Error(errorMsg);
             }
 
-            console.log('Email sent successfully:', result);
             setSubmitStatus("success");
             setErrorMessage('');
             form.reset();
 
-            // Reset success message after 5 seconds
             setTimeout(() => setSubmitStatus('idle'), 5000);
         } catch (error: any) {
-            console.error("Contact form error:", error);
-            console.error("Error details:", {
-                message: error?.message,
-                name: error?.name,
-                stack: error?.stack
-            });
             const errorMsg = error?.message || "Failed to send message. Please check your connection and try again.";
             setErrorMessage(errorMsg);
             setSubmitStatus("error");
@@ -162,10 +148,22 @@ const ContactPage = () => {
                             <div className="mt-16">
                                 <h4 className="font-bold text-dark-grey uppercase text-xs tracking-widest mb-6">Follow Our Impact</h4>
                                 <div className="flex gap-4">
-                                    {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
-                                        <div key={i} className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:text-primary-green hover:border-primary-green transition-all cursor-pointer">
+                                    {[
+                                        { Icon: Facebook, href: 'https://facebook.com/forwardfallsinitiative', label: 'Facebook' },
+                                        { Icon: Twitter, href: 'https://twitter.com/forwardfalls', label: 'Twitter / X' },
+                                        { Icon: Instagram, href: 'https://instagram.com/forwardfallsinitiative', label: 'Instagram' },
+                                        { Icon: Youtube, href: 'https://youtube.com/@forwardfallsinitiative', label: 'YouTube' },
+                                    ].map(({ Icon, href, label }) => (
+                                        <a
+                                            key={label}
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={label}
+                                            className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-400 hover:text-primary-green hover:border-primary-green transition-all"
+                                        >
                                             <Icon size={18} />
-                                        </div>
+                                        </a>
                                     ))}
                                 </div>
                             </div>
@@ -250,10 +248,18 @@ const ContactPage = () => {
                 </div>
             </section>
 
-            {/* Map Placeholder */}
-            <section className="h-[400px] bg-gray-100 w-full flex items-center justify-center relative overflow-hidden">
-                <div className="text-gray-300 font-bold uppercase tracking-[0.4em] text-2xl z-10">Interactive Map Preview</div>
-                <div className="absolute inset-0 bg-primary-green/5"></div>
+            {/* Map — embedded Google Maps iframe */}
+            <section className="h-[400px] w-full overflow-hidden">
+                <iframe
+                    title="Forward Falls Initiative — Nigeria"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7!2d3.3792057!3d6.5243793!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1"
+                    width="100%"
+                    height="400"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                />
             </section>
 
             <Footer />

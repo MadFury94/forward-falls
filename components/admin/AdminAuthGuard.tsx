@@ -10,10 +10,11 @@ export default function AdminAuthGuard({ children }: { children: React.ReactNode
     useEffect(() => {
         const token = localStorage.getItem('wp_token');
         if (!token) {
+            // Middleware handles the real auth check via HttpOnly cookie.
+            // This is a client-side fallback for cases where localStorage
+            // was cleared but the cookie is still valid (rare edge case).
             router.replace('/admin-login');
         } else {
-            // Keep cookie in sync with localStorage for middleware
-            document.cookie = `wp_token=${token}; path=/; max-age=86400; SameSite=Lax`;
             setChecked(true);
         }
     }, [router]);

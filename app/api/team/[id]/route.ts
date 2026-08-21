@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { validateId } from '@/lib/validate-id';
 
-
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
-
-function auth(token: string) {
-    return { 'Authorization': `Bearer ${token}` };
-}
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
+const auth = (token: string) => ({ 'Authorization': `Bearer ${token}` });
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const token = request.headers.get('x-wp-token') || '';
+    const check = validateId(id);
+    if (!check.valid) return check.response;
 
+    const token = request.headers.get('x-wp-token') || '';
     const res = await fetch(`${WP_URL}/wp-json/wp/v2/team-member/${id}?acf_format=standard&_embed=wp:featuredmedia`, {
         headers: auth(token),
     });
@@ -22,13 +21,16 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const check = validateId(id);
+    if (!check.valid) return check.response;
+
     const token = request.headers.get('x-wp-token') || '';
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 
     const body = await request.json();
     const { name, roles, featured_media, menu_order, acf_order } = body;
 
-    const wpPayload: Record<string, any> = {};
+    const wpPayload: Record<string, unknown> = {};
     if (name !== undefined || roles !== undefined || acf_order !== undefined) {
         wpPayload.acf = {
             ...(name !== undefined ? { name } : {}),
@@ -50,12 +52,14 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
         const err = await res.json();
         return NextResponse.json({ success: false, error: err.message }, { status: 400 });
     }
-
     return NextResponse.json({ success: true });
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const check = validateId(id);
+    if (!check.valid) return check.response;
+
     const token = request.headers.get('x-wp-token') || '';
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 

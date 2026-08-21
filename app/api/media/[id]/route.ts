@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { validateId } from '@/lib/validate-id';
 
-
-const WP_URL = process.env.WORDPRESS_SITE_URL || 'https://azure-dugong-563921.hostingersite.com';
-
-function auth(token: string) {
-    return { 'Authorization': `Bearer ${token}` };
-}
+const WP_URL = process.env.WORDPRESS_SITE_URL || '';
+const auth = (token: string) => ({ 'Authorization': `Bearer ${token}` });
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const check = validateId(id);
+    if (!check.valid) return check.response;
+
     const token = request.headers.get('x-wp-token') || '';
     if (!token) return NextResponse.json({ success: false, error: 'Not authenticated' }, { status: 401 });
 

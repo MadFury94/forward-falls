@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
     LayoutDashboard, FileText, LogOut,
-    Users, Image, CreditCard, ChevronDown, Globe
+    Users, Image, CreditCard, ChevronDown, Globe, UserCog
 } from 'lucide-react'
 import {
     Sidebar, SidebarContent, SidebarFooter, SidebarGroup,
@@ -59,10 +59,16 @@ const navGroups = [
         href: '/admin-dashboard/media',
         icon: Image,
     },
+    {
+        title: 'My Account',
+        href: '/admin-dashboard/account',
+        icon: UserCog,
+    },
 ]
 
 export function AppSidebar() {
     const pathname = usePathname()
+    const [user, setUser] = useState<{ name?: string; email?: string } | null>(null)
 
     // Track which groups are open — default open if current path is inside
     const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
@@ -72,6 +78,13 @@ export function AppSidebar() {
         })
         return init
     })
+
+    useEffect(() => {
+        const stored = localStorage.getItem('wp_user')
+        if (stored) {
+            try { setUser(JSON.parse(stored)) } catch { /* */ }
+        }
+    }, [])
 
     const toggle = (title: string) =>
         setOpenGroups((prev) => ({ ...prev, [title]: !prev[title] }))
@@ -173,6 +186,14 @@ export function AppSidebar() {
             <SidebarFooter>
                 <SidebarMenu>
                     <SidebarMenuItem>
+                        <SidebarMenuButton asChild tooltip='My Account'>
+                            <Link href='/admin-dashboard/account' className='text-sidebar-foreground/70 hover:text-[#00baa3]'>
+                                <UserCog />
+                                <span>My Account</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
                         <SidebarMenuButton asChild tooltip='Logout'>
                             <Link
                                 href='/admin-login'
@@ -180,7 +201,8 @@ export function AppSidebar() {
                                 onClick={() => {
                                     localStorage.removeItem('wp_token');
                                     localStorage.removeItem('wp_user');
-                                    document.cookie = 'wp_token=; path=/; max-age=0';
+                                    // Call DELETE to clear the HttpOnly cookie server-side
+                                    fetch('/api/wordpress-auth', { method: 'DELETE' }).catch(() => { });
                                 }}
                             >
                                 <LogOut />
@@ -189,14 +211,20 @@ export function AppSidebar() {
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size='lg' className='data-[state=open]:bg-sidebar-accent'>
-                            <Avatar className='h-8 w-8 rounded-lg'>
-                                <AvatarFallback className='rounded-lg'>AD</AvatarFallback>
-                            </Avatar>
-                            <div className='grid flex-1 text-start text-sm leading-tight'>
-                                <span className='truncate font-semibold'>Admin</span>
-                                <span className='truncate text-xs text-sidebar-foreground/60'>super_admin</span>
-                            </div>
+                        <SidebarMenuButton size='lg' asChild tooltip='My Account' className='data-[state=open]:bg-sidebar-accent'>
+                            <Link href='/admin-dashboard/account'>
+                                <Avatar className='h-8 w-8 rounded-lg'>
+                                    <AvatarFallback className='rounded-lg bg-[#00baa3]/10 text-[#00baa3] font-bold text-xs'>
+                                        {user?.name
+                                            ? user.name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2)
+                                            : 'AD'}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div className='grid flex-1 text-start text-sm leading-tight'>
+                                    <span className='truncate font-semibold'>{user?.name || 'Admin'}</span>
+                                    <span className='truncate text-xs text-sidebar-foreground/60'>{user?.email || 'Administrator'}</span>
+                                </div>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

@@ -274,6 +274,7 @@ HelloTheme\Theme::instance();
 // Custom REST API for homepage ACF options
 add_action('rest_api_init', function () {
 
+    // GET /wp-json/ffi/v1/homepage — public read (used by Next.js frontend)
     register_rest_route('ffi/v1', '/homepage', [
         'methods'             => 'GET',
         'callback'            => function () {
@@ -287,6 +288,7 @@ add_action('rest_api_init', function () {
         'permission_callback' => '__return_true',
     ]);
 
+    // POST /wp-json/ffi/v1/homepage — requires a logged-in administrator
     register_rest_route('ffi/v1', '/homepage', [
         'methods'             => 'POST',
         'callback'            => function (WP_REST_Request $request) {
@@ -294,30 +296,22 @@ add_action('rest_api_init', function () {
             if (empty($fields)) {
                 return new WP_Error('no_fields', 'No fields provided', ['status' => 400]);
             }
+            // Whitelist allowed field keys to prevent arbitrary option writes
+            $allowed_keys = ['about_eyebrow','about_heading','about_stat_number','about_stat_label','about_image','about_paragraphs','vm_eyebrow','vm_heading','vm_intro','vision_text','mission_text','sdg_pillars','programs_eyebrow','programs_heading','programs_description','programs_stats','programs_progress_bars','programs_initiatives','partners','hero_slides'];
+            $saved = [];
             foreach ($fields as $key => $value) {
-                update_option('options_' . $key, $value);
+                if (in_array($key, $allowed_keys, true)) {
+                    update_option('options_' . $key, $value);
+                    $saved[] = $key;
+                }
             }
-            return rest_ensure_response(['success' => true, 'saved_keys' => array_keys($fields)]);
+            return rest_ensure_response(['success' => true, 'saved_keys' => $saved]);
         },
-        'permission_callback' => '__return_true',
+        'permission_callback' => function () {
+            return current_user_can('administrator');
+        },
     ]);
 
-});
-add_action('rest_api_init', function () {
-    register_rest_route('ffi/v1', '/test-write', [
-        'methods'             => 'POST',
-        'callback'            => function (WP_REST_Request $request) {
-            $val = $request->get_json_params()['val'] ?? 'empty';
-            update_option('ffi_test_val', $val);
-            $read_back = get_option('ffi_test_val', 'NOT_FOUND');
-            return rest_ensure_response([
-                'wrote'     => $val,
-                'read_back' => $read_back,
-                'match'     => $val === $read_back,
-            ]);
-        },
-        'permission_callback' => '__return_true',
-    ]);
 });
 
 

@@ -188,8 +188,9 @@ export default function PostsPage() {
                   <tr key={post.id} className="hover:bg-gray-50 transition-colors group">
                     {/* Title */}
                     <td className="px-6 py-4">
-                      <div className="font-semibold text-dark-grey text-sm line-clamp-1"
-                        dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+                      <div className="font-semibold text-dark-grey text-sm line-clamp-1">
+                        {post.title.rendered.replace(/<[^>]*>/g, '')}
+                      </div>
                       <div className="flex items-center gap-3 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
                         <Link href={`/admin-dashboard/posts/${post.id}/edit`} className="text-xs text-primary-green hover:underline">Edit</Link>
                         <span className="text-gray-300">|</span>
